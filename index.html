@@ -57,6 +57,11 @@
             border: 2px solid #00ff00;
             border-radius: 6px;
         }
+
+        .button:hover {
+            transform: scale(1.1);
+            text-shadow: 0 0 10px #00ff00,0 0 20px #00ff00;
+        }
     </style>
 </head>
 <body>
@@ -70,8 +75,10 @@
     <p>Username: <strong>Rip_Dead</strong></p>
     <p>Status: <strong>Public Profile</strong></p>
 
-    <!-- For now Register button points to error.html -->
-    <a class="button" href="/error.html">Register Account</a>
+    <!-- Register button points to under-maintenance -->
+    <a class="button" href="/under-maintenance.html">Register Account</a>
+    <br>
+    <a class="button" href="/users/user.html">View Profile</a>
 
     <div class="links">
         <p>
@@ -82,11 +89,10 @@
         </p>
     </div>
 
-    <p><a href="/about">More About Me</a> (coming soon)</p>
+    <p><a href="/about.html">More About Me</a> (coming soon)</p>
 </div>
 
 <script>
-    // MATRIX effect
     const canvas = document.getElementById("matrix");
     const ctx = canvas.getContext("2d");
 
@@ -122,3 +128,4 @@
 
 </body>
 </html>
+
