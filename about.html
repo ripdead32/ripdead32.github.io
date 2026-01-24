@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Rip_Dead Site - About Me</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <style>
+        body {
+            margin: 0;
+            font-family: "Courier New", monospace;
+            background: black;
+            color: #00ff00;
+            overflow: hidden;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 50px;
+            font-size: 3em;
+            text-shadow: 0 0 10px #00ff00;
+        }
+
+        .content {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 20px;
+            border: 2px solid #00ff00;
+            background: rgba(0,0,0,0.75);
+            border-radius: 10px;
+            line-height: 1.5em;
+            text-align: left;
+        }
+
+        a.button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 18px;
+            border: 2px solid #00ff00;
+            border-radius: 6px;
+            text-decoration: none;
+            color: #00ff00;
+            transition: all 0.2s ease-in-out;
+            font-weight: bold;
+        }
+
+        a.button:hover {
+            transform: scale(1.2);
+            text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px #00ff00;
+            box-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px #00ff00;
+        }
+
+        .matrix {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="matrix" class="matrix"></canvas>
+
+<h1>About Me</h1>
+
+<div class="content">
+    <p>Hello, welcome to the Rip_Dead Site About Me! I'm Rip_Dead, your average animator and gaming YouTuber. I make content for Geometry Dash, Friday Night Funkin', and random short videos. I sometimes follow trends and have a variety of interests, one of them being baseball.</p>
+
+    <p>I also have a Discord account. The <strong>only official account</strong> is <strong>rip_deadlolz</strong>. The <strong>only official Rip_Dead usernames</strong> are: RIPDEAD32, RIPDEADLOLZ, RIPDEADD, and RIPDEADD.</p>
+
+    <p>This About Me page has finished, and I've included a button below to return to the Rip_Dead Site.</p>
+
+    <a class="button" href="/index.html">Return to Home</a>
+</div>
+
+<script>
+    const canvas = document.getElementById("matrix");
+    const ctx = canvas.getContext("2d");
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    const fontSize = 16;
+    const columns = canvas.width / fontSize;
+    const drops = Array.from({ length: columns }).fill(0);
+
+    function draw() {
+        ctx.fillStyle = "rgba(0,0,0,0.05)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.fillStyle = "#00ff00";
+        ctx.font = fontSize + "px monospace";
+
+        drops.forEach((y, i) => {
+            const text = chars[Math.floor(Math.random() * chars.length)];
+            ctx.fillText(text, i * fontSize, y * fontSize);
+            drops[i] = y * fontSize > canvas.height && Math.random() > 0.975 ? 0 : y + 1;
+        });
+    }
+
+    setInterval(draw, 50);
+
+    window.addEventListener("resize", () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    });
+</script>
+
+</body>
+</html>
