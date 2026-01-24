@@ -26,14 +26,22 @@
             margin-top: 20px;
         }
 
-        a {
-            color: #00ff00;
+        a.button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 24px;
+            border: 2px solid #00ff00;
+            border-radius: 8px;
             text-decoration: none;
+            color: #00ff00;
+            transition: all 0.2s ease-in-out;
             font-weight: bold;
         }
 
-        a:hover {
-            color: #a0ffa0;
+        a.button:hover {
+            transform: scale(1.2);
+            text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px #00ff00;
+            box-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px #00ff00;
         }
 
         .matrix {
@@ -49,10 +57,9 @@
 
 <h1>Oops! Error</h1>
 <p>This feature is under maintenance.</p>
-<p><a href="/index.html">Return to Home</a></p>
+<p><a class="button" href="/index.html">Return to Rip_Dead Site</a></p>
 
 <script>
-    // MATRIX effect
     const canvas = document.getElementById("matrix");
     const ctx = canvas.getContext("2d");
 
