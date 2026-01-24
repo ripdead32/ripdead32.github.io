@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Rip_Dead Site - Home</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <style>
+        body {
+            margin: 0;
+            font-family: "Courier New", monospace;
+            background: black;
+            color: #00ff00;
+            overflow: hidden;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 50px;
+            font-size: 3em;
+            text-shadow: 0 0 10px #00ff00;
+        }
+
+        a {
+            color: #00ff00;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: #a0ffa0;
+        }
+
+        .matrix {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+        }
+
+        .card {
+            max-width: 420px;
+            margin: 40px auto;
+            padding: 20px;
+            border: 2px solid #00ff00;
+            background: rgba(0,0,0,0.75);
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .links {
+            margin-top: 15px;
+        }
+
+        .button {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 18px;
+            border: 2px solid #00ff00;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="matrix" class="matrix"></canvas>
+
+<h1>Welcome to Rip_Dead's Site</h1>
+
+<div class="card">
+    <h2>Rip_Dead Account</h2>
+    <p>Username: <strong>Rip_Dead</strong></p>
+    <p>Status: <strong>Public Profile</strong></p>
+
+    <!-- For now Register button points to error.html -->
+    <a class="button" href="/error.html">Register Account</a>
+
+    <div class="links">
+        <p>
+            <a href="https://www.youtube.com/@ripdeadd" target="_blank">YouTube</a> |
+            <a href="https://x.com/rip_dead32" target="_blank">X</a> |
+            <a href="https://www.reddit.com/u/rip_dead32/s/hVrQI0NqEs" target="_blank">Reddit</a> |
+            <a href="https://www.facebook.com/share/1AbvyPZgEh/" target="_blank">Facebook</a>
+        </p>
+    </div>
+
+    <p><a href="/about">More About Me</a> (coming soon)</p>
+</div>
+
+<script>
+    // MATRIX effect
+    const canvas = document.getElementById("matrix");
+    const ctx = canvas.getContext("2d");
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    const fontSize = 16;
+    const columns = canvas.width / fontSize;
+    const drops = Array.from({ length: columns }).fill(0);
+
+    function draw() {
+        ctx.fillStyle = "rgba(0,0,0,0.05)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.fillStyle = "#00ff00";
+        ctx.font = fontSize + "px monospace";
+
+        drops.forEach((y, i) => {
+            const text = chars[Math.floor(Math.random() * chars.length)];
+            ctx.fillText(text, i * fontSize, y * fontSize);
+            drops[i] = y * fontSize > canvas.height && Math.random() > 0.975 ? 0 : y + 1;
+        });
+    }
+
+    setInterval(draw, 50);
+
+    window.addEventListener("resize", () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    });
+</script>
+
+</body>
+</html>
