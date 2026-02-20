@@ -1,51 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Rip_Dead Site - Home</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<style>
-body {margin:0;padding:0;background:black;color:#00ff00;font-family:"Courier New", monospace;text-align:center;}
-header {display:flex;justify-content:space-between;align-items:center;padding:10px 20px;}
-h1 {font-size:3em;margin-top:60px;text-shadow:0 0 10px #00ff00;}
-a.button {display:inline-block;margin:15px;padding:14px 30px;border:2px solid #00ff00;border-radius:8px;color:#00ff00;text-decoration:none;font-weight:bold;transition:all 0.3s ease;}
-a.button:hover {transform: scale(1.15);box-shadow:0 0 15px #00ff00;}
-.links {margin-top:40px;font-size:1.1em;}
-.links a {color:#00ff00;text-decoration:none;margin:0 10px;transition: all 0.2s;}
-.links a:hover {text-shadow:0 0 8px #00ff00;}
-#user-section {display:flex;align-items:center;}
-#username-display {margin-right:10px;text-decoration:underline;cursor:pointer;}
-button.logout {padding:6px 12px;border:2px solid #00ff00;border-radius:6px;background:black;color:#00ff00;font-weight:bold;cursor:pointer;}
-button.logout:hover {transform:scale(1.1);box-shadow:0 0 10px #00ff00;}
-hr {border:none;border-top:2px solid #00ff00;margin:50px 0 20px 0;}
-footer {font-size:12px;text-align:center;margin-bottom:20px;}
-</style>
+    <meta charset="UTF-8">
+    <title>Rip_Dead Site - Home</title>
+    <link rel="icon" href="/favicon.ico">
+    <style>
+        body {
+            margin:0;
+            padding:0;
+            background:black;
+            color:#00ff00;
+            font-family:"Courier New", monospace;
+            text-align:center;
+        }
+
+        h1 {
+            font-size:3em;
+            margin-top:80px;
+            text-shadow:0 0 10px #00ff00;
+        }
+
+        a.button {
+            display:inline-block;
+            margin:15px;
+            padding:14px 30px;
+            border:2px solid #00ff00;
+            border-radius:8px;
+            color:#00ff00;
+            text-decoration:none;
+            font-weight:bold;
+            transition: all 0.3s ease;
+        }
+
+        a.button:hover {
+            transform: scale(1.15);
+            box-shadow:0 0 15px #00ff00;
+        }
+
+        .links {
+            margin-top:40px;
+            font-size:1.1em;
+        }
+
+        .links a {
+            color:#00ff00;
+            text-decoration:none;
+            margin:0 10px;
+            transition: all 0.2s;
+        }
+
+        .links a:hover {
+            text-shadow:0 0 8px #00ff00;
+        }
+
+        hr {
+            border:none;
+            border-top:2px solid #00ff00;
+            margin:50px 0 20px 0;
+        }
+
+        footer {
+            font-size:12px;
+            text-align:center;
+            margin-bottom:20px;
+        }
+    </style>
 </head>
 <body>
-
-<header>
-<div id="user-section">
-<!-- Username and Logout will appear here if logged in -->
-</div>
-<div>
-<a class="button" id="login-btn" href="/login/">Login</a>
-<a class="button" id="register-btn" href="/register/">Register</a>
-</div>
-</header>
 
 <h1>Welcome to Rip_Dead Site</h1>
 
 <a class="button" href="/about/">About Me</a>
 <a class="button" href="/downloads/">Downloads</a>
-<a class="button" href="/search/">Search Users</a>
+<a class="button" href="/support/">Support</a> <!-- Added Support Button -->
 
 <div class="links">
-<p>
-<a href="https://www.youtube.com/@ripdeadYT" target="_blank">YouTube</a> |
-<a href="https://x.com/rip_dead32" target="_blank">X</a> |
-<a href="https://www.reddit.com/u/rip_dead32/s/hVrQI0NqEs" target="_blank">Reddit</a> |
-<a href="https://www.facebook.com/share/1AbvyPZgEh/" target="_blank">Facebook</a>
-</p>
+    <p>
+        <a href="https://www.youtube.com/@ripdeadYT" target="_blank">YouTube</a> |
+        <a href="https://x.com/rip_dead32" target="_blank">X</a> |
+        <a href="https://www.reddit.com/u/rip_dead32/s/hVrQI0NqEs" target="_blank">Reddit</a> |
+        <a href="https://www.facebook.com/share/1AbvyPZgEh/" target="_blank">Facebook</a>
+    </p>
 </div>
 
 <hr>
@@ -53,50 +88,6 @@ footer {font-size:12px;text-align:center;margin-bottom:20px;}
 <footer>
 (C) Copyright Rip_Dead Studios 2026, All Rights Reserved
 </footer>
-
-<script>
-const supabaseUrl = 'https://uuvddjdbflwtbrbcgttj.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV1dmRkamRiZmx3dGJyYmNndHRqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE2MTAzNTIsImV4cCI6MjA4NzE4NjM1Mn0.b_betmbrXem0_EwtXCoXRLU7E2w2KEKJKVncQ9f0dVE';
-const supabase = supabase.createClient(supabaseUrl, supabaseKey);
-
-const userSection = document.getElementById('user-section');
-const loginBtn = document.getElementById('login-btn');
-const registerBtn = document.getElementById('register-btn');
-
-async function loadUser() {
-    const { data: currentUser } = await supabase.auth.getUser();
-    if (currentUser && currentUser.user) {
-        const username = currentUser.user.user_metadata.username || 'Unknown';
-
-        // Hide login/register
-        loginBtn.style.display = 'none';
-        registerBtn.style.display = 'none';
-
-        // Show username and logout button
-        const nameEl = document.createElement('span');
-        nameEl.id = 'username-display';
-        nameEl.textContent = username;
-        nameEl.onclick = () => window.location.href = `/users/${username}/`;
-
-        const logoutBtn = document.createElement('button');
-        logoutBtn.className = 'logout';
-        logoutBtn.textContent = 'Logout';
-        logoutBtn.onclick = async () => {
-            await supabase.auth.signOut();
-            window.location.reload();
-        };
-
-        userSection.appendChild(nameEl);
-        userSection.appendChild(logoutBtn);
-    } else {
-        // Not logged in
-        loginBtn.style.display = 'inline-block';
-        registerBtn.style.display = 'inline-block';
-    }
-}
-
-loadUser();
-</script>
 
 </body>
 </html>
