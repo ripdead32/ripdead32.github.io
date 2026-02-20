@@ -6,120 +6,136 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 body {margin:0;padding:0;background:black;color:#00ff00;font-family:"Courier New", monospace;text-align:center;}
-h1 {font-size:2.5em;margin-top:40px;text-shadow:0 0 10px #00ff00;}
-.profile-pic {width:120px;height:120px;border-radius:50%;border:2px solid #00ff00;background:transparent;}
-textarea {width:300px;height:100px;margin:10px;padding:10px;border:2px solid #00ff00;border-radius:6px;background:black;color:#00ff00;font-family:"Courier New", monospace;}
-button {padding:8px 16px;border:2px solid #00ff00;border-radius:6px;background:black;color:#00ff00;font-weight:bold;cursor:pointer;}
-button:hover {transform: scale(1.1);box-shadow:0 0 10px #00ff00;}
+h1 {font-size:2.5em;margin-top:60px;text-shadow:0 0 10px #00ff00;}
+input, textarea {margin:10px;padding:10px;width:300px;border:2px solid #00ff00;border-radius:6px;background:black;color:#00ff00;font-family:"Courier New", monospace;}
+button {padding:6px 14px;margin:5px;border:2px solid #00ff00;border-radius:6px;background:black;color:#00ff00;font-weight:bold;cursor:pointer;}
+button:hover {transform:scale(1.1);box-shadow:0 0 10px #00ff00;}
+img.profile-pic {width:150px;height:150px;border:2px solid #00ff00;border-radius:50%;background:transparent;display:block;margin:20px auto;}
 #error {color:red;margin-top:10px;}
+.success {color:#00ff00;margin-top:10px;}
 </style>
 </head>
 <body>
 
-<h1 id="username-title"></h1>
-
+<h1 id="username-header">User Profile</h1>
 <img id="profile-pic" class="profile-pic" src="" alt="Profile Picture">
 
 <div id="bio-section">
-<p id="bio-text"></p>
+<h3>Bio:</h3>
+<p id="bio-display"></p>
+<textarea id="bio-edit" style="display:none;"></textarea><br>
+<button id="bio-save" style="display:none;">Save Bio</button>
 </div>
 
-<div id="edit-section" style="display:none;">
-<h3>Edit Your Profile</h3>
-<input type="file" id="profile-pic-input" accept="image/*"><br>
-<textarea id="bio-input" placeholder="Enter your bio"></textarea><br>
-<button id="save-btn">Save Changes</button>
-<div id="error"></div>
+<div id="pic-section">
+<input type="file" id="pic-input" style="display:none;">
+<button id="pic-save" style="display:none;">Update Profile Picture</button>
 </div>
+
+<div id="messages"></div>
 
 <script>
 const supabaseUrl = 'https://uuvddjdbflwtbrbcgttj.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV1dmRkamRiZmx3dGJyYmNndHRqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE2MTAzNTIsImV4cCI6MjA4NzE4NjM1Mn0.b_betmbrXem0_EwtXCoXRLU7E2w2KEKJKVncQ9f0dVE';
 const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-const usernameTitle = document.getElementById('username-title');
+const usernameHeader = document.getElementById('username-header');
+const bioDisplay = document.getElementById('bio-display');
+const bioEdit = document.getElementById('bio-edit');
+const bioSaveBtn = document.getElementById('bio-save');
+const picInput = document.getElementById('pic-input');
+const picSaveBtn = document.getElementById('pic-save');
 const profilePic = document.getElementById('profile-pic');
-const bioText = document.getElementById('bio-text');
-const editSection = document.getElementById('edit-section');
-const bioInput = document.getElementById('bio-input');
-const profilePicInput = document.getElementById('profile-pic-input');
-const saveBtn = document.getElementById('save-btn');
-const errorDiv = document.getElementById('error');
+const messagesDiv = document.getElementById('messages');
 
-// Get username from URL: /users/[username]/index.html
+// Get username from URL
 const pathParts = window.location.pathname.split('/');
-const profileUsername = pathParts[pathParts.length - 2];
+const pageUsername = pathParts[2]; // /users/[username]/
 
-// Fetch user data
+let currentUser = null;
+
 async function loadUser() {
-    const { data: users } = await supabase
+    const { data: userData } = await supabase.auth.getUser();
+    if (userData && userData.user) currentUser = userData.user;
+
+    usernameHeader.textContent = pageUsername;
+
+    // Fetch user profile info from table
+    const { data, error } = await supabase
         .from('users')
         .select('*')
-        .eq('username', profileUsername)
+        .eq('username', pageUsername)
         .maybeSingle();
 
-    if (!users) {
-        usernameTitle.textContent = 'User not found';
-        bioText.textContent = '';
-        profilePic.src = '';
+    if (error || !data) {
+        messagesDiv.textContent = 'User not found';
         return;
     }
 
-    usernameTitle.textContent = users.username;
-    bioText.textContent = users.bio || 'No bio yet';
-    profilePic.src = users.profile_pic || 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==';
-}
+    bioDisplay.textContent = data.bio || '';
+    profilePic.src = data.profile_pic || 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs='; // Transparent if none
 
-// Check if current user is viewing own profile
-async function checkOwnProfile() {
-    const { data: currentUser } = await supabase.auth.getUser();
-    if (currentUser && currentUser.user && currentUser.user.user_metadata.username === profileUsername) {
-        editSection.style.display = 'block';
-        bioInput.value = bioText.textContent;
+    // If current user owns this page, allow edits
+    if (currentUser && currentUser.user_metadata.username === pageUsername) {
+        bioDisplay.style.display = 'none';
+        bioEdit.style.display = 'block';
+        bioEdit.value = data.bio || '';
+        bioSaveBtn.style.display = 'inline-block';
+        picInput.style.display = 'block';
+        picSaveBtn.style.display = 'inline-block';
     }
 }
 
-// Save changes
-saveBtn.addEventListener('click', async () => {
-    errorDiv.textContent = '';
-
-    const bio = bioInput.value;
-    let profileUrl = null;
-
-    if (profilePicInput.files.length > 0) {
-        const file = profilePicInput.files[0];
-        const fileExt = file.name.split('.').pop();
-        const fileName = `${profileUsername}.${fileExt}`;
-        const { data, error: uploadError } = await supabase.storage
-            .from('profiles')
-            .upload(fileName, file, { upsert: true });
-
-        if (uploadError) {
-            errorDiv.textContent = 'Error uploading image';
-            return;
-        }
-
-        const { data: publicURL } = supabase.storage.from('profiles').getPublicUrl(fileName);
-        profileUrl = publicURL;
-    }
-
+bioSaveBtn.addEventListener('click', async () => {
+    const newBio = bioEdit.value.trim();
     const { error } = await supabase
         .from('users')
-        .update({ bio, profile_pic: profileUrl || profilePic.src })
-        .eq('username', profileUsername);
+        .update({ bio: newBio })
+        .eq('username', pageUsername);
 
     if (error) {
-        errorDiv.textContent = error.message;
+        messagesDiv.textContent = 'Failed to update bio';
+    } else {
+        messagesDiv.textContent = 'Bio updated!';
+        bioDisplay.textContent = newBio;
+    }
+});
+
+picSaveBtn.addEventListener('click', async () => {
+    const file = picInput.files[0];
+    if (!file) {
+        messagesDiv.textContent = 'Please select a file';
         return;
     }
 
-    bioText.textContent = bio;
-    if (profileUrl) profilePic.src = profileUrl;
-    alert('Profile updated!');
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${pageUsername}.${fileExt}`;
+    const filePath = `profile-pics/${fileName}`;
+
+    const { error: uploadError } = await supabase.storage
+        .from('avatars')
+        .upload(filePath, file, { upsert: true });
+
+    if (uploadError) {
+        messagesDiv.textContent = 'Failed to upload image';
+        return;
+    }
+
+    const { data: urlData } = supabase.storage.from('avatars').getPublicUrl(filePath);
+    const { error: updateError } = await supabase
+        .from('users')
+        .update({ profile_pic: urlData.publicUrl })
+        .eq('username', pageUsername);
+
+    if (updateError) {
+        messagesDiv.textContent = 'Failed to update profile picture';
+    } else {
+        profilePic.src = urlData.publicUrl;
+        messagesDiv.textContent = 'Profile picture updated!';
+    }
 });
 
 loadUser();
-checkOwnProfile();
 </script>
 
 </body>
