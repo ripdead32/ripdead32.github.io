@@ -3,78 +3,124 @@
 <head>
 <meta charset="UTF-8">
 <title>Rip_Dead Site - User Profile</title>
-<link rel="icon" href="/favicon.ico">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-body { margin:0; padding:0; background:black; color:#00ff00; font-family:"Courier New", monospace; text-align:center; }
-h1 { font-size:2.5em; margin-top:60px; text-shadow:0 0 10px #00ff00; }
-img { border:2px solid #00ff00; border-radius:10px; width:128px; height:128px; object-fit:cover; }
-textarea, input, button { margin:10px; padding:10px; border:2px solid #00ff00; border-radius:5px; background:black; color:#00ff00; font-family:inherit; font-size:1em; }
-button:hover { transform: scale(1.05); cursor:pointer; }
-footer { font-size:12px; text-align:center; margin-top:50px; }
+body {margin:0;padding:0;background:black;color:#00ff00;font-family:"Courier New", monospace;text-align:center;}
+h1 {font-size:2.5em;margin-top:40px;text-shadow:0 0 10px #00ff00;}
+.profile-pic {width:120px;height:120px;border-radius:50%;border:2px solid #00ff00;background:transparent;}
+textarea {width:300px;height:100px;margin:10px;padding:10px;border:2px solid #00ff00;border-radius:6px;background:black;color:#00ff00;font-family:"Courier New", monospace;}
+button {padding:8px 16px;border:2px solid #00ff00;border-radius:6px;background:black;color:#00ff00;font-weight:bold;cursor:pointer;}
+button:hover {transform: scale(1.1);box-shadow:0 0 10px #00ff00;}
+#error {color:red;margin-top:10px;}
 </style>
 </head>
 <body>
 
-<h1 id="usernameHeader">Username</h1>
-<img id="profilePic" src="" alt="Profile Picture"><br/>
-<p id="role">Role: User</p>
-<p id="bio">Bio: </p>
+<h1 id="username-title"></h1>
 
-<div id="editSection" style="display:none;">
-    <textarea id="bioInput" placeholder="Your bio"></textarea><br/>
-    <input type="file" id="newPic"/><br/>
-    <button onclick="saveProfile()">Save</button>
+<img id="profile-pic" class="profile-pic" src="" alt="Profile Picture">
+
+<div id="bio-section">
+<p id="bio-text"></p>
 </div>
 
-<hr>
+<div id="edit-section" style="display:none;">
+<h3>Edit Your Profile</h3>
+<input type="file" id="profile-pic-input" accept="image/*"><br>
+<textarea id="bio-input" placeholder="Enter your bio"></textarea><br>
+<button id="save-btn">Save Changes</button>
+<div id="error"></div>
+</div>
 
-<footer>(C) Copyright Rip_Dead Studios 2026, All Rights Reserved</footer>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const SUPABASE_URL = "https://uuvddjdbflwtbrbcgttj.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV1dmRkamRiZmx3dGJyYmNndHRqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE2MTAzNTIsImV4cCI6MjA4NzE4NjM1Mn0.b_betmbrXem0_EwtXCoXRLU7E2w2KEKJKVncQ9f0dVE";
-const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const supabaseUrl = 'https://uuvddjdbflwtbrbcgttj.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV1dmRkamRiZmx3dGJyYmNndHRqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE2MTAzNTIsImV4cCI6MjA4NzE4NjM1Mn0.b_betmbrXem0_EwtXCoXRLU7E2w2KEKJKVncQ9f0dVE';
+const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
+const usernameTitle = document.getElementById('username-title');
+const profilePic = document.getElementById('profile-pic');
+const bioText = document.getElementById('bio-text');
+const editSection = document.getElementById('edit-section');
+const bioInput = document.getElementById('bio-input');
+const profilePicInput = document.getElementById('profile-pic-input');
+const saveBtn = document.getElementById('save-btn');
+const errorDiv = document.getElementById('error');
+
+// Get username from URL: /users/[username]/index.html
 const pathParts = window.location.pathname.split('/');
-const profileUsername = pathParts[pathParts.length-1];
+const profileUsername = pathParts[pathParts.length - 2];
 
-async function loadProfile() {
-    const { data: { session } } = await supabase.auth.getSession();
-    const users = await supabase.auth.admin.listUsers(); // Supabase requires separate table to properly search metadata
-    const user = users.data.users.find(u => u.user_metadata.username === profileUsername);
-    if(!user){ alert("User not found"); return; }
+// Fetch user data
+async function loadUser() {
+    const { data: users } = await supabase
+        .from('users')
+        .select('*')
+        .eq('username', profileUsername)
+        .maybeSingle();
 
-    document.getElementById('usernameHeader').textContent = user.user_metadata.username;
-    document.getElementById('role').textContent = "Role: "+(user.user_metadata.role || "User");
-    document.getElementById('bio').textContent = "Bio: "+(user.user_metadata.bio || "");
-    document.getElementById('profilePic').src = user.user_metadata.profile_pic || "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
+    if (!users) {
+        usernameTitle.textContent = 'User not found';
+        bioText.textContent = '';
+        profilePic.src = '';
+        return;
+    }
 
-    if(session && session.user.user_metadata.username === profileUsername){
-        document.getElementById('editSection').style.display = "block";
-        document.getElementById('bioInput').value = user.user_metadata.bio || "";
+    usernameTitle.textContent = users.username;
+    bioText.textContent = users.bio || 'No bio yet';
+    profilePic.src = users.profile_pic || 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==';
+}
+
+// Check if current user is viewing own profile
+async function checkOwnProfile() {
+    const { data: currentUser } = await supabase.auth.getUser();
+    if (currentUser && currentUser.user && currentUser.user.user_metadata.username === profileUsername) {
+        editSection.style.display = 'block';
+        bioInput.value = bioText.textContent;
     }
 }
 
-async function saveProfile() {
-    const bio = document.getElementById('bioInput').value;
-    const file = document.getElementById('newPic').files[0];
-    let picUrl = null;
-    if(file){
-        const { data, error } = await supabase.storage.from('profile-pics').upload(`public/${profileUsername}`, file, {upsert:true});
-        if(error){ alert("Pic upload failed"); return; }
-        picUrl = `https://uuvddjdbflwtbrbcgttj.supabase.co/storage/v1/object/public/profile-pics/${profileUsername}`;
+// Save changes
+saveBtn.addEventListener('click', async () => {
+    errorDiv.textContent = '';
+
+    const bio = bioInput.value;
+    let profileUrl = null;
+
+    if (profilePicInput.files.length > 0) {
+        const file = profilePicInput.files[0];
+        const fileExt = file.name.split('.').pop();
+        const fileName = `${profileUsername}.${fileExt}`;
+        const { data, error: uploadError } = await supabase.storage
+            .from('profiles')
+            .upload(fileName, file, { upsert: true });
+
+        if (uploadError) {
+            errorDiv.textContent = 'Error uploading image';
+            return;
+        }
+
+        const { data: publicURL } = supabase.storage.from('profiles').getPublicUrl(fileName);
+        profileUrl = publicURL;
     }
-    const updates = { bio };
-    if(picUrl) updates.profile_pic = picUrl;
 
-    const { data, error } = await supabase.auth.admin.updateUserById(user.id, { data: updates });
-    if(error){ alert(error.message); return; }
-    alert("Profile updated!");
-    loadProfile();
-}
+    const { error } = await supabase
+        .from('users')
+        .update({ bio, profile_pic: profileUrl || profilePic.src })
+        .eq('username', profileUsername);
 
-loadProfile();
+    if (error) {
+        errorDiv.textContent = error.message;
+        return;
+    }
+
+    bioText.textContent = bio;
+    if (profileUrl) profilePic.src = profileUrl;
+    alert('Profile updated!');
+});
+
+loadUser();
+checkOwnProfile();
 </script>
+
 </body>
 </html>
