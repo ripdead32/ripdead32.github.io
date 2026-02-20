@@ -3,62 +3,87 @@
 <head>
 <meta charset="UTF-8">
 <title>Rip_Dead Site - Register</title>
-<link rel="icon" href="/favicon.ico">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-body { margin:0; padding:0; background:black; color:#00ff00; font-family:"Courier New", monospace; text-align:center; }
-h1 { font-size:2.5em; margin-top:60px; text-shadow:0 0 10px #00ff00; }
-input, button { margin:10px; padding:10px; border:2px solid #00ff00; border-radius:5px; background:black; color:#00ff00; font-family:inherit; font-size:1em; }
-button:hover { transform: scale(1.05); cursor:pointer; }
-footer { font-size:12px; text-align:center; margin-top:50px; }
+body {margin:0;padding:0;background:black;color:#00ff00;font-family:"Courier New", monospace;text-align:center;}
+h1 {font-size:2.5em;margin-top:60px;text-shadow:0 0 10px #00ff00;}
+form {margin-top:40px;}
+input {margin:10px;padding:10px;border:2px solid #00ff00;border-radius:6px;background:black;color:#00ff00;font-family:"Courier New", monospace;}
+button {padding:10px 20px;border:2px solid #00ff00;border-radius:6px;background:black;color:#00ff00;font-weight:bold;cursor:pointer;}
+button:hover {transform: scale(1.1);box-shadow:0 0 10px #00ff00;}
+#error {color:red;margin-top:10px;}
 </style>
 </head>
 <body>
 
-<h1>Register Account</h1>
+<h1>Register</h1>
 
-<div>
-    <input type="text" id="username" placeholder="Username" /><br/>
-    <input type="email" id="email" placeholder="Email" /><br/>
-    <input type="password" id="password" placeholder="Password" /><br/>
-    <input type="file" id="profile_pic"/><br/>
-    <button onclick="register()">Register</button>
-</div>
+<form id="register-form">
+<input type="text" id="username" placeholder="Username" required><br>
+<input type="email" id="email" placeholder="Email" required><br>
+<input type="password" id="password" placeholder="Password" required><br>
+<button type="submit">Register</button>
+</form>
 
-<hr>
+<div id="error"></div>
 
-<footer>(C) Copyright Rip_Dead Studios 2026, All Rights Reserved</footer>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const SUPABASE_URL = "https://uuvddjdbflwtbrbcgttj.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV1dmRkamRiZmx3dGJyYmNndHRqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE2MTAzNTIsImV4cCI6MjA4NzE4NjM1Mn0.b_betmbrXem0_EwtXCoXRLU7E2w2KEKJKVncQ9f0dVE";
-const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const supabaseUrl = 'https://uuvddjdbflwtbrbcgttj.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV1dmRkamRiZmx3dGJyYmNndHRqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE2MTAzNTIsImV4cCI6MjA4NzE4NjM1Mn0.b_betmbrXem0_EwtXCoXRLU7E2w2KEKJKVncQ9f0dVE';
+const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-async function register() {
+const form = document.getElementById('register-form');
+const errorDiv = document.getElementById('error');
+
+form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    errorDiv.textContent = '';
+
     const username = document.getElementById('username').value.trim();
     const email = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value;
-    const picFile = document.getElementById('profile_pic').files[0];
 
-    if(!username || !email || !password){ alert("Fill all fields"); return; }
+    // 1️⃣ Check if email already exists
+    const { data: existingUser, error: selectError } = await supabase
+        .from('users')
+        .select('id')
+        .eq('email', email)
+        .limit(1)
+        .maybeSingle();
 
-    let picUrl = "";
-    if(picFile){
-        const { data, error } = await supabase.storage.from('profile-pics').upload(`public/${username}`, picFile, {upsert:true});
-        if(error){ console.error(error); alert("Pic upload failed"); return; }
-        picUrl = `https://uuvddjdbflwtbrbcgttj.supabase.co/storage/v1/object/public/profile-pics/${username}`;
+    if (existingUser) {
+        errorDiv.textContent = 'This account is registered already';
+        return;
     }
 
+    // 2️⃣ Create user in Supabase Auth
     const { data, error } = await supabase.auth.signUp({
-        email, password,
-        options:{ data:{ username: username, profile_pic: picUrl, role:"User", bio:"" } }
+        email,
+        password,
+        options: {
+            data: { username } // store username in user_metadata
+        }
     });
 
-    if(error){ alert(error.message); return; }
+    if (error) {
+        errorDiv.textContent = error.message;
+        return;
+    }
 
-    alert("Registered! You can now log in.");
-    window.location.href = "/login/";
-}
+    // 3️⃣ Insert into users table for RLS policies
+    const { error: insertError } = await supabase.from('users').insert([
+        { id: data.user.id, email, username, bio: '', profile_pic: null }
+    ]);
+
+    if (insertError) {
+        errorDiv.textContent = insertError.message;
+        return;
+    }
+
+    // 4️⃣ Success — redirect to home
+    window.location = '/';
+});
 </script>
+
 </body>
 </html>
