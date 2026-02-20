@@ -1,111 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Rip_Dead Site - Login</title>
-    <link rel="icon" href="/favicon.ico">
-    <style>
-        body {
-            margin:0;
-            padding:0;
-            background:black;
-            color:#00ff00;
-            font-family:"Courier New", monospace;
-            text-align:center;
-        }
-
-        h1 {
-            font-size:2.5em;
-            margin-top:60px;
-            text-shadow:0 0 10px #00ff00;
-        }
-
-        input[type="text"], input[type="password"] {
-            padding:10px;
-            width:250px;
-            border:2px solid #00ff00;
-            border-radius:6px;
-            background:black;
-            color:#00ff00;
-            font-size:1em;
-            margin-bottom:10px;
-        }
-
-        button {
-            padding:10px 20px;
-            border:2px solid #00ff00;
-            border-radius:6px;
-            background:black;
-            color:#00ff00;
-            font-weight:bold;
-            margin-top:10px;
-            cursor:pointer;
-            transition: all 0.3s ease;
-        }
-
-        button:hover {
-            transform: scale(1.1);
-            box-shadow:0 0 10px #00ff00;
-        }
-
-        .links {
-            margin-top:30px;
-        }
-
-        .links a {
-            color:#00ff00;
-            text-decoration:none;
-            margin:0 10px;
-        }
-
-        .links a:hover {
-            text-shadow:0 0 8px #00ff00;
-        }
-
-        footer {
-            font-size:12px;
-            text-align:center;
-            margin-top:50px;
-        }
-
-        form {
-            margin-top:30px;
-        }
-    </style>
+<meta charset="UTF-8">
+<title>Rip_Dead Site - Login</title>
+<link rel="icon" href="/favicon.ico">
+<style>
+body { margin:0; padding:0; background:black; color:#00ff00; font-family:"Courier New", monospace; text-align:center; }
+h1 { font-size:2.5em; margin-top:60px; text-shadow:0 0 10px #00ff00; }
+input, button { margin:10px; padding:10px; border:2px solid #00ff00; border-radius:5px; background:black; color:#00ff00; font-family:inherit; font-size:1em; }
+button:hover { transform: scale(1.05); cursor:pointer; }
+footer { font-size:12px; text-align:center; margin-top:50px; }
+</style>
 </head>
 <body>
 
 <h1>Login</h1>
 
-<form id="loginForm" onsubmit="return loginUser()">
-    <input type="text" id="username" placeholder="Username" required><br>
-    <input type="password" id="password" placeholder="Password" required><br>
-    <button type="submit">Login</button>
-</form>
-
-<div class="links">
-    <a href="/">Home</a>
-    <a href="/register/">Register</a>
-    <a href="/search/">Search Users</a>
+<div>
+    <input type="email" id="email" placeholder="Email" /><br/>
+    <input type="password" id="password" placeholder="Password" /><br/>
+    <button onclick="login()">Login</button>
 </div>
 
-<footer>
-(C) Copyright Rip_Dead Studios 2026, All Rights Reserved
-</footer>
+<hr>
 
+<footer>(C) Copyright Rip_Dead Studios 2026, All Rights Reserved</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-function loginUser() {
-    const username = document.getElementById('username').value.trim();
+const SUPABASE_URL = "https://uuvddjdbflwtbrbcgttj.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV1dmRkamRiZmx3dGJyYmNndHRqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE2MTAzNTIsImV4cCI6MjA4NzE4NjM1Mn0.b_betmbrXem0_EwtXCoXRLU7E2w2KEKJKVncQ9f0dVE";
+const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+async function login() {
+    const email = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value;
 
-    if(!username || !password) return false;
+    if(!email || !password){ alert("Fill all fields"); return; }
 
-    // For now, just alert
-    alert(`Logged in as: ${username}`);
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    if(error){ alert(error.message); return; }
 
-    return false;
+    window.location.href = "/";
 }
 </script>
-
 </body>
 </html>
