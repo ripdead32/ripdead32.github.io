@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Rip_Dead Site - Search</title>
+    <link rel="icon" href="/favicon.ico">
+    <style>
+        body {
+            margin:0;
+            padding:0;
+            background:black;
+            color:#00ff00;
+            font-family:"Courier New", monospace;
+            text-align:center;
+        }
+
+        h1 {
+            font-size:2.5em;
+            margin-top:60px;
+            text-shadow:0 0 10px #00ff00;
+        }
+
+        input[type="text"] {
+            padding:10px;
+            width:250px;
+            border:2px solid #00ff00;
+            border-radius:6px;
+            background:black;
+            color:#00ff00;
+            font-size:1em;
+        }
+
+        button {
+            padding:10px 20px;
+            border:2px solid #00ff00;
+            border-radius:6px;
+            background:black;
+            color:#00ff00;
+            font-weight:bold;
+            margin-left:10px;
+            cursor:pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            transform: scale(1.1);
+            box-shadow:0 0 10px #00ff00;
+        }
+
+        .links {
+            margin-top:30px;
+        }
+
+        .links a {
+            color:#00ff00;
+            text-decoration:none;
+            margin:0 10px;
+        }
+
+        .links a:hover {
+            text-shadow:0 0 8px #00ff00;
+        }
+
+        footer {
+            font-size:12px;
+            text-align:center;
+            margin-top:50px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Search Users</h1>
+
+<form id="searchForm" onsubmit="return searchUser()">
+    <input type="text" id="username" placeholder="Enter username" required>
+    <button type="submit">Search</button>
+</form>
+
+<div class="links">
+    <a href="/">Home</a>
+    <a href="/register/">Register</a>
+    <a href="/login/">Login</a>
+</div>
+
+<footer>
+(C) Copyright Rip_Dead Studios 2026, All Rights Reserved
+</footer>
+
+<script>
+function searchUser() {
+    const username = document.getElementById('username').value.trim();
+    if(username) {
+        // Redirect to /users/[username]
+        window.location.href = `/users/${username}/`;
+    }
+    return false; // prevent form submission
+}
+</script>
+
+</body>
+</html>
