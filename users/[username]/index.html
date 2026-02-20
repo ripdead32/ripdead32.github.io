@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Rip_Dead Site - User Profile</title>
+    <link rel="icon" href="/favicon.ico">
+    <style>
+        body {
+            margin:0;
+            padding:0;
+            background:black;
+            color:#00ff00;
+            font-family:"Courier New", monospace;
+            text-align:center;
+        }
+
+        h1 {
+            font-size:2.5em;
+            margin-top:60px;
+            text-shadow:0 0 10px #00ff00;
+        }
+
+        .admin-check {
+            color:yellow;
+            font-weight:bold;
+            margin-left:10px;
+        }
+
+        .links {
+            margin-top:30px;
+        }
+
+        .links a {
+            color:#00ff00;
+            text-decoration:none;
+            margin:0 10px;
+        }
+
+        .links a:hover {
+            text-shadow:0 0 8px #00ff00;
+        }
+
+        footer {
+            font-size:12px;
+            text-align:center;
+            margin-top:50px;
+        }
+
+        img.profile-pic {
+            width:120px;
+            height:120px;
+            border-radius:50%;
+            margin-top:20px;
+            border:2px solid #00ff00;
+        }
+    </style>
+</head>
+<body>
+
+<h1 id="username">Username<span id="role"></span></h1>
+
+<img class="profile-pic" id="profilePic" src="/default-avatar.png" alt="Profile Picture">
+
+<div class="links">
+    <a href="/">Home</a>
+    <a href="/search/">Search Users</a>
+    <a href="/register/">Register</a>
+    <a href="/login/">Login</a>
+</div>
+
+<footer>
+(C) Copyright Rip_Dead Studios 2026, All Rights Reserved
+</footer>
+
+<script>
+const username = window.location.pathname.split('/')[2] || 'unknown';
+document.getElementById('username').textContent = username;
+
+// Show Admin checkmark for ripdead32
+if(username.toLowerCase() === 'ripdead32'){
+    const span = document.getElementById('role');
+    span.textContent = ' ✔ Admin';
+    span.classList.add('admin-check');
+}
+
+// TODO: Replace profilePic src with real user data if using Firebase
+</script>
+
+</body>
+</html>
