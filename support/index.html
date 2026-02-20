@@ -59,29 +59,66 @@ footer {
     margin-top:40px;
     font-size:12px;
 }
+.success {
+    display:none;
+    margin-top:15px;
+    font-weight:bold;
+}
+.error {
+    display:none;
+    margin-top:15px;
+    color:red;
+    font-weight:bold;
+}
 </style>
 </head>
 <body>
 
 <h1>Support / Contact</h1>
 
-<form action="https://formsubmit.co/ripdead-team@outlook.com" method="POST">
+<form id="support-form" action="https://formkeep.com/f/d13ae91fe8d6" method="POST">
     <input type="text" name="name" placeholder="Name" required>
     <input type="email" name="email" placeholder="Email" required>
     <input type="text" name="subject" placeholder="Subject" required>
     <textarea name="message" placeholder="Message" rows="6" required></textarea>
 
-    <!-- Disable captcha -->
-    <input type="hidden" name="_captcha" value="false">
-
-    <!-- Optional: redirect to your own thank-you page -->
-    <!-- <input type="hidden" name="_next" value="https://ripdead.kozow.com/support/thankyou.html"> -->
-
     <button type="submit">Send Message</button>
 </form>
 
+<p class="success" id="success-msg">✅ Submitted Successfully!</p>
+<p class="error" id="error-msg">❌ Failed to submit. Try again later.</p>
+
 <a class="button" href="/">Back to Home</a>
-<hr>
+
+<script>
+const form = document.getElementById("support-form");
+const successMsg = document.getElementById("success-msg");
+const errorMsg = document.getElementById("error-msg");
+
+form.addEventListener("submit", function(e) {
+    e.preventDefault();
+    const data = new FormData(form);
+
+    fetch(form.action, {
+        method: "POST",
+        body: data,
+        headers: { 'Accept': 'application/json' }
+    }).then(response => {
+        if (response.ok) {
+            form.reset();
+            successMsg.style.display = "block";
+            errorMsg.style.display = "none";
+        } else {
+            throw new Error("Form submission failed");
+        }
+    }).catch(error => {
+        successMsg.style.display = "none";
+        errorMsg.style.display = "block";
+        console.error(error);
+    });
+});
+</script>
+
 <footer>
 (C) Copyright Rip_Dead Studios 2026, All Rights Reserved
 </footer>
