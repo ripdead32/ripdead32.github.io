@@ -4,39 +4,42 @@
 <meta charset="UTF-8">
 <title>Rip_Dead Site - Home</title>
 <link rel="icon" href="/favicon.ico">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-body { margin:0; padding:0; background:black; color:#00ff00; font-family:"Courier New", monospace; text-align:center; }
-h1 { font-size:3em; margin-top:80px; text-shadow:0 0 10px #00ff00; }
-a.button { display:inline-block; margin:15px; padding:14px 30px; border:2px solid #00ff00; border-radius:8px; color:#00ff00; text-decoration:none; font-weight:bold; transition: all 0.3s ease; }
-a.button:hover { transform: scale(1.15); box-shadow:0 0 15px #00ff00; }
-.links { margin-top:40px; font-size:1.1em; }
-.links a { color:#00ff00; text-decoration:none; margin:0 10px; transition: all 0.2s; }
-.links a:hover { text-shadow:0 0 8px #00ff00; }
-.top-left { position:absolute; top:10px; left:20px; }
-.top-left a { color:#00ff00; text-decoration:none; font-weight:bold; margin-right:10px; }
-button.logout { background:none; border:2px solid #00ff00; border-radius:5px; color:#00ff00; padding:5px 10px; cursor:pointer; }
-footer { font-size:12px; text-align:center; margin-bottom:20px; }
+body {margin:0;padding:0;background:black;color:#00ff00;font-family:"Courier New", monospace;text-align:center;}
+h1 {font-size:3em;margin-top:80px;text-shadow:0 0 10px #00ff00;}
+a.button {display:inline-block;margin:15px;padding:14px 30px;border:2px solid #00ff00;border-radius:8px;color:#00ff00;text-decoration:none;font-weight:bold;transition: all 0.3s ease;}
+a.button:hover {transform: scale(1.15);box-shadow:0 0 15px #00ff00;}
+.links {margin-top:40px;font-size:1.1em;}
+.links a {color:#00ff00;text-decoration:none;margin:0 10px;transition: all 0.2s;}
+.links a:hover {text-shadow:0 0 8px #00ff00;}
+hr {border:none;border-top:2px solid #00ff00;margin:50px 0 20px 0;}
+footer {font-size:12px;text-align:center;margin-bottom:20px;}
+#user-info {position:absolute;top:10px;left:10px;}
+#user-info span {cursor:pointer;text-decoration:underline;}
 </style>
 </head>
 <body>
 
-<div class="top-left" id="authArea">
+<div id="user-info"></div>
+
+<h1>Welcome to Rip_Dead Site</h1>
+
+<div id="auth-buttons">
     <a class="button" href="/register/">Register</a>
     <a class="button" href="/login/">Login</a>
 </div>
-
-<h1>Welcome to Rip_Dead Site</h1>
 
 <a class="button" href="/about/">About Me</a>
 <a class="button" href="/downloads/">Downloads</a>
 
 <div class="links">
-    <p>
-        <a href="https://www.youtube.com/@ripdeadYT" target="_blank">YouTube</a> |
-        <a href="https://x.com/rip_dead32" target="_blank">X</a> |
-        <a href="https://www.reddit.com/u/rip_dead32/s/hVrQI0NqEs" target="_blank">Reddit</a> |
-        <a href="https://www.facebook.com/share/1AbvyPZgEh/" target="_blank">Facebook</a>
-    </p>
+<p>
+<a href="https://www.youtube.com/@ripdeadYT" target="_blank">YouTube</a> |
+<a href="https://x.com/rip_dead32" target="_blank">X</a> |
+<a href="https://www.reddit.com/u/rip_dead32/s/hVrQI0NqEs" target="_blank">Reddit</a> |
+<a href="https://www.facebook.com/share/1AbvyPZgEh/" target="_blank">Facebook</a>
+</p>
 </div>
 
 <hr>
@@ -45,27 +48,35 @@ footer { font-size:12px; text-align:center; margin-bottom:20px; }
 (C) Copyright Rip_Dead Studios 2026, All Rights Reserved
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const SUPABASE_URL = "https://uuvddjdbflwtbrbcgttj.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV1dmRkamRiZmx3dGJyYmNndHRqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE2MTAzNTIsImV4cCI6MjA4NzE4NjM1Mn0.b_betmbrXem0_EwtXCoXRLU7E2w2KEKJKVncQ9f0dVE";
-const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const supabaseUrl = 'https://uuvddjdbflwtbrbcgttj.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV1dmRkamRiZmx3dGJyYmNndHRqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE2MTAzNTIsImV4cCI6MjA4NzE4NjM1Mn0.b_betmbrXem0_EwtXCoXRLU7E2w2KEKJKVncQ9f0dVE';
+const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-async function updateAuthUI() {
-    const { data: { session } } = await supabase.auth.getSession();
-    const container = document.getElementById('authArea');
-    if(session) {
-        const username = session.user.user_metadata.username || "User";
-        container.innerHTML = `<a href="/users/${username}">${username}</a> <button class="logout" onclick="logout()">Logout</button>`;
+async function updateUserUI() {
+    const { data: { user } } = await supabase.auth.getUser();
+    const infoDiv = document.getElementById('user-info');
+    const authButtons = document.getElementById('auth-buttons');
+
+    if (user) {
+        // Hide login/register buttons
+        authButtons.style.display = 'none';
+        infoDiv.innerHTML = `<span id="username" onclick="window.location='/users/${user.user_metadata.username || user.email}'">${user.user_metadata.username || user.email}</span> 
+        <button onclick="logout()">Logout</button>`;
+    } else {
+        authButtons.style.display = 'block';
+        infoDiv.innerHTML = '';
     }
 }
 
 async function logout() {
     await supabase.auth.signOut();
-    window.location.reload();
+    updateUserUI();
 }
 
-updateAuthUI();
+// Update UI on load
+updateUserUI();
 </script>
+
 </body>
 </html>
