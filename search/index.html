@@ -7,22 +7,24 @@
 <style>
 body {margin:0;padding:0;background:black;color:#00ff00;font-family:"Courier New", monospace;text-align:center;}
 h1 {font-size:2.5em;margin-top:60px;text-shadow:0 0 10px #00ff00;}
-input {margin:10px;padding:10px;border:2px solid #00ff00;border-radius:6px;background:black;color:#00ff00;font-family:"Courier New", monospace;}
-button {padding:10px 20px;border:2px solid #00ff00;border-radius:6px;background:black;color:#00ff00;font-weight:bold;cursor:pointer;}
-button:hover {transform: scale(1.1);box-shadow:0 0 10px #00ff00;}
-#results {margin-top:30px;}
-.user-link {display:block;margin:10px;font-size:1.2em;cursor:pointer;text-decoration:underline;color:#00ff00;}
-.user-link:hover {text-shadow:0 0 8px #00ff00;}
+input {margin:10px;padding:10px;width:300px;border:2px solid #00ff00;border-radius:6px;background:black;color:#00ff00;font-family:"Courier New", monospace;}
+button {padding:6px 14px;margin-left:5px;border:2px solid #00ff00;border-radius:6px;background:black;color:#00ff00;font-weight:bold;cursor:pointer;}
+button:hover {transform:scale(1.1);box-shadow:0 0 10px #00ff00;}
+ul {list-style:none;padding:0;margin-top:20px;}
+li {margin:5px 0;}
+li a {color:#00ff00;text-decoration:underline;}
+#error {color:red;margin-top:10px;}
 </style>
 </head>
 <body>
 
 <h1>Search Users</h1>
 
-<input type="text" id="search-input" placeholder="Enter username">
+<input type="text" id="search-input" placeholder="Enter username...">
 <button id="search-btn">Search</button>
+<div id="error"></div>
 
-<div id="results"></div>
+<ul id="results"></ul>
 
 <script>
 const supabaseUrl = 'https://uuvddjdbflwtbrbcgttj.supabase.co';
@@ -31,36 +33,41 @@ const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
 const searchBtn = document.getElementById('search-btn');
 const searchInput = document.getElementById('search-input');
-const resultsDiv = document.getElementById('results');
+const resultsList = document.getElementById('results');
+const errorDiv = document.getElementById('error');
 
 searchBtn.addEventListener('click', async () => {
-    const query = searchInput.value.trim();
-    resultsDiv.innerHTML = '';
+    errorDiv.textContent = '';
+    resultsList.innerHTML = '';
 
-    if (!query) return;
+    const query = searchInput.value.trim();
+    if (!query) {
+        errorDiv.textContent = 'Please enter a username to search';
+        return;
+    }
 
     const { data: users, error } = await supabase
         .from('users')
         .select('username')
-        .ilike('username', `%${query}%`)
-        .limit(20);
+        .ilike('username', `%${query}%`);
 
     if (error) {
-        resultsDiv.innerHTML = 'Error fetching users';
+        errorDiv.textContent = 'Error fetching users';
         return;
     }
 
-    if (!users.length) {
-        resultsDiv.innerHTML = 'No users found';
+    if (users.length === 0) {
+        resultsList.innerHTML = '<li>No users found</li>';
         return;
     }
 
     users.forEach(user => {
+        const li = document.createElement('li');
         const link = document.createElement('a');
+        link.href = `/users/${user.username}/`;
         link.textContent = user.username;
-        link.href = `/users/${user.username}`;
-        link.className = 'user-link';
-        resultsDiv.appendChild(link);
+        li.appendChild(link);
+        resultsList.appendChild(li);
     });
 });
 </script>
