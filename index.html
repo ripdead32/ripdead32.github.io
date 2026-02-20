@@ -5,92 +5,30 @@
     <title>Rip_Dead Site - Home</title>
     <link rel="icon" href="/favicon.ico">
     <style>
-        body {
-            margin:0;
-            padding:0;
-            background:black;
-            color:#00ff00;
-            font-family:"Courier New", monospace;
-            text-align:center;
-        }
-
-        h1 {
-            font-size:3em;
-            margin-top:80px;
-            text-shadow:0 0 10px #00ff00;
-        }
-
-        a.button {
-            display:inline-block;
-            margin:15px;
-            padding:14px 30px;
-            border:2px solid #00ff00;
-            border-radius:8px;
-            color:#00ff00;
-            text-decoration:none;
-            font-weight:bold;
-            transition: all 0.3s ease;
-        }
-
-        a.button:hover {
-            transform: scale(1.15);
-            box-shadow:0 0 15px #00ff00;
-        }
-
-        .links {
-            margin-top:40px;
-            font-size:1.1em;
-        }
-
-        .links a {
-            color:#00ff00;
-            text-decoration:none;
-            margin:0 10px;
-            transition: all 0.2s;
-        }
-
-        .links a:hover {
-            text-shadow:0 0 8px #00ff00;
-        }
-
-        hr {
-            border:none;
-            border-top:2px solid #00ff00;
-            margin:50px 0 20px 0;
-        }
-
-        footer {
-            font-size:12px;
-            text-align:center;
-            margin-bottom:20px;
-        }
-
-        /* Top-right search users button */
-        .top-right {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-        }
+        body { margin:0; padding:0; background:black; color:#00ff00; font-family:"Courier New", monospace; text-align:center; }
+        h1 { font-size:3em; margin-top:80px; text-shadow:0 0 10px #00ff00; }
+        a.button { display:inline-block; margin:15px; padding:14px 30px; border:2px solid #00ff00; border-radius:8px; color:#00ff00; text-decoration:none; font-weight:bold; transition: all 0.3s ease; }
+        a.button:hover { transform: scale(1.15); box-shadow:0 0 15px #00ff00; }
+        .links { margin-top:40px; font-size:1.1em; }
+        .links a { color:#00ff00; text-decoration:none; margin:0 10px; transition: all 0.2s; }
+        .links a:hover { text-shadow:0 0 8px #00ff00; }
+        .top-left { position:absolute; top:10px; left:20px; }
+        .top-left a { color:#00ff00; text-decoration:none; font-weight:bold; margin-right:10px; }
+        button.logout { background:none; border:2px solid #00ff00; border-radius:5px; color:#00ff00; padding:5px 10px; cursor:pointer; }
+        footer { font-size:12px; text-align:center; margin-bottom:20px; }
     </style>
 </head>
 <body>
 
-<!-- Top-right Search Users button -->
-<div class="top-right">
-    <a class="button" href="search/">Search Users</a>
+<div class="top-left" id="authArea">
+    <a class="button" href="/register/">Register</a>
+    <a class="button" href="/login/">Login</a>
 </div>
 
 <h1>Welcome to Rip_Dead Site</h1>
 
-<!-- Register / Login buttons -->
-<a class="button" href="register/">Register</a>
-<a class="button" href="login/">Login</a>
-
-<!-- Existing About / Downloads links -->
-<div class="links">
-    <a class="button" href="/about/">About Me</a>
-    <a class="button" href="/downloads/">Downloads</a>
-</div>
+<a class="button" href="/about/">About Me</a>
+<a class="button" href="/downloads/">Downloads</a>
 
 <div class="links">
     <p>
@@ -107,5 +45,27 @@
 (C) Copyright Rip_Dead Studios 2026, All Rights Reserved
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = "https://uuvddjdbflwtbrbcgttj.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV1dmRkamRiZmx3dGJyYmNndHRqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE2MTAzNTIsImV4cCI6MjA4NzE4NjM1Mn0.b_betmbrXem0_EwtXCoXRLU7E2w2KEKJKVncQ9f0dVE";
+const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+async function updateAuthUI() {
+    const { data: { session } } = await supabase.auth.getSession();
+    const container = document.getElementById('authArea');
+    if(session) {
+        const username = session.user.user_metadata.username || "User";
+        container.innerHTML = `<a href="/users/${username}">${username}</a> <button class="logout" onclick="logout()">Logout</button>`;
+    }
+}
+
+async function logout() {
+    await supabase.auth.signOut();
+    window.location.reload();
+}
+
+updateAuthUI();
+</script>
 </body>
-</html>
+</html> l
