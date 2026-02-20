@@ -7,60 +7,51 @@
 <style>
 body {margin:0;padding:0;background:black;color:#00ff00;font-family:"Courier New", monospace;text-align:center;}
 h1 {font-size:2.5em;margin-top:60px;text-shadow:0 0 10px #00ff00;}
-form {margin-top:40px;}
 input {margin:10px;padding:10px;border:2px solid #00ff00;border-radius:6px;background:black;color:#00ff00;font-family:"Courier New", monospace;}
-button {padding:10px 20px;border:2px solid #00ff00;border-radius:6px;background:black;color:#00ff00;font-weight:bold;cursor:pointer;}
+button {padding:8px 16px;border:2px solid #00ff00;border-radius:6px;background:black;color:#00ff00;font-weight:bold;cursor:pointer;}
 button:hover {transform: scale(1.1);box-shadow:0 0 10px #00ff00;}
 #error {color:red;margin-top:10px;}
+a {color:#00ff00;text-decoration:underline;}
 </style>
 </head>
 <body>
 
 <h1>Login</h1>
 
-<form id="login-form">
-<input type="email" id="email" placeholder="Email" required><br>
-<input type="password" id="password" placeholder="Password" required><br>
-<button type="submit">Login</button>
-</form>
-
+<input type="email" id="email" placeholder="Email"><br>
+<input type="password" id="password" placeholder="Password"><br>
+<button id="login-btn">Login</button>
 <div id="error"></div>
+
+<p>Don't have an account? <a href="/register/">Register here</a></p>
 
 <script>
 const supabaseUrl = 'https://uuvddjdbflwtbrbcgttj.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV1dmRkamRiZmx3dGJyYmNndHRqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE2MTAzNTIsImV4cCI6MjA4NzE4NjM1Mn0.b_betmbrXem0_EwtXCoXRLU7E2w2KEKJKVncQ9f0dVE';
 const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-const form = document.getElementById('login-form');
+const loginBtn = document.getElementById('login-btn');
 const errorDiv = document.getElementById('error');
 
-form.addEventListener('submit', async (e) => {
-    e.preventDefault();
+loginBtn.addEventListener('click', async () => {
     errorDiv.textContent = '';
 
     const email = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value;
 
-    // 1️⃣ Sign in with Supabase Auth
-    const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password
-    });
+    if (!email || !password) {
+        errorDiv.textContent = 'Please fill in all fields';
+        return;
+    }
+
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 
     if (error) {
         errorDiv.textContent = 'Invalid email or password';
         return;
     }
 
-    // 2️⃣ Optional: fetch username from users table
-    const { data: userRow, error: fetchError } = await supabase
-        .from('users')
-        .select('username')
-        .eq('id', data.user.id)
-        .maybeSingle();
-
-    // 3️⃣ Redirect to home after login
-    window.location = '/';
+    window.location.href = '/';
 });
 </script>
 
