@@ -1,90 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Rip_Dead Site - User Profile</title>
-    <link rel="icon" href="/favicon.ico">
-    <style>
-        body {
-            margin:0;
-            padding:0;
-            background:black;
-            color:#00ff00;
-            font-family:"Courier New", monospace;
-            text-align:center;
-        }
-
-        h1 {
-            font-size:2.5em;
-            margin-top:60px;
-            text-shadow:0 0 10px #00ff00;
-        }
-
-        .admin-check {
-            color:yellow;
-            font-weight:bold;
-            margin-left:10px;
-        }
-
-        .links {
-            margin-top:30px;
-        }
-
-        .links a {
-            color:#00ff00;
-            text-decoration:none;
-            margin:0 10px;
-        }
-
-        .links a:hover {
-            text-shadow:0 0 8px #00ff00;
-        }
-
-        footer {
-            font-size:12px;
-            text-align:center;
-            margin-top:50px;
-        }
-
-        img.profile-pic {
-            width:120px;
-            height:120px;
-            border-radius:50%;
-            margin-top:20px;
-            border:2px solid #00ff00;
-        }
-    </style>
+<meta charset="UTF-8">
+<title>Rip_Dead Site - User Profile</title>
+<link rel="icon" href="/favicon.ico">
+<style>
+body { margin:0; padding:0; background:black; color:#00ff00; font-family:"Courier New", monospace; text-align:center; }
+h1 { font-size:2.5em; margin-top:60px; text-shadow:0 0 10px #00ff00; }
+img { border:2px solid #00ff00; border-radius:10px; width:128px; height:128px; object-fit:cover; }
+textarea, input, button { margin:10px; padding:10px; border:2px solid #00ff00; border-radius:5px; background:black; color:#00ff00; font-family:inherit; font-size:1em; }
+button:hover { transform: scale(1.05); cursor:pointer; }
+footer { font-size:12px; text-align:center; margin-top:50px; }
+</style>
 </head>
 <body>
 
-<h1 id="username">Username<span id="role"></span></h1>
+<h1 id="usernameHeader">Username</h1>
+<img id="profilePic" src="" alt="Profile Picture"><br/>
+<p id="role">Role: User</p>
+<p id="bio">Bio: </p>
 
-<img class="profile-pic" id="profilePic" src="/default-avatar.png" alt="Profile Picture">
-
-<div class="links">
-    <a href="/">Home</a>
-    <a href="/search/">Search Users</a>
-    <a href="/register/">Register</a>
-    <a href="/login/">Login</a>
+<div id="editSection" style="display:none;">
+    <textarea id="bioInput" placeholder="Your bio"></textarea><br/>
+    <input type="file" id="newPic"/><br/>
+    <button onclick="saveProfile()">Save</button>
 </div>
 
-<footer>
-(C) Copyright Rip_Dead Studios 2026, All Rights Reserved
-</footer>
+<hr>
 
+<footer>(C) Copyright Rip_Dead Studios 2026, All Rights Reserved</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const username = window.location.pathname.split('/')[2] || 'unknown';
-document.getElementById('username').textContent = username;
+const SUPABASE_URL = "https://uuvddjdbflwtbrbcgttj.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV1dmRkamRiZmx3dGJyYmNndHRqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE2MTAzNTIsImV4cCI6MjA4NzE4NjM1Mn0.b_betmbrXem0_EwtXCoXRLU7E2w2KEKJKVncQ9f0dVE";
+const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// Show Admin checkmark for ripdead32
-if(username.toLowerCase() === 'ripdead32'){
-    const span = document.getElementById('role');
-    span.textContent = ' ✔ Admin';
-    span.classList.add('admin-check');
+const pathParts = window.location.pathname.split('/');
+const profileUsername = pathParts[pathParts.length-1];
+
+async function loadProfile() {
+    const { data: { session } } = await supabase.auth.getSession();
+    const users = await supabase.auth.admin.listUsers(); // Supabase requires separate table to properly search metadata
+    const user = users.data.users.find(u => u.user_metadata.username === profileUsername);
+    if(!user){ alert("User not found"); return; }
+
+    document.getElementById('usernameHeader').textContent = user.user_metadata.username;
+    document.getElementById('role').textContent = "Role: "+(user.user_metadata.role || "User");
+    document.getElementById('bio').textContent = "Bio: "+(user.user_metadata.bio || "");
+    document.getElementById('profilePic').src = user.user_metadata.profile_pic || "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
+
+    if(session && session.user.user_metadata.username === profileUsername){
+        document.getElementById('editSection').style.display = "block";
+        document.getElementById('bioInput').value = user.user_metadata.bio || "";
+    }
 }
 
-// TODO: Replace profilePic src with real user data if using Firebase
-</script>
+async function saveProfile() {
+    const bio = document.getElementById('bioInput').value;
+    const file = document.getElementById('newPic').files[0];
+    let picUrl = null;
+    if(file){
+        const { data, error } = await supabase.storage.from('profile-pics').upload(`public/${profileUsername}`, file, {upsert:true});
+        if(error){ alert("Pic upload failed"); return; }
+        picUrl = `https://uuvddjdbflwtbrbcgttj.supabase.co/storage/v1/object/public/profile-pics/${profileUsername}`;
+    }
+    const updates = { bio };
+    if(picUrl) updates.profile_pic = picUrl;
 
+    const { data, error } = await supabase.auth.admin.updateUserById(user.id, { data: updates });
+    if(error){ alert(error.message); return; }
+    alert("Profile updated!");
+    loadProfile();
+}
+
+loadProfile();
+</script>
 </body>
 </html>
