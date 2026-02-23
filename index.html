@@ -7,35 +7,64 @@
 <link rel="icon" href="/favicon.ico">
 <link rel="stylesheet" href="/navbar.css">
 <style>
-body {
+body{
   margin:0;
-  font-family:'Segoe UI', sans-serif;
+  font-family:'Segoe UI',sans-serif;
   color:#fff;
   overflow-x:hidden;
-  animation:fadeIn 0.6s ease forwards;
 }
-body::before {
+body::before{
   content:"";
-  position:fixed; inset:0;
+  position:fixed;
+  inset:0;
   z-index:-1;
   background:linear-gradient(-45deg,#000,#4c1d95,#000,#6d28d9);
   background-size:400% 400%;
   animation:gradientMove 12s ease infinite;
 }
-body.light::before {
+body.light::before{
   background:linear-gradient(-45deg,#fff,#c084fc,#fff,#a855f7);
 }
-@keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
 @keyframes gradientMove{0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
 
-.hero{padding:80px 20px;text-align:center;}
+.hero{text-align:center;padding:100px 20px 40px 20px;}
 .hero h1{font-size:36px;}
-.section{padding:40px 20px;text-align:center;}
-.card{background:rgba(20,20,20,0.6);backdrop-filter:blur(12px);padding:30px;border-radius:16px;max-width:600px;margin:20px auto;transition:transform 0.3s ease;}
+.hero p{font-size:18px;margin-top:10px;}
+
+.section{padding:40px 20px 80px 20px;text-align:center;}
+
+/* Cards */
+.card{
+  background:rgba(20,20,20,0.6);
+  backdrop-filter:blur(12px);
+  padding:30px;
+  border-radius:16px;
+  max-width:700px;
+  margin:20px auto;
+  transition:transform 0.3s ease;
+}
 .card:hover{transform:translateY(-6px);}
-.card a{display:inline-block;margin:10px 10px;padding:12px 28px;border-radius:8px;background:#a855f7;color:#000;font-weight:bold;text-decoration:none;transition:transform 0.3s ease,background 0.3s ease;}
-.card a:hover{transform:scale(1.1);background:#c084fc;}
-footer{text-align:center;padding:20px;border-top:1px solid rgba(255,255,255,0.1);font-size:14px;}
+.card h2{font-size:24px;margin-bottom:15px;}
+.card p{line-height:1.6em;margin-bottom:20px;}
+.card a.button{
+  display:inline-block;
+  margin:10px;
+  padding:14px 30px;
+  border-radius:8px;
+  background:#a855f7;
+  color:#000;
+  font-weight:bold;
+  text-decoration:none;
+  transition:transform 0.2s ease,background 0.2s ease;
+}
+.card a.button:hover{transform:scale(1.05);background:#c084fc;}
+
+footer{text-align:center;padding:20px;font-size:14px;border-top:1px solid rgba(255,255,255,0.1);}
+@media(max-width:768px){
+  .hero h1{font-size:28px;}
+  .hero p{font-size:16px;}
+  .card{padding:20px;}
+}
 </style>
 </head>
 <body>
@@ -45,33 +74,40 @@ footer{text-align:center;padding:20px;border-top:1px solid rgba(255,255,255,0.1)
   <div class="nav-right">
     <a href="/about/">About</a>
     <a href="/support/">Support</a>
-    <a href="/downloads/" class="download-btn">Download</a>
+    <a href="/downloads/">Download</a>
     <a href="/blogs/">Blogs</a>
     <button class="theme-toggle" onclick="toggleTheme()" id="themeIcon">☀️</button>
   </div>
 </div>
 
 <div class="hero">
-  <h1>Welcome to Rip_Dead Site!</h1>
+  <h1>Welcome to Rip_Dead Site</h1>
+  <p>Explore FNF mods, Kahoot apps, blogs, and more!</p>
 </div>
 
 <div class="section">
   <div class="card">
     <h2>Enjoy the socials of Rip_Dead</h2>
-    <a href="https://www.youtube.com/@ripdeadYT" target="_blank">YouTube</a>
-    <a href="https://x.com/rip_dead32" target="_blank">X</a>
-    <a href="https://www.reddit.com/u/rip_dead32/s/hVrQI0NqEs" target="_blank">Reddit</a>
-    <a href="https://www.facebook.com/share/1AbvyPZgEh/" target="_blank">Facebook</a>
+    <a href="https://www.youtube.com/@ripdeadYT" class="button" target="_blank">YouTube</a>
+    <a href="https://x.com/rip_dead32" class="button" target="_blank">X</a>
+    <a href="https://www.reddit.com/u/rip_dead32/s/hVrQI0NqEs" class="button" target="_blank">Reddit</a>
+    <a href="https://www.facebook.com/share/1AbvyPZgEh/" class="button" target="_blank">Facebook</a>
+  </div>
+
+  <div class="card">
+    <h2>Want help? We got your back!</h2>
+    <p>Visit the <a href="/support/" class="button">Support Page</a> for questions or problems.</p>
   </div>
 </div>
 
-<footer>
-© 2026 Rip_Dead Studios — All Rights Reserved
-</footer>
+<footer>© 2026 Rip_Dead Studios — All Rights Reserved</footer>
 
 <script>
 const themeIcon=document.getElementById("themeIcon");
-function toggleTheme(){document.body.classList.toggle("light");themeIcon.textContent=document.body.classList.contains("light")?"🌙":"☀️";}
+function toggleTheme(){
+  document.body.classList.toggle("light");
+  themeIcon.textContent=document.body.classList.contains("light")?"🌙":"☀️";
+}
 </script>
 
 </body>
