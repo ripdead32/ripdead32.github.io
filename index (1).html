@@ -1,0 +1,262 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rip_Dead Site - Home</title>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+<style>
+:root {
+  --text: #ffffff;
+  --card: rgba(20,20,20,0.6);
+  --accent: #a855f7;
+}
+
+body.light {
+  --text: #111;
+  --card: rgba(255,255,255,0.7);
+  --accent: #9333ea;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  color: var(--text);
+  overflow-x: hidden;
+  animation: fadeIn 0.6s ease forwards;
+}
+
+/* Fade animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Animated Gradient Background */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(-45deg, #000000, #4c1d95, #000000, #6d28d9);
+  background-size: 400% 400%;
+  animation: gradientMove 12s ease infinite;
+}
+
+body.light::before {
+  background: linear-gradient(-45deg, #ffffff, #c084fc, #ffffff, #a855f7);
+  background-size: 400% 400%;
+}
+
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  backdrop-filter: blur(10px);
+}
+
+.site-name {
+  font-weight: bold;
+  font-size: 20px;
+  text-decoration: none;
+  color: var(--text);
+  position: relative;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.nav-right a {
+  text-decoration: none;
+  color: var(--text);
+  position: relative;
+}
+
+/* Purple underline hover */
+.nav-right a::after,
+.site-name::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 0%;
+  height: 2px;
+  background: var(--accent);
+  transition: 0.3s;
+}
+
+.nav-right a:hover::after,
+.site-name:hover::after {
+  width: 100%;
+}
+
+/* Download Button */
+.download-btn {
+  padding: 6px 14px;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #000;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+/* Theme Toggle Circular */
+.theme-toggle {
+  font-size: 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease, background 0.3s ease;
+  background: #ffffff; /* dark mode default */
+}
+
+body.light .theme-toggle {
+  background: #000000; /* circle black in light mode */
+}
+
+.theme-toggle:hover {
+  transform: scale(1.1);
+}
+
+/* Hero */
+.hero {
+  text-align: center;
+  padding: 100px 20px 60px 20px;
+}
+
+.hero h1 {
+  font-size: 42px;
+}
+
+/* Cards */
+.section {
+  padding: 40px 20px 80px 20px;
+  text-align: center;
+}
+
+.card {
+  background: var(--card);
+  backdrop-filter: blur(12px);
+  padding: 25px;
+  border-radius: 16px;
+  max-width: 500px;
+  margin: 20px auto;
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+}
+
+/* Social Buttons */
+.social-btn {
+  display: inline-block;
+  padding: 8px 14px;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #000;
+  font-weight: bold;
+  text-decoration: none;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.social-btn:hover {
+  transform: translateY(-3px);
+  background: #c084fc;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 20px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  font-size: 14px;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .nav-right {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .hero h1 {
+    font-size: 32px;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <a href="/" class="site-name">Rip_Dead Site</a>
+
+  <div class="nav-right">
+    <a href="/about/">About</a>
+    <a href="/support/">Support</a>
+    <a href="/download/" class="download-btn">Download</a>
+    <button class="theme-toggle" onclick="toggleTheme()" id="themeIcon">☀️</button>
+  </div>
+</div>
+
+<div class="hero">
+  <h1>Welcome</h1>
+</div>
+
+<div class="section">
+
+  <div class="card">
+    <h2>Enjoy the socials of Rip_Dead</h2>
+    <p>Follow them here:</p>
+    <div style="display:flex; justify-content:center; gap:15px; margin-top:10px; flex-wrap: wrap;">
+      <a href="https://www.youtube.com/@ripdeadYT" target="_blank" class="social-btn">YouTube</a>
+      <a href="https://x.com/rip_dead32" target="_blank" class="social-btn">X</a>
+      <a href="https://www.reddit.com/u/rip_dead32/s/hVrQI0NqEs" target="_blank" class="social-btn">Reddit</a>
+      <a href="https://www.facebook.com/share/1AbvyPZgEh/" target="_blank" class="social-btn">Facebook</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Projects And Others!</h2>
+    <p>Rip made LOTS and LOTS of projects, find them up in the Navigation Bar of Rip_Dead Site</p>
+  </div>
+
+</div>
+
+<footer>
+  © 2026 Rip_Dead Studios -- All Rights Reserved
+</footer>
+
+<script>
+const themeIcon = document.getElementById("themeIcon");
+
+/* Theme Toggle */
+function toggleTheme() {
+  document.body.classList.toggle("light");
+  const isLight = document.body.classList.contains("light");
+  themeIcon.textContent = isLight ? "🌙" : "☀️";
+}
+</script>
+
+</body>
+</html>
