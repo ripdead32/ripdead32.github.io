@@ -7,13 +7,49 @@
 <link rel="icon" href="/favicon.ico">
 <link rel="stylesheet" href="/navbar.css">
 <style>
-body{margin:0;padding:50px;font-family:'Courier New',monospace;background:#000;color:#00ff00;text-align:center;}
-h1{font-size:2.8em;text-shadow:0 0 10px #00ff00;margin-bottom:30px;}
-p{max-width:700px;margin:20px auto;line-height:1.6em;}
-a.button{display:inline-block;margin-top:30px;padding:14px 30px;border:2px solid #00ff00;border-radius:8px;color:#00ff00;text-decoration:none;font-weight:bold;transition:all 0.3s ease;}
-a.button:hover{transform:scale(1.15);box-shadow:0 0 15px #00ff00;}
-hr{border:none;border-top:2px solid #00ff00;margin:50px 0 20px 0;}
-footer{font-size:12px;text-align:center;margin-bottom:20px;}
+body{
+  margin:0;
+  padding:50px;
+  font-family:'Courier New',monospace;
+  background:#000;
+  color:#00ff00;
+  text-align:center;
+}
+h1{
+  font-size:2.8em;
+  text-shadow:0 0 10px #00ff00;
+  margin-bottom:30px;
+}
+p{
+  max-width:700px;
+  margin:20px auto;
+  line-height:1.6em;
+}
+a.button{
+  display:inline-block;
+  margin-top:30px;
+  padding:14px 30px;
+  border:2px solid #00ff00;
+  border-radius:8px;
+  color:#00ff00;
+  text-decoration:none;
+  font-weight:bold;
+  transition:all 0.3s ease;
+}
+a.button:hover{
+  transform:scale(1.15);
+  box-shadow:0 0 15px #00ff00;
+}
+hr{
+  border:none;
+  border-top:2px solid #00ff00;
+  margin:50px 0 20px 0;
+}
+footer{
+  font-size:12px;
+  text-align:center;
+  margin-bottom:20px;
+}
 </style>
 </head>
 <body>
@@ -31,10 +67,18 @@ footer{font-size:12px;text-align:center;margin-bottom:20px;}
 
 <h1>About Me</h1>
 
-<p>Hello, welcome to the Rip_Dead Site About Me! I'm Rip_Dead, your average animator
-and gaming YouTuber. I create content for Geometry Dash, Friday Night Funkin', and random shorts. I sometimes follow trends and have many interests, one of them being baseball. I prefer not to say my real name, so just go with "Rip_Dead" or "Rip".</p>
+<p>
+Hello, welcome to the Rip_Dead Site About Me! I'm Rip_Dead, your average animator
+and gaming YouTuber. I create content for Geometry Dash, Friday Night Funkin',
+and random short videos. I sometimes follow trends and have many interests,
+one of them being baseball. I prefer not to say my real name so just go with "Rip_Dead" or "Rip", whatever you like.
+</p>
 
-<p>I also have a Discord account. The <strong>only official account</strong> is <strong>ripdeaddev</strong>. The only official Rip_Dead usernames are: RIPDEAD32, RIPDEADLOLZ, RIPDEADD, and RIP_DEADD.</p>
+<p>
+I also have a Discord account. The <strong>only official account</strong> is
+<strong>ripdeaddev</strong>. The only official Rip_Dead usernames are:
+RIPDEAD32, RIPDEADLOLZ, RIPDEADD, and RIP_DEADD.
+</p>
 
 <a href="/" class="button">Return to Home</a>
 
@@ -46,7 +90,10 @@ and gaming YouTuber. I create content for Geometry Dash, Friday Night Funkin', a
 
 <script>
 const themeIcon=document.getElementById("themeIcon");
-function toggleTheme(){document.body.classList.toggle("light");themeIcon.textContent=document.body.classList.contains("light")?"🌙":"☀️";}
+function toggleTheme(){
+  document.body.classList.toggle("light");
+  themeIcon.textContent=document.body.classList.contains("light")?"🌙":"☀️";
+}
 </script>
 
 </body>
