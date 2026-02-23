@@ -4,267 +4,49 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Rip_Dead Site - About Me</title>
-<link rel="icon" href="/favicon.ico" type="image/x-icon">
-
+<link rel="icon" href="/favicon.ico">
+<link rel="stylesheet" href="/navbar.css">
 <style>
-:root {
-  --text: #ffffff;
-  --card: rgba(20,20,20,0.6);
-  --accent: #a855f7;
-}
-
-body.light {
-  --text: #111;
-  --card: rgba(255,255,255,0.7);
-  --accent: #9333ea;
-}
-
-body {
-  margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  color: var(--text);
-  overflow-x: hidden;
-  animation: fadeIn 0.6s ease forwards;
-}
-
-/* Fade animation */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* Animated Gradient Background */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  background: linear-gradient(-45deg, #000000, #4c1d95, #000000, #6d28d9);
-  background-size: 400% 400%;
-  animation: gradientMove 12s ease infinite;
-}
-
-body.light::before {
-  background: linear-gradient(-45deg, #ffffff, #c084fc, #ffffff, #a855f7);
-  background-size: 400% 400%;
-}
-
-@keyframes gradientMove {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-/* Navbar */
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 40px;
-  backdrop-filter: blur(10px);
-}
-
-.site-name {
-  font-weight: bold;
-  font-size: 20px;
-  text-decoration: none;
-  color: var(--text);
-  position: relative;
-}
-
-.nav-right {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-.nav-right a {
-  text-decoration: none;
-  color: var(--text);
-  position: relative;
-}
-
-/* Purple underline hover */
-.nav-right a::after,
-.site-name::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -4px;
-  width: 0%;
-  height: 2px;
-  background: var(--accent);
-  transition: 0.3s;
-}
-
-.nav-right a:hover::after,
-.site-name:hover::after {
-  width: 100%;
-}
-
-/* Download Button */
-.download-btn {
-  padding: 6px 14px;
-  border-radius: 8px;
-  background: var(--accent);
-  color: #000;
-  font-weight: bold;
-  text-decoration: none;
-}
-
-/* Theme Toggle Circular */
-.theme-toggle {
-  font-size: 20px;
-  border: none;
-  cursor: pointer;
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.3s ease, background 0.3s ease;
-  background: #ffffff; /* dark mode default */
-}
-
-body.light .theme-toggle {
-  background: #000000; /* circle black in light mode */
-}
-
-.theme-toggle:hover {
-  transform: scale(1.1);
-}
-
-/* Hero */
-.hero {
-  text-align: center;
-  padding: 80px 20px 40px 20px;
-}
-
-.hero h1 {
-  font-size: 36px;
-}
-
-/* Cards */
-.section {
-  padding: 40px 20px 80px 20px;
-  text-align: center;
-}
-
-.card {
-  background: var(--card);
-  backdrop-filter: blur(12px);
-  padding: 30px;
-  border-radius: 16px;
-  max-width: 700px;
-  margin: 20px auto;
-  transition: transform 0.3s ease;
-  text-align: left;
-}
-
-.card:hover {
-  transform: translateY(-6px);
-}
-
-.card h2 {
-  margin-top: 0;
-  text-align: center;
-}
-
-/* Buttons */
-a.button {
-  display: inline-block;
-  margin-top: 20px;
-  padding: 10px 25px;
-  border-radius: 8px;
-  background: var(--accent);
-  color: #000;
-  font-weight: bold;
-  text-decoration: none;
-  transition: transform 0.2s ease, background 0.2s ease;
-}
-
-a.button:hover {
-  transform: scale(1.1);
-  background: #c084fc;
-}
-
-/* Footer */
-footer {
-  text-align: center;
-  padding: 20px;
-  border-top: 1px solid rgba(255,255,255,0.1);
-  font-size: 14px;
-}
-
-/* Mobile */
-@media (max-width: 768px) {
-  .navbar {
-    flex-direction: column;
-    gap: 10px;
-  }
-  .nav-right {
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  .hero h1 {
-    font-size: 28px;
-  }
-  .card {
-    padding: 20px;
-  }
-}
+body{margin:0;padding:50px;font-family:'Courier New',monospace;background:#000;color:#00ff00;text-align:center;}
+h1{font-size:2.8em;text-shadow:0 0 10px #00ff00;margin-bottom:30px;}
+p{max-width:700px;margin:20px auto;line-height:1.6em;}
+a.button{display:inline-block;margin-top:30px;padding:14px 30px;border:2px solid #00ff00;border-radius:8px;color:#00ff00;text-decoration:none;font-weight:bold;transition:all 0.3s ease;}
+a.button:hover{transform:scale(1.15);box-shadow:0 0 15px #00ff00;}
+hr{border:none;border-top:2px solid #00ff00;margin:50px 0 20px 0;}
+footer{font-size:12px;text-align:center;margin-bottom:20px;}
 </style>
 </head>
 <body>
 
 <div class="navbar">
   <a href="/" class="site-name">Rip_Dead Site</a>
-
   <div class="nav-right">
     <a href="/about/">About</a>
     <a href="/support/">Support</a>
     <a href="/downloads/" class="download-btn">Download</a>
+    <a href="/blogs/">Blogs</a>
     <button class="theme-toggle" onclick="toggleTheme()" id="themeIcon">☀️</button>
   </div>
 </div>
 
-<div class="hero">
-  <h1>About Me</h1>
-</div>
+<h1>About Me</h1>
 
-<div class="section">
-  <div class="card">
-    <p>
-      Hello, welcome to the Rip_Dead Site About Me! I'm Rip_Dead, your average animator
-      and gaming YouTuber. I create content for Geometry Dash, Friday Night Funkin',
-      and random short videos. I sometimes follow trends and have many interests,
-      one of them being baseball. I prefer not to say my real name, so just go with "Rip_Dead" or "Rip".
-    </p>
+<p>Hello, welcome to the Rip_Dead Site About Me! I'm Rip_Dead, your average animator
+and gaming YouTuber. I create content for Geometry Dash, Friday Night Funkin', and random shorts. I sometimes follow trends and have many interests, one of them being baseball. I prefer not to say my real name, so just go with "Rip_Dead" or "Rip".</p>
 
-    <p>
-      I also have a Discord account. The <strong>only official account</strong> is
-      <strong>ripdeaddev</strong>. The only official Rip_Dead usernames are:
-      RIPDEAD32, RIPDEADLOLZ, RIPDEADD, and RIP_DEADD.
-    </p>
+<p>I also have a Discord account. The <strong>only official account</strong> is <strong>ripdeaddev</strong>. The only official Rip_Dead usernames are: RIPDEAD32, RIPDEADLOLZ, RIPDEADD, and RIP_DEADD.</p>
 
-    <a class="button" href="/">Return to Home</a>
-  </div>
-</div>
+<a href="/" class="button">Return to Home</a>
+
+<hr>
 
 <footer>
-  © 2026 Rip_Dead Studios — All Rights Reserved
+© 2026 Rip_Dead Studios — All Rights Reserved
 </footer>
 
 <script>
-const themeIcon = document.getElementById("themeIcon");
-
-/* Theme Toggle */
-function toggleTheme() {
-  document.body.classList.toggle("light");
-  const isLight = document.body.classList.contains("light");
-  themeIcon.textContent = isLight ? "🌙" : "☀️";
-}
+const themeIcon=document.getElementById("themeIcon");
+function toggleTheme(){document.body.classList.toggle("light");themeIcon.textContent=document.body.classList.contains("light")?"🌙":"☀️";}
 </script>
 
 </body>
