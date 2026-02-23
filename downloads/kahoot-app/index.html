@@ -2,89 +2,154 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Rip_Dead Site - Kahoot App Download</title>
-<link rel="icon" href="/download.ico">
+<link rel="icon" href="/favicon.ico">
+<link rel="stylesheet" href="/navbar.css">
 <style>
-body {
-    margin:0;
-    padding:50px;
-    background:black;
-    color:#00ff00;
-    font-family:"Courier New", monospace;
-    text-align:center;
+body{
+  margin:0;
+  font-family:'Segoe UI',sans-serif;
+  color:#fff;
+  overflow-x:hidden;
 }
-
-h1 {
-    font-size:2.6em;
-    text-shadow:0 0 10px #00ff00;
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  background:linear-gradient(-45deg,#000,#4c1d95,#000,#6d28d9);
+  background-size:400% 400%;
+  animation:gradientMove 12s ease infinite;
 }
-
-p {
-    line-height:1.5em;
-    margin:20px auto;
-    max-width:700px;
+body.light::before{
+  background:linear-gradient(-45deg,#fff,#c084fc,#fff,#a855f7);
 }
+@keyframes gradientMove{0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
 
-a.button {
-    display:inline-block;
-    margin:12px;
-    padding:14px 30px;
-    border:2px solid #00ff00;
-    border-radius:8px;
-    color:#00ff00;
-    text-decoration:none;
-    font-weight:bold;
-    transition: all 0.3s ease;
+.navbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:15px 40px;
+  background:rgba(0,0,0,0.6);
+  backdrop-filter:blur(10px);
+  position:sticky;
+  top:0;
+  z-index:100;
 }
-
-a.button:hover {
-    transform: scale(1.15);
-    box-shadow:0 0 15px #00ff00;
+.navbar a, .navbar button{
+  margin-left:15px;
+  color:#fff;
+  text-decoration:none;
+  font-weight:bold;
+  background:none;
+  border:none;
+  cursor:pointer;
 }
-
-hr {
-    border:none;
-    border-top:2px solid #00ff00;
-    margin:50px 0 20px 0;
+.navbar a:hover{border-bottom:2px solid #a855f7;}
+.theme-toggle{
+  width:35px;
+  height:35px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:18px;
+  background:#fff;
+  color:#000;
 }
+body.light .theme-toggle{
+  background:#000;
+  color:#fff;
+}
+.nav-right{display:flex;align-items:center;}
 
-footer {
-    font-size:12px;
-    text-align:center;
-    margin-bottom:20px;
+.hero{text-align:center;padding:80px 20px 40px 20px;}
+.hero h1{font-size:36px;}
+
+.section{padding:40px 20px 80px 20px;text-align:center;}
+
+.card{
+  background:rgba(20,20,20,0.6);
+  backdrop-filter:blur(12px);
+  padding:30px;
+  border-radius:16px;
+  max-width:700px;
+  margin:20px auto;
+  transition:transform 0.3s ease;
+  text-align:center;
+}
+.card:hover{transform:translateY(-6px);}
+
+.card h2{margin-bottom:20px;}
+.card p{margin-bottom:20px;line-height:1.5em;}
+.card a.button{
+  display:inline-block;
+  margin:10px 10px;
+  padding:14px 30px;
+  border-radius:8px;
+  background:#a855f7;
+  color:#000;
+  font-weight:bold;
+  text-decoration:none;
+  transition:transform 0.2s ease,background 0.2s ease;
+}
+.card a.button:hover{transform:scale(1.05);background:#c084fc;}
+
+footer{text-align:center;padding:20px;font-size:14px;border-top:1px solid rgba(255,255,255,0.1);}
+
+@media(max-width:768px){
+  .navbar{flex-direction:column;gap:10px;}
+  .nav-right{flex-wrap:wrap;justify-content:center;}
+  .hero h1{font-size:28px;}
+  .card{padding:20px;}
 }
 </style>
 </head>
 <body>
 
-<h1>What even is Kahoot App?</h1>
+<div class="navbar">
+  <a href="/" class="site-name">Rip_Dead Site</a>
+  <div class="nav-right">
+    <a href="/about/">About</a>
+    <a href="/support/">Support</a>
+    <a href="/downloads/">Download</a>
+    <a href="/blogs/">Blogs</a>
+    <button class="theme-toggle" onclick="toggleTheme()" id="themeIcon">☀️</button>
+  </div>
+</div>
 
-<p>
-Kahoot App is an unofficial software made by Rip_Dead to play Kahoot on your desktop.
-No need to open browsers or anything, just double click and you’re in!
-</p>
+<div class="hero">
+  <h1>Kahoot App</h1>
+</div>
 
-<p>
-This is not by Kahoot, all copyright goes to Kahoot Inc.
-</p>
+<div class="section">
+  <div class="card">
+    <p>Kahoot App is an unofficial software made by Rip_Dead to play Kahoot on your desktop.<br>No need to open browsers — just double click and you’re in!</p>
+    <p>This is not by Kahoot; all copyright goes to Kahoot Inc.</p>
+    
+    <h2>Want to download it? Check These Out:</h2>
+    <a href="/downloads/kahoot-app/releases/" class="button">Releases</a>
+    <a href="/downloads/kahoot-app/betas/" class="button">Betas</a>
 
-<h2>Want to download it? Check These Out:</h2>
+    <h2>Having trouble installing? Download the disk image instead!</h2>
+    <a href="https://github.com/ripdead32/Kahoot-App/releases/download/iso/KA-install-image.iso" class="button">Download Disk Image</a>
+    
+    <br>
+    <a href="/downloads/" class="button">Back to Downloads</a>
+  </div>
+</div>
 
-<a class="button" href="/downloads/kahoot-app/releases/">Releases</a>
-<a class="button" href="/downloads/kahoot-app/betas/">Betas</a>
+<footer>© 2026 Rip_Dead Studios — All Rights Reserved</footer>
 
-<h2>Having trouble installing? Download the disk image instead!</h2>
-
-<a class="button" href="https://github.com/ripdead32/Kahoot-App/releases/download/iso/KA-install-image.iso">
-Download Disk Image
-</a>
-
-<p><a class="button" href="/downloads/">Return to Downloads</a></p>
-
-<hr>
-<footer>
-(C) Copyright Rip_Dead Studios 2026, All Rights Reserved
-</footer>
+<script>
+const themeIcon=document.getElementById("themeIcon");
+function toggleTheme(){
+  document.body.classList.toggle("light");
+  themeIcon.textContent=document.body.classList.contains("light")?"🌙":"☀️";
+}
+</script>
 
 </body>
 </html>
