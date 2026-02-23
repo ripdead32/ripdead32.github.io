@@ -1,0 +1,77 @@
+/* navbar.css */
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  backdrop-filter: blur(10px);
+}
+
+.site-name {
+  font-weight: bold;
+  font-size: 20px;
+  text-decoration: none;
+  color: var(--text);
+  position: relative;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.nav-right a {
+  text-decoration: none;
+  color: var(--text);
+  position: relative;
+}
+
+.nav-right a::after,
+.site-name::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 0%;
+  height: 2px;
+  background: var(--accent);
+  transition: 0.3s;
+}
+
+.nav-right a:hover::after,
+.site-name:hover::after {
+  width: 100%;
+}
+
+.download-btn {
+  padding: 6px 14px;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #000;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.theme-toggle {
+  font-size: 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease, background 0.3s ease;
+  background: #ffffff;
+}
+
+body.light .theme-toggle {
+  background: #000000;
+}
+
+.theme-toggle:hover {
+  transform: scale(1.1);
+}
