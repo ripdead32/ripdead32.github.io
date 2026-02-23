@@ -2,61 +2,123 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>404 - Not Found</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rip_Dead Site - Page Not Found</title>
+<link rel="icon" href="/favicon.ico">
+<link rel="stylesheet" href="/navbar.css">
 <style>
-body {
+body{
   margin:0;
-  background:black;
-  color:#00ff00;
-  font-family: monospace;
-  text-align:center;
+  font-family:'Segoe UI',sans-serif;
+  color:#fff;
+  overflow-x:hidden;
 }
-
-.container {
-  padding:50px 20px;
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  background:linear-gradient(-45deg,#000,#4c1d95,#000,#6d28d9);
+  background-size:400% 400%;
+  animation:gradientMove 12s ease infinite;
 }
-
-h1 {
-  font-size:80px;
-  text-shadow:0 0 10px #00ff00;
+body.light::before{
+  background:linear-gradient(-45deg,#fff,#c084fc,#fff,#a855f7);
 }
+@keyframes gradientMove{0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
 
-h2 {
-  font-size:28px;
-  text-shadow:0 0 5px #00ff00;
+.navbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:15px 40px;
+  background:rgba(0,0,0,0.6);
+  backdrop-filter:blur(10px);
+  position:sticky;
+  top:0;
+  z-index:100;
 }
-
-.button {
-  display:inline-block;
-  margin:20px;
-  padding:12px 28px;
-  border:2px solid #00ff00;
-  color:#00ff00;
+.navbar a, .navbar button{
+  margin-left:15px;
+  color:#fff;
   text-decoration:none;
-  border-radius:8px;
   font-weight:bold;
-  transition:0.3s;
+  background:none;
+  border:none;
+  cursor:pointer;
 }
+.navbar a:hover{border-bottom:2px solid #a855f7;}
+.theme-toggle{
+  width:35px;
+  height:35px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:18px;
+  background:#fff;
+  color:#000;
+}
+body.light .theme-toggle{
+  background:#000;
+  color:#fff;
+}
+.nav-right{display:flex;align-items:center;}
 
-.button:hover {
-  transform:scale(1.15);
-  box-shadow:0 0 15px #00ff00;
+.hero{text-align:center;padding:100px 20px 40px 20px;}
+.hero h1{font-size:50px;margin-bottom:20px;}
+.hero p{font-size:20px;margin-bottom:30px;}
+
+a.button{
+  display:inline-block;
+  padding:16px 36px;
+  border-radius:8px;
+  background:#a855f7;
+  color:#000;
+  font-weight:bold;
+  text-decoration:none;
+  transition:transform 0.2s ease,background 0.2s ease;
+}
+a.button:hover{transform:scale(1.05);background:#c084fc;}
+
+footer{text-align:center;padding:20px;font-size:14px;border-top:1px solid rgba(255,255,255,0.1);}
+
+@media(max-width:768px){
+  .navbar{flex-direction:column;gap:10px;}
+  .nav-right{flex-wrap:wrap;justify-content:center;}
+  .hero h1{font-size:36px;}
+  .hero p{font-size:16px;}
 }
 </style>
-<link rel="icon" href="/favicon.ico">
 </head>
 <body>
-<div class="container">
-  <h1>404</h1>
-  <h2>Page Not Found</h2>
-  <p>The page you tried to access does not exist.</p>
 
-  <a class="button" href="/">Return to Home</a>
-
-  <hr style="border:none; border-top:2px solid #00ff00; margin:40px 0;">
-  <footer>
-    (C) Copyright Rip_Dead Studios 2026, All Rights Reserved
-  </footer>
+<div class="navbar">
+  <a href="/" class="site-name">Rip_Dead Site</a>
+  <div class="nav-right">
+    <a href="/about/">About</a>
+    <a href="/support/">Support</a>
+    <a href="/downloads/">Download</a>
+    <a href="/blogs/">Blogs</a>
+    <button class="theme-toggle" onclick="toggleTheme()" id="themeIcon">☀️</button>
+  </div>
 </div>
+
+<div class="hero">
+  <h1>404</h1>
+  <p>Oops! The page you are looking for does not exist.</p>
+  <a href="/" class="button">Back to Home</a>
+</div>
+
+<footer>© 2026 Rip_Dead Studios — All Rights Reserved</footer>
+
+<script>
+const themeIcon=document.getElementById("themeIcon");
+function toggleTheme(){
+  document.body.classList.toggle("light");
+  themeIcon.textContent=document.body.classList.contains("light")?"🌙":"☀️";
+}
+</script>
+
 </body>
 </html>
