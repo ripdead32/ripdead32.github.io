@@ -5,131 +5,275 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Rip_Dead Site - Support</title>
 <link rel="icon" href="/support.ico" type="image/x-icon">
+
 <style>
-  body {
-    background-color: #000;
-    color: #0f0;
-    font-family: monospace;
+:root {
+  --text: #ffffff;
+  --card: rgba(20,20,20,0.6);
+  --accent: #a855f7;
+}
+
+body.light {
+  --text: #111;
+  --card: rgba(255,255,255,0.7);
+  --accent: #9333ea;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  color: var(--text);
+  overflow-x: hidden;
+  animation: fadeIn 0.6s ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Animated Gradient Background */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(-45deg, #000000, #4c1d95, #000000, #6d28d9);
+  background-size: 400% 400%;
+  animation: gradientMove 12s ease infinite;
+}
+
+body.light::before {
+  background: linear-gradient(-45deg, #ffffff, #c084fc, #ffffff, #a855f7);
+  background-size: 400% 400%;
+}
+
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  backdrop-filter: blur(10px);
+}
+
+.site-name {
+  font-weight: bold;
+  font-size: 20px;
+  text-decoration: none;
+  color: var(--text);
+  position: relative;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.nav-right a {
+  text-decoration: none;
+  color: var(--text);
+  position: relative;
+}
+
+.nav-right a::after,
+.site-name::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 0%;
+  height: 2px;
+  background: var(--accent);
+  transition: 0.3s;
+}
+
+.nav-right a:hover::after,
+.site-name:hover::after {
+  width: 100%;
+}
+
+.download-btn {
+  padding: 6px 14px;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #000;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.theme-toggle {
+  font-size: 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease, background 0.3s ease;
+  background: #ffffff;
+}
+
+body.light .theme-toggle {
+  background: #000000;
+}
+
+.theme-toggle:hover {
+  transform: scale(1.1);
+}
+
+/* Hero */
+.hero {
+  text-align: center;
+  padding: 80px 20px 40px 20px;
+}
+
+.hero h1 {
+  font-size: 36px;
+}
+
+/* Cards */
+.section {
+  padding: 40px 20px 80px 20px;
+  text-align: center;
+}
+
+.card {
+  background: var(--card);
+  backdrop-filter: blur(12px);
+  padding: 30px;
+  border-radius: 16px;
+  max-width: 600px;
+  margin: 20px auto;
+  transition: transform 0.3s ease;
+  text-align: left;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+}
+
+.card h2 {
+  margin-top: 0;
+  text-align: center;
+}
+
+/* Form */
+form input, form textarea {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  border-radius: 8px;
+  border: 1px solid var(--accent);
+  background: rgba(0,0,0,0.2);
+  color: var(--text);
+}
+
+body.light form input, body.light form textarea {
+  background: rgba(255,255,255,0.4);
+  color: var(--text);
+}
+
+form textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+form button {
+  padding: 10px 25px;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #000;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+form button:hover {
+  transform: scale(1.05);
+  background: #c084fc;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 20px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  font-size: 14px;
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .nav-right {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .hero h1 {
+    font-size: 28px;
+  }
+  .card {
     padding: 20px;
   }
-  h1 {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  form {
-    max-width: 500px;
-    margin: 0 auto;
-  }
-  input, textarea {
-    display: block;
-    width: 100%;
-    margin-bottom: 10px;
-    padding: 10px;
-    background-color: #000;
-    color: #0f0;
-    border: 2px solid #0f0;
-    font-family: monospace;
-    font-size: 16px;
-  }
-  .hover-button {
-    background-color: #000;
-    border: 2px solid #0f0;
-    color: #0f0;
-    padding: 10px;
-    font-family: monospace;
-    font-size: 16px;
-    cursor: pointer;
-    transition: all 0.2s ease-in-out;
-  }
-  .hover-button:hover {
-    background-color: #0f0;
-    color: #000;
-    transform: scale(1.05);
-  }
-  #success-msg, #error-msg {
-    text-align: center;
-    margin-top: 10px;
-  }
-  .divider {
-    width: 80%;
-    border-top: 2px solid #0f0;
-    margin: 40px auto 20px auto;
-  }
-  footer {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  a.back-home {
-    color:#0f0;
-    text-align:center;
-    display:block;
-    margin-top:10px;
-    text-decoration:none;
-  }
-  a.back-home:hover {
-    color:#000;
-    background-color:#0f0;
-    transform: scale(1.05);
-  }
+}
 </style>
 </head>
 <body>
 
-<h1>Support</h1>
-<p style="text-align:center;">Want help? We got your back!</p>
+<div class="navbar">
+  <a href="/" class="site-name">Rip_Dead Site</a>
 
-<form id="support-form">
-  <input type="hidden" name="access_key" value="0811539e-92b5-4af8-a62a-aef76b8027a2">
-  <input type="text" name="name" placeholder="Name (don't use your real name, optional)">
-  <input type="email" name="email" placeholder="Email" required>
-  <input type="text" name="subject" placeholder="Subject" required>
-  <textarea name="message" placeholder="Message" rows="6" required></textarea>
-  
-  <button type="submit" class="hover-button">Send Message</button>
-  <a href="/" class="back-home">← Back to Home</a>
-</form>
+  <div class="nav-right">
+    <a href="/about/">About</a>
+    <a href="/support/">Support</a>
+    <a href="/downloads/" class="download-btn">Download</a>
+    <button class="theme-toggle" onclick="toggleTheme()" id="themeIcon">☀️</button>
+  </div>
+</div>
 
-<p id="success-msg" style="display:none;">✅ Submitted Successfully!</p>
-<p id="error-msg" style="display:none;">❌ Failed to submit. Try again later.</p>
+<div class="hero">
+  <h1>Support</h1>
+</div>
 
-<!-- Divider line above footer -->
-<div class="divider"></div>
+<div class="section">
+  <div class="card">
+    <h2>Need Help? We got your back!</h2>
+    <form id="supportForm" action="https://formkeep.com/f/d13ae91fe8d6" method="POST">
+      <input type="text" name="name" placeholder="Name (don't use your real name, optional)">
+      <input type="email" name="email" placeholder="Email" required>
+      <input type="text" name="subject" placeholder="Subject" required>
+      <textarea name="message" placeholder="Message" required></textarea>
+      <button type="submit">Send Message</button>
+    </form>
+    <div style="margin-top:15px; text-align:center;">
+      <a href="/" class="button">Back to Home</a>
+    </div>
+  </div>
+</div>
 
 <footer>
-  (C) Copyright Rip_Dead Studios 2026, All Rights Reserved
+  © 2026 Rip_Dead Studios — All Rights Reserved
 </footer>
 
 <script>
-const form = document.getElementById("support-form");
-const successMsg = document.getElementById("success-msg");
-const errorMsg = document.getElementById("error-msg");
-
-form.addEventListener("submit", async (e) => {
-  e.preventDefault();
-
-  const formData = new FormData(form);
-
-  try {
-    const res = await fetch("https://api.web3forms.com/submit", {
-      method: "POST",
-      body: formData
-    });
-
-    const result = await res.json();
-
-    if (res.ok && result.success) {
-      form.reset();
-      successMsg.style.display = "block";
-      errorMsg.style.display = "none";
-    } else {
-      throw new Error(result.message || "Form submission failed");
-    }
-  } catch (err) {
-    console.error(err);
-    successMsg.style.display = "none";
-    errorMsg.style.display = "block";
-  }
-});
+const themeIcon = document.getElementById("themeIcon");
+function toggleTheme() {
+  document.body.classList.toggle("light");
+  const isLight = document.body.classList.contains("light");
+  themeIcon.textContent = isLight ? "🌙" : "☀️";
+}
 </script>
 
 </body>
