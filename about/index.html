@@ -9,46 +9,103 @@
 <style>
 body{
   margin:0;
-  padding:50px;
-  font-family:'Courier New',monospace;
-  background:#000;
-  color:#00ff00;
-  text-align:center;
+  font-family:'Segoe UI',sans-serif;
+  color:#fff;
+  overflow-x:hidden;
 }
-h1{
-  font-size:2.8em;
-  text-shadow:0 0 10px #00ff00;
-  margin-bottom:30px;
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  background:linear-gradient(-45deg,#000,#4c1d95,#000,#6d28d9);
+  background-size:400% 400%;
+  animation:gradientMove 12s ease infinite;
 }
-p{
-  max-width:700px;
-  margin:20px auto;
-  line-height:1.6em;
+body.light::before{
+  background:linear-gradient(-45deg,#fff,#c084fc,#fff,#a855f7);
 }
-a.button{
-  display:inline-block;
-  margin-top:30px;
-  padding:14px 30px;
-  border:2px solid #00ff00;
-  border-radius:8px;
-  color:#00ff00;
+@keyframes gradientMove{0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
+
+.navbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:15px 40px;
+  background:rgba(0,0,0,0.6);
+  backdrop-filter:blur(10px);
+  position:sticky;
+  top:0;
+  z-index:100;
+}
+.navbar a, .navbar button{
+  margin-left:15px;
+  color:#fff;
   text-decoration:none;
   font-weight:bold;
-  transition:all 0.3s ease;
-}
-a.button:hover{
-  transform:scale(1.15);
-  box-shadow:0 0 15px #00ff00;
-}
-hr{
+  background:none;
   border:none;
-  border-top:2px solid #00ff00;
-  margin:50px 0 20px 0;
+  cursor:pointer;
 }
-footer{
-  font-size:12px;
-  text-align:center;
-  margin-bottom:20px;
+.navbar a:hover{border-bottom:2px solid #a855f7;}
+.theme-toggle{
+  width:35px;
+  height:35px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:18px;
+  background:#fff;
+  color:#000;
+}
+body.light .theme-toggle{
+  background:#000;
+  color:#fff;
+}
+.nav-right{display:flex;align-items:center;}
+
+.hero{text-align:center;padding:80px 20px 40px 20px;}
+.hero h1{font-size:36px;}
+
+.section{padding:40px 20px 80px 20px;text-align:center;}
+
+.card{
+  background:rgba(20,20,20,0.6);
+  backdrop-filter:blur(12px);
+  padding:30px;
+  border-radius:16px;
+  max-width:700px;
+  margin:20px auto;
+  transition:transform 0.3s ease;
+  text-align:left;
+}
+.card:hover{transform:translateY(-6px);}
+
+.card p{
+  line-height:1.6em;
+  margin:15px 0;
+}
+.card a.button{
+  display:inline-block;
+  margin-top:20px;
+  padding:10px 25px;
+  border-radius:8px;
+  background:#a855f7;
+  color:#000;
+  font-weight:bold;
+  text-decoration:none;
+  transition:transform 0.2s ease,background 0.2s ease;
+}
+.card a.button:hover{transform:scale(1.05);background:#c084fc;}
+
+footer{text-align:center;padding:20px;font-size:14px;border-top:1px solid rgba(255,255,255,0.1);}
+
+@media(max-width:768px){
+  .navbar{flex-direction:column;gap:10px;}
+  .nav-right{flex-wrap:wrap;justify-content:center;}
+  .hero h1{font-size:28px;}
+  .card{padding:20px;}
 }
 </style>
 </head>
@@ -59,34 +116,36 @@ footer{
   <div class="nav-right">
     <a href="/about/">About</a>
     <a href="/support/">Support</a>
-    <a href="/downloads/" class="download-btn">Download</a>
+    <a href="/downloads/">Download</a>
     <a href="/blogs/">Blogs</a>
     <button class="theme-toggle" onclick="toggleTheme()" id="themeIcon">☀️</button>
   </div>
 </div>
 
-<h1>About Me</h1>
+<div class="hero">
+  <h1>About Me</h1>
+</div>
 
-<p>
-Hello, welcome to the Rip_Dead Site About Me! I'm Rip_Dead, your average animator
-and gaming YouTuber. I create content for Geometry Dash, Friday Night Funkin',
-and random short videos. I sometimes follow trends and have many interests,
-one of them being baseball. I prefer not to say my real name so just go with "Rip_Dead" or "Rip", whatever you like.
-</p>
+<div class="section">
+  <div class="card">
+    <p>
+      Hello, welcome to the Rip_Dead Site About Me! I'm Rip_Dead, your average animator
+      and gaming YouTuber. I create content for Geometry Dash, Friday Night Funkin',
+      and random short videos. I sometimes follow trends and have many interests,
+      one of them being baseball. I prefer not to say my real name so just go with "Rip_Dead" or "Rip", whatever you like.
+    </p>
 
-<p>
-I also have a Discord account. The <strong>only official account</strong> is
-<strong>ripdeaddev</strong>. The only official Rip_Dead usernames are:
-RIPDEAD32, RIPDEADLOLZ, RIPDEADD, and RIP_DEADD.
-</p>
+    <p>
+      I also have a Discord account. The <strong>only official account</strong> is
+      <strong>ripdeaddev</strong>. The only official Rip_Dead usernames are:
+      RIPDEAD32, RIPDEADLOLZ, RIPDEADD, and RIP_DEADD.
+    </p>
 
-<a href="/" class="button">Return to Home</a>
+    <a href="/" class="button">Back to Home</a>
+  </div>
+</div>
 
-<hr>
-
-<footer>
-© 2026 Rip_Dead Studios — All Rights Reserved
-</footer>
+<footer>© 2026 Rip_Dead Studios — All Rights Reserved</footer>
 
 <script>
 const themeIcon=document.getElementById("themeIcon");
