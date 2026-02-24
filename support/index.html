@@ -5,185 +5,146 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Rip_Dead Site - Support</title>
 <link rel="icon" href="/favicon.ico">
-
+<link rel="stylesheet" href="/navbar.css">
 <style>
-body {
+body{
   margin:0;
-  font-family: Arial, sans-serif;
-  background:#000;
+  font-family:'Segoe UI',sans-serif;
   color:#fff;
+  overflow-x:hidden;
   transition:0.3s;
 }
-
-body.light {
-  background:#fff;
-  color:#111;
+body.light{color:#111;}
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  background:linear-gradient(-45deg,#000,#4c1d95,#000,#6d28d9);
+  background-size:400% 400%;
+  animation:gradientMove 12s ease infinite;
 }
-
-/* Navbar */
-.navbar {
+body.light::before{
+  background:linear-gradient(-45deg,#fff,#c084fc,#fff,#a855f7);
+}
+@keyframes gradientMove{
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
+.navbar{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  padding:20px 40px;
+  padding:15px 40px;
+  background:rgba(0,0,0,0.6);
+  backdrop-filter:blur(10px);
+  position:sticky;
+  top:0;
+  z-index:100;
 }
-
-.nav-left a {
-  font-weight:bold;
-  font-size:20px;
-  text-decoration:none;
-  color:inherit;
-}
-
-.nav-right a {
-  margin-left:20px;
-  text-decoration:none;
-  color:inherit;
-}
-
-.download-btn {
-  padding:6px 12px;
-  background:purple;
-  color:#fff;
-  border-radius:6px;
-}
-
-body.light .download-btn {
-  background:#9333ea;
-}
-
-.theme-toggle {
+.navbar a, .navbar button{
   margin-left:15px;
-  cursor:pointer;
-  font-size:18px;
+  color:inherit;
+  text-decoration:none;
+  font-weight:bold;
+  background:none;
   border:none;
-  border-radius:50%;
+  cursor:pointer;
+}
+.navbar a:hover{border-bottom:2px solid #a855f7;}
+.theme-toggle{
   width:35px;
   height:35px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:18px;
   background:#fff;
+  color:#000;
 }
+body.light .theme-toggle{background:#000;color:#fff;}
+.nav-right{display:flex;align-items:center;}
 
-body.light .theme-toggle {
-  background:#000;
-  color:#fff;
-}
-
-/* Form */
-.main {
-  padding:60px 20px;
-  text-align:center;
-}
-
-form {
-  max-width:500px;
-  margin:auto;
-}
-
-input, textarea {
-  width:100%;
-  padding:10px;
-  margin:8px 0;
-  border-radius:6px;
-  border:none;
-}
-
-button {
-  padding:10px 20px;
-  background:purple;
-  color:#fff;
-  border:none;
-  border-radius:6px;
-  cursor:pointer;
-  transition:0.2s;
-}
-
-button:hover {
-  transform:scale(1.05);
-}
-
-/* Card */
-.card {
+.section{padding:40px 20px 80px 20px;text-align:center;}
+.card{
+  background:rgba(20,20,20,0.6);
+  backdrop-filter:blur(12px);
+  padding:30px;
+  border-radius:16px;
+  max-width:700px;
   margin:20px auto;
-  padding:25px;
-  max-width:550px;
-  border-radius:12px;
-  background:rgba(255,255,255,0.08);
-}
-
-body.light .card {
-  background:rgba(0,0,0,0.08);
-}
-
-footer {
+  transition:transform 0.3s ease;
   text-align:center;
-  padding:20px;
-  font-size:14px;
 }
+body.light .card{background:rgba(255,255,255,0.08);}
+.card:hover{transform:translateY(-6px);}
+.card h2{font-size:24px;margin-bottom:15px;}
+.card input, .card textarea{
+  width:90%;
+  padding:12px;
+  margin:10px 0;
+  border-radius:8px;
+  border:2px solid #a855f7;
+  background:transparent;
+  color:inherit;
+}
+.card button{
+  margin-top:10px;
+  padding:12px 25px;
+  border:none;
+  border-radius:8px;
+  background:#a855f7;
+  color:#000;
+  font-weight:bold;
+  cursor:pointer;
+  transition:transform 0.2s ease,background 0.2s ease;
+}
+.card button:hover{transform:scale(1.05);background:#c084fc;}
+
+footer{text-align:center;padding:20px;font-size:14px;border-top:1px solid rgba(255,255,255,0.1);}
 
 @media(max-width:768px){
-  .navbar {
-    flex-direction:column;
-    gap:12px;
-  }
-  .nav-right {
-    flex-wrap:wrap;
-    justify-content:center;
-  }
+  .navbar{flex-direction:column;gap:10px;}
+  .nav-right{flex-wrap:wrap;justify-content:center;}
+  .card{padding:20px;}
 }
 </style>
 </head>
 <body>
 
 <div class="navbar">
-  <div class="nav-left">
-    <a href="/">Rip_Dead Site</a>
-  </div>
+  <a href="/" class="site-name">Rip_Dead Site</a>
   <div class="nav-right">
     <a href="/about/">About</a>
     <a href="/support/">Support</a>
-    <a href="/downloads/" class="download-btn">Download</a>
+    <a href="/downloads/">Download</a>
     <a href="/blogs/">Blogs</a>
-    <button class="theme-toggle" id="themeIcon" onclick="toggleTheme()">☀️</button>
+    <button class="theme-toggle" onclick="toggleTheme()" id="themeIcon">☀️</button>
   </div>
 </div>
 
-<div class="main">
-  <h1>Want help? We got your back!</h1>
-
+<div class="section">
   <div class="card">
-    <form action="https://api.web3forms.com/submit" method="POST">
-      <!-- Web3Forms Access Key -->
+    <h2>Want help? We got your back!</h2>
+    <form action="https://web3forms.com/submit" method="POST">
       <input type="hidden" name="access_key" value="0811539e-92b5-4af8-a62a-aef76b8027a2">
-
-      <!-- Optional Name -->
       <input type="text" name="name" placeholder="Name (don't use your real name, optional)">
-
-      <!-- Email Required -->
-      <input type="email" name="email" placeholder="Email (required)" required>
-
-      <!-- Subject -->
-      <input type="text" name="subject" placeholder="Subject" required>
-
-      <!-- Message -->
-      <textarea name="message" rows="5" placeholder="Your message..." required></textarea>
-
-      <!-- Submit -->
+      <input type="email" name="email" placeholder="Email" required>
+      <textarea name="message" placeholder="Your message" rows="6" required></textarea>
       <button type="submit">Send Message</button>
     </form>
-
-    <a href="/" class="button" style="margin-top:15px; display:inline-block;">Back to Home</a>
   </div>
 </div>
 
-<footer>
-© 2026 Rip_Dead Studios — All Rights Reserved
-</footer>
+<footer>© 2026 Rip_Dead Studios — All Rights Reserved</footer>
 
 <script>
+const themeIcon=document.getElementById("themeIcon");
 function toggleTheme(){
   document.body.classList.toggle("light");
-  const icon = document.getElementById("themeIcon");
-  icon.textContent = document.body.classList.contains("light") ? "🌙" : "☀️";
+  themeIcon.textContent=document.body.classList.contains("light")?"🌙":"☀️";
 }
 </script>
 
