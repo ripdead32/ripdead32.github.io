@@ -5,12 +5,116 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Rip_Dead Site</title>
 <link rel="icon" href="/favicon.ico">
-<link rel="stylesheet" href="/navbar.css">
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #000;
+  color: #fff;
+  transition: 0.3s;
+}
+
+/* Light mode */
+body.light {
+  background: #fff;
+  color: #111;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+}
+
+.nav-left a {
+  font-weight: bold;
+  font-size: 20px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.nav-right a {
+  margin-left: 20px;
+  text-decoration: none;
+  color: inherit;
+  position: relative;
+}
+
+.nav-right a:hover {
+  text-decoration: underline;
+}
+
+.download-btn {
+  padding: 6px 12px;
+  background: purple;
+  color: white;
+  border-radius: 6px;
+}
+
+body.light .download-btn {
+  background: #9333ea;
+}
+
+/* Theme button */
+.theme-toggle {
+  margin-left: 15px;
+  cursor: pointer;
+  font-size: 18px;
+  border: none;
+  background: #fff;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+}
+
+body.light .theme-toggle {
+  background: #000;
+  color: #fff;
+}
+
+/* Main content */
+.main {
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.card {
+  margin: 30px auto;
+  padding: 25px;
+  max-width: 600px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.08);
+}
+
+body.light .card {
+  background: rgba(0,0,0,0.08);
+}
+
+.button {
+  display: inline-block;
+  margin: 10px;
+  padding: 10px 20px;
+  background: purple;
+  color: white;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: 0.2s;
+}
+
+.button:hover {
+  transform: scale(1.05);
+}
+</style>
 </head>
 <body>
 
 <div class="navbar">
-  <a href="/" class="site-name">Rip_Dead Site</a>
+  <div class="nav-left">
+    <a href="/">Rip_Dead Site</a>
+  </div>
   <div class="nav-right">
     <a href="/about/">About</a>
     <a href="/support/">Support</a>
@@ -20,28 +124,27 @@
   </div>
 </div>
 
-<div style="padding:80px 20px; text-align:center;">
+<div class="main">
   <h1>Welcome to Rip_Dead Site</h1>
+
+  <div class="card">
+    <h2>Enjoy the socials of Rip_Dead</h2>
+    <a class="button" href="https://www.youtube.com/@ripdeadYT" target="_blank">YouTube</a>
+    <a class="button" href="https://x.com/rip_dead32" target="_blank">X</a>
+    <a class="button" href="https://www.reddit.com/u/rip_dead32/s/hVrQI0NqEs" target="_blank">Reddit</a>
+    <a class="button" href="https://www.facebook.com/share/1AbvyPZgEh/" target="_blank">Facebook</a>
+  </div>
 </div>
 
-<div class="card">
-  <h2>Enjoy the socials of Rip_Dead</h2>
-  <a class="button" href="https://www.youtube.com/@ripdeadYT" target="_blank">YouTube</a>
-  <a class="button" href="https://x.com/rip_dead32" target="_blank">X</a>
-  <a class="button" href="https://www.reddit.com/u/rip_dead32/s/hVrQI0NqEs" target="_blank">Reddit</a>
-  <a class="button" href="https://www.facebook.com/share/1AbvyPZgEh/" target="_blank">Facebook</a>
-</div>
-
-<footer>
+<footer style="text-align:center; padding:20px;">
 © 2026 Rip_Dead Studios — All Rights Reserved
 </footer>
 
 <script>
-const themeIcon = document.getElementById("themeIcon");
-function toggleTheme(){
+function toggleTheme() {
   document.body.classList.toggle("light");
-  themeIcon.textContent =
-    document.body.classList.contains("light") ? "🌙" : "☀️";
+  const icon = document.getElementById("themeIcon");
+  icon.textContent = document.body.classList.contains("light") ? "🌙" : "☀️";
 }
 </script>
 
