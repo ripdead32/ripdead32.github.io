@@ -3,22 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rip_Dead Site - RipUI 1.1 Update</title>
+<title>Rip_Dead Site - Rip_Dead Site Upgraded to RipUI 1.1</title>
 <link rel="icon" href="/favicon.ico">
-
+<link rel="stylesheet" href="/navbar.css">
 <style>
 body{
   margin:0;
   font-family:'Segoe UI',sans-serif;
   color:#fff;
   overflow-x:hidden;
-  transition:0.3s;
 }
 body.light{
-  color:#111;
+  color:#000; /* Fix light mode text color */
 }
-
-/* Animated gradient background */
 body::before{
   content:"";
   position:fixed;
@@ -37,7 +34,6 @@ body.light::before{
   100%{background-position:0% 50%;}
 }
 
-/* Navbar */
 .navbar{
   display:flex;
   justify-content:space-between;
@@ -51,7 +47,7 @@ body.light::before{
 }
 .navbar a, .navbar button{
   margin-left:15px;
-  color:inherit;
+  color:#fff;
   text-decoration:none;
   font-weight:bold;
   background:none;
@@ -76,12 +72,11 @@ body.light .theme-toggle{
 }
 .nav-right{display:flex;align-items:center;}
 
-/* Hero */
 .hero{text-align:center;padding:80px 20px 40px 20px;}
-.hero h1{font-size:32px;}
+.hero h1{font-size:36px;}
 
-/* Card */
 .section{padding:40px 20px 80px 20px;text-align:center;}
+
 .card{
   background:rgba(20,20,20,0.6);
   backdrop-filter:blur(12px);
@@ -92,10 +87,12 @@ body.light .theme-toggle{
   transition:transform 0.3s ease;
   text-align:center;
 }
-body.light .card{background:rgba(255,255,255,0.08);}
 .card:hover{transform:translateY(-6px);}
-.card h2{font-size:24px;margin-bottom:15px;}
-.card p{font-size:16px;line-height:1.6em;margin-bottom:20px;}
+.card p{
+  font-style:italic;
+  margin:15px 0;
+  line-height:1.6em;
+}
 .card a.button{
   display:inline-block;
   margin:10px 10px;
@@ -133,14 +130,12 @@ footer{text-align:center;padding:20px;font-size:14px;border-top:1px solid rgba(2
 </div>
 
 <div class="hero">
-  <h1>Rip_Dead Site Updated To RipUI 1.1</h1>
-  <p>Check out the latest bug fixes and improvements!</p>
+  <h1>Rip_Dead Site Upgraded to RipUI 1.1</h1>
 </div>
 
 <div class="section">
   <div class="card">
-    <h2>What Changed Here?</h2>
-    <p>We've fixed minor bugs with Support where it doesn't send the submission.</p>
+    <p>What Changed? Fixed minor bugs with text not turning black upon light mode.</p>
     <a href="/blogs/" class="button">Back to Blogs</a>
   </div>
 </div>
