@@ -25,8 +25,11 @@ body::before{
 body.light::before{
   background:linear-gradient(-45deg,#fff,#c084fc,#fff,#a855f7);
 }
-@keyframes gradientMove{0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
-
+@keyframes gradientMove{
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
 .navbar{
   display:flex;
   justify-content:space-between;
@@ -64,11 +67,9 @@ body.light .theme-toggle{
   color:#fff;
 }
 .nav-right{display:flex;align-items:center;}
-
 .hero{text-align:center;padding:80px 20px 40px 20px;}
 .hero h1{font-size:32px;}
 .section{padding:40px 20px 80px 20px;text-align:center;}
-
 .card{
   background:rgba(20,20,20,0.6);
   backdrop-filter:blur(12px);
@@ -93,9 +94,7 @@ body.light .theme-toggle{
   transition:transform 0.2s ease,background 0.2s ease;
 }
 .card a.button:hover{transform:scale(1.05);background:#c084fc;}
-
 footer{text-align:center;padding:20px;font-size:14px;border-top:1px solid rgba(255,255,255,0.1);}
-
 @media(max-width:768px){
   .navbar{flex-direction:column;gap:10px;}
   .nav-right{flex-wrap:wrap;justify-content:center;}
@@ -123,9 +122,16 @@ footer{text-align:center;padding:20px;font-size:14px;border-top:1px solid rgba(2
 </div>
 
 <div class="section">
+  <!-- Article 1 -->
   <div class="card">
     <h2>𝐑𝐢𝐩_𝐃𝐞𝐚𝐝 𝐒𝐢𝐭𝐞 𝐌𝐢𝐠𝐫𝐚𝐭𝐞𝐝 𝐭𝐨 𝐑𝐢𝐩𝐔𝐈 𝟏.𝟎</h2>
     <a href="/blogs/article1/" class="button">Read Now</a>
+  </div>
+
+  <!-- Article 2 -->
+  <div class="card">
+    <h2>𝐑𝐢𝐩_𝐃𝐞𝐚𝐝 𝐒𝐢𝐭𝐞 𝐔𝐩𝐝𝐚𝐭𝐞𝐝 𝐓𝐨 𝐑𝐢𝐩𝐔𝐈 𝟏.𝟏</h2>
+    <a href="/blogs/article2/" class="button">Read Now</a>
   </div>
 </div>
 
