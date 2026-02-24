@@ -3,43 +3,187 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rip_Dead Site - Downloads</title>
+<title>Rip_Dead Site - About</title>
 <link rel="icon" href="/favicon.ico">
 <link rel="stylesheet" href="/navbar.css">
+
+<style>
+body{
+  margin:0;
+  font-family:'Segoe UI',sans-serif;
+  color:#fff;
+  overflow-x:hidden;
+  transition:0.3s;
+}
+
+/* Light mode fixes */
+body.light{
+  color:#111;
+}
+body.light h1,
+body.light h2,
+body.light h3,
+body.light p,
+body.light span,
+body.light strong,
+body.light li{
+  color:#111;
+}
+
+/* Gradient background */
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  background:linear-gradient(-45deg,#000,#4c1d95,#000,#6d28d9);
+  background-size:400% 400%;
+  animation:gradientMove 12s ease infinite;
+}
+body.light::before{
+  background:linear-gradient(-45deg,#fff,#c084fc,#fff,#a855f7);
+}
+@keyframes gradientMove{
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
+
+/* Navbar (always dark blur) */
+.navbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:15px 40px;
+  background:rgba(0,0,0,0.6);
+  backdrop-filter:blur(10px);
+  position:sticky;
+  top:0;
+  z-index:100;
+}
+.navbar a, .navbar button{
+  margin-left:15px;
+  color:#fff;
+  text-decoration:none;
+  font-weight:bold;
+  background:none;
+  border:none;
+  cursor:pointer;
+}
+.navbar a:hover{
+  border-bottom:2px solid #a855f7;
+}
+.theme-toggle{
+  width:35px;
+  height:35px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:18px;
+  background:#fff;
+  color:#000;
+}
+body.light .theme-toggle{
+  background:#000;
+  color:#fff;
+}
+.nav-right{
+  display:flex;
+  align-items:center;
+}
+
+/* Layout */
+.hero{
+  text-align:center;
+  padding:80px 20px 40px 20px;
+}
+.hero h1{
+  font-size:36px;
+}
+
+.section{
+  padding:40px 20px 80px 20px;
+  text-align:center;
+}
+
+/* Card */
+.card{
+  background:rgba(20,20,20,0.6);
+  backdrop-filter:blur(12px);
+  padding:30px;
+  border-radius:16px;
+  max-width:700px;
+  margin:20px auto;
+  transition:transform 0.3s ease;
+  text-align:left;
+}
+body.light .card{
+  background:rgba(255,255,255,0.8);
+}
+
+.card:hover{
+  transform:translateY(-6px);
+}
+
+.card p{
+  margin:15px 0;
+  line-height:1.6em;
+}
+
+/* Footer */
+footer{
+  text-align:center;
+  padding:20px;
+  font-size:14px;
+  border-top:1px solid rgba(255,255,255,0.1);
+}
+body.light footer{
+  border-top:1px solid rgba(0,0,0,0.1);
+}
+
+/* Responsive */
+@media(max-width:768px){
+  .navbar{flex-direction:column;gap:10px;}
+  .nav-right{flex-wrap:wrap;justify-content:center;}
+  .hero h1{font-size:28px;}
+  .card{padding:20px;}
+}
+</style>
 </head>
+
 <body>
 
 <div class="navbar">
   <a href="/" class="site-name">Rip_Dead Site</a>
   <div class="nav-right">
-    <a href="/about/">About</a>
+    <a href="/">Home</a>
     <a href="/support/">Support</a>
-    <a href="/downloads/" class="download-btn">Download</a>
+    <a href="/downloads/">Download</a>
     <a href="/blogs/">Blogs</a>
     <button class="theme-toggle" onclick="toggleTheme()" id="themeIcon">☀️</button>
   </div>
 </div>
 
-<div style="padding:80px 20px; text-align:center;">
-  <h1>Downloads</h1>
+<div class="hero">
+  <h1>About Rip_Dead Site</h1>
 </div>
 
-<div class="card">
-  <a href="/downloads/kahoot-app/" class="button">Kahoot App</a>
-  <a href="/downloads/fnfmods/" class="button">FNF Mods</a>
-  <a href="/" class="button">Back to Home</a>
+<div class="section">
+  <div class="card">
+    <p>Welcome to Rip_Dead Site! This website is maintained by Rip_Dead and is dedicated to showcasing projects, software, and mods created by him.</p>
+    <p>The site uses RipUI 1.1 — Rip_Dead's own custom user interface framework for a modern and dynamic look.</p>
+    <p>Feel free to explore blogs, downloads, and support pages for more information!</p>
+  </div>
 </div>
 
-<footer>
-© 2026 Rip_Dead Studios — All Rights Reserved
-</footer>
+<footer>© 2026 Rip_Dead Studios — All Rights Reserved</footer>
 
 <script>
-const themeIcon = document.getElementById("themeIcon");
+const themeIcon=document.getElementById("themeIcon");
 function toggleTheme(){
   document.body.classList.toggle("light");
-  themeIcon.textContent =
-    document.body.classList.contains("light") ? "🌙" : "☀️";
+  themeIcon.textContent=document.body.classList.contains("light")?"🌙":"☀️";
 }
 </script>
 
