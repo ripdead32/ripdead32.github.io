@@ -5,14 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Rip_Dead Site - Blogs</title>
 <link rel="icon" href="/favicon.ico">
-<link rel="stylesheet" href="/navbar.css">
+
 <style>
 body{
   margin:0;
   font-family:'Segoe UI',sans-serif;
   color:#fff;
   overflow-x:hidden;
+  transition:0.3s;
 }
+body.light{
+  color:#111;
+}
+
+/* Animated Gradient */
 body::before{
   content:"";
   position:fixed;
@@ -25,11 +31,14 @@ body::before{
 body.light::before{
   background:linear-gradient(-45deg,#fff,#c084fc,#fff,#a855f7);
 }
+
 @keyframes gradientMove{
   0%{background-position:0% 50%;}
   50%{background-position:100% 50%;}
   100%{background-position:0% 50%;}
 }
+
+/* Navbar */
 .navbar{
   display:flex;
   justify-content:space-between;
@@ -41,17 +50,21 @@ body.light::before{
   top:0;
   z-index:100;
 }
-.navbar a, .navbar button{
+.navbar a{
   margin-left:15px;
   color:#fff;
   text-decoration:none;
   font-weight:bold;
-  background:none;
-  border:none;
-  cursor:pointer;
 }
-.navbar a:hover{border-bottom:2px solid #a855f7;}
+.navbar a:hover{
+  border-bottom:2px solid #a855f7;
+}
+.nav-right{
+  display:flex;
+  align-items:center;
+}
 .theme-toggle{
+  margin-left:15px;
   width:35px;
   height:35px;
   border-radius:50%;
@@ -61,15 +74,28 @@ body.light::before{
   font-size:18px;
   background:#fff;
   color:#000;
+  border:none;
+  cursor:pointer;
 }
 body.light .theme-toggle{
   background:#000;
   color:#fff;
 }
-.nav-right{display:flex;align-items:center;}
-.hero{text-align:center;padding:80px 20px 40px 20px;}
-.hero h1{font-size:32px;}
-.section{padding:40px 20px 80px 20px;text-align:center;}
+
+/* Hero */
+.hero{
+  text-align:center;
+  padding:80px 20px 40px;
+}
+.hero h1{
+  font-size:32px;
+}
+
+/* Cards */
+.section{
+  padding:40px 20px 80px;
+  text-align:center;
+}
 .card{
   background:rgba(20,20,20,0.6);
   backdrop-filter:blur(12px);
@@ -78,35 +104,47 @@ body.light .theme-toggle{
   max-width:700px;
   margin:20px auto;
   transition:transform 0.3s ease;
-  text-align:center;
 }
-.card:hover{transform:translateY(-6px);}
-.card h2{font-size:24px;margin-bottom:15px;}
-.card a.button{
+body.light .card{
+  background:rgba(255,255,255,0.7);
+}
+.card:hover{
+  transform:translateY(-6px);
+}
+.card h2{
+  margin-bottom:15px;
+}
+.button{
   display:inline-block;
-  margin:10px 10px;
   padding:14px 30px;
   border-radius:8px;
   background:#a855f7;
   color:#000;
   font-weight:bold;
   text-decoration:none;
-  transition:transform 0.2s ease,background 0.2s ease;
+  transition:0.2s;
 }
-.card a.button:hover{transform:scale(1.05);background:#c084fc;}
-footer{text-align:center;padding:20px;font-size:14px;border-top:1px solid rgba(255,255,255,0.1);}
-@media(max-width:768px){
-  .navbar{flex-direction:column;gap:10px;}
-  .nav-right{flex-wrap:wrap;justify-content:center;}
-  .hero h1{font-size:28px;}
-  .card{padding:20px;}
+.button:hover{
+  background:#c084fc;
+  transform:scale(1.05);
+}
+
+/* Footer */
+footer{
+  text-align:center;
+  padding:20px;
+  border-top:1px solid rgba(255,255,255,0.1);
+}
+body.light footer{
+  border-top:1px solid rgba(0,0,0,0.1);
 }
 </style>
 </head>
+
 <body>
 
 <div class="navbar">
-  <a href="/" class="site-name">Rip_Dead Site</a>
+  <a href="/">Rip_Dead Site</a>
   <div class="nav-right">
     <a href="/about/">About</a>
     <a href="/support/">Support</a>
@@ -117,25 +155,27 @@ footer{text-align:center;padding:20px;font-size:14px;border-top:1px solid rgba(2
 </div>
 
 <div class="hero">
-  <h1>Welcome to Blogs</h1>
-  <p>Here are current blogs you may read:</p>
+  <h1>Blogs</h1>
+  <p>Latest updates and announcements.</p>
 </div>
 
 <div class="section">
-  <!-- Article 1 -->
+
   <div class="card">
-    <h2>𝐑𝐢𝐩_𝐃𝐞𝐚𝐝 𝐒𝐢𝐭𝐞 𝐌𝐢𝐠𝐫𝐚𝐭𝐞𝐝 𝐭𝐨 𝐑𝐢𝐩𝐔𝐈 𝟏.𝟎</h2>
+    <h2>Rip_Dead Site Migrated to RipUI 1.0</h2>
     <a href="/blogs/article1/" class="button">Read Now</a>
   </div>
 
-  <!-- Article 2 -->
   <div class="card">
-    <h2>𝐑𝐢𝐩_𝐃𝐞𝐚𝐝 𝐒𝐢𝐭𝐞 𝐔𝐩𝐝𝐚𝐭𝐞𝐝 𝐓𝐨 𝐑𝐢𝐩𝐔𝐈 𝟏.𝟏</h2>
+    <h2>Rip_Dead Site Updated To RipUI 1.1</h2>
     <a href="/blogs/article2/" class="button">Read Now</a>
   </div>
+
 </div>
 
-<footer>© 2026 Rip_Dead Studios — All Rights Reserved</footer>
+<footer>
+© 2026 Rip_Dead Studios — All Rights Reserved
+</footer>
 
 <script>
 const themeIcon=document.getElementById("themeIcon");
