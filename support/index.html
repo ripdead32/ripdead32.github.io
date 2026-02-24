@@ -5,35 +5,174 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Rip_Dead Site - Support</title>
 <link rel="icon" href="/favicon.ico">
-<link rel="stylesheet" href="/navbar.css">
+
+<style>
+body {
+  margin:0;
+  font-family: Arial, sans-serif;
+  background:#000;
+  color:#fff;
+  transition:0.3s;
+}
+
+body.light {
+  background:#fff;
+  color:#111;
+}
+
+/* Navbar */
+.navbar {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:20px 40px;
+}
+
+.nav-left a {
+  font-weight:bold;
+  font-size:20px;
+  text-decoration:none;
+  color:inherit;
+}
+
+.nav-right a {
+  margin-left:20px;
+  text-decoration:none;
+  color:inherit;
+}
+
+.download-btn {
+  padding:6px 12px;
+  background:purple;
+  color:#fff;
+  border-radius:6px;
+}
+
+body.light .download-btn {
+  background:#9333ea;
+}
+
+.theme-toggle {
+  margin-left:15px;
+  cursor:pointer;
+  font-size:18px;
+  border:none;
+  border-radius:50%;
+  width:35px;
+  height:35px;
+  background:#fff;
+}
+
+body.light .theme-toggle {
+  background:#000;
+  color:#fff;
+}
+
+/* Form */
+.main {
+  padding:60px 20px;
+  text-align:center;
+}
+
+form {
+  max-width:500px;
+  margin:auto;
+}
+
+input, textarea {
+  width:100%;
+  padding:10px;
+  margin:8px 0;
+  border-radius:6px;
+  border:none;
+}
+
+button {
+  padding:10px 20px;
+  background:purple;
+  color:#fff;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+  transition:0.2s;
+}
+
+button:hover {
+  transform:scale(1.05);
+}
+
+/* Card */
+.card {
+  margin:20px auto;
+  padding:25px;
+  max-width:550px;
+  border-radius:12px;
+  background:rgba(255,255,255,0.08);
+}
+
+body.light .card {
+  background:rgba(0,0,0,0.08);
+}
+
+footer {
+  text-align:center;
+  padding:20px;
+  font-size:14px;
+}
+
+@media(max-width:768px){
+  .navbar {
+    flex-direction:column;
+    gap:12px;
+  }
+  .nav-right {
+    flex-wrap:wrap;
+    justify-content:center;
+  }
+}
+</style>
 </head>
 <body>
 
 <div class="navbar">
-  <a href="/" class="site-name">Rip_Dead Site</a>
+  <div class="nav-left">
+    <a href="/">Rip_Dead Site</a>
+  </div>
   <div class="nav-right">
     <a href="/about/">About</a>
     <a href="/support/">Support</a>
     <a href="/downloads/" class="download-btn">Download</a>
     <a href="/blogs/">Blogs</a>
-    <button class="theme-toggle" onclick="toggleTheme()" id="themeIcon">☀️</button>
+    <button class="theme-toggle" id="themeIcon" onclick="toggleTheme()">☀️</button>
   </div>
 </div>
 
-<div style="padding:80px 20px; text-align:center;">
-  <h1>Support</h1>
-</div>
+<div class="main">
+  <h1>Want help? We got your back!</h1>
 
-<div class="card">
-<form action="https://formkeep.com/f/d13ae91fe8d6" method="POST">
-  <input type="text" name="name" placeholder="Name (optional)" style="width:100%;padding:10px;margin:8px 0;border-radius:6px;">
-  <input type="email" name="email" placeholder="Email" required style="width:100%;padding:10px;margin:8px 0;border-radius:6px;">
-  <input type="text" name="subject" placeholder="Subject" required style="width:100%;padding:10px;margin:8px 0;border-radius:6px;">
-  <textarea name="message" placeholder="Message" required style="width:100%;padding:10px;margin:8px 0;border-radius:6px;"></textarea>
-  <button class="button" type="submit">Send Message</button>
-</form>
+  <div class="card">
+    <form action="https://api.web3forms.com/submit" method="POST">
+      <!-- Web3Forms Access Key -->
+      <input type="hidden" name="access_key" value="0811539e-92b5-4af8-a62a-aef76b8027a2">
 
-<a href="/" class="button">Back to Home</a>
+      <!-- Optional Name -->
+      <input type="text" name="name" placeholder="Name (don't use your real name, optional)">
+
+      <!-- Email Required -->
+      <input type="email" name="email" placeholder="Email (required)" required>
+
+      <!-- Subject -->
+      <input type="text" name="subject" placeholder="Subject" required>
+
+      <!-- Message -->
+      <textarea name="message" rows="5" placeholder="Your message..." required></textarea>
+
+      <!-- Submit -->
+      <button type="submit">Send Message</button>
+    </form>
+
+    <a href="/" class="button" style="margin-top:15px; display:inline-block;">Back to Home</a>
+  </div>
 </div>
 
 <footer>
@@ -41,11 +180,10 @@
 </footer>
 
 <script>
-const themeIcon = document.getElementById("themeIcon");
 function toggleTheme(){
   document.body.classList.toggle("light");
-  themeIcon.textContent =
-    document.body.classList.contains("light") ? "🌙" : "☀️";
+  const icon = document.getElementById("themeIcon");
+  icon.textContent = document.body.classList.contains("light") ? "🌙" : "☀️";
 }
 </script>
 
