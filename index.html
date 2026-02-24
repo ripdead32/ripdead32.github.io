@@ -6,6 +6,7 @@
 <title>Rip_Dead Site</title>
 <link rel="icon" href="/favicon.ico">
 <link rel="stylesheet" href="/navbar.css">
+
 <style>
 body{
   margin:0;
@@ -17,6 +18,8 @@ body{
 body.light{
   color:#111;
 }
+
+/* Animated Gradient Background */
 body::before{
   content:"";
   position:fixed;
@@ -56,7 +59,11 @@ body.light::before{
   border:none;
   cursor:pointer;
 }
-.navbar a:hover{border-bottom:2px solid #a855f7;}
+.navbar a:hover{
+  border-bottom:2px solid #a855f7;
+}
+
+/* Theme Button */
 .theme-toggle{
   width:35px;
   height:35px;
@@ -67,20 +74,36 @@ body.light::before{
   font-size:18px;
   background:#fff;
   color:#000;
+  transition:0.2s ease;
 }
 body.light .theme-toggle{
   background:#000;
   color:#fff;
 }
-.nav-right{display:flex;align-items:center;}
+.theme-toggle:hover{
+  transform:scale(1.1);
+}
 
 /* Hero */
-.hero{text-align:center;padding:100px 20px 40px 20px;}
-.hero h1{font-size:36px;}
-.hero p{font-size:18px;line-height:1.6em;}
+.hero{
+  text-align:center;
+  padding:100px 20px 40px 20px;
+}
+.hero h1{
+  font-size:36px;
+}
+.hero p{
+  font-size:18px;
+  line-height:1.6em;
+}
 
-/* Section Cards */
-.section{padding:40px 20px 80px 20px;text-align:center;}
+/* Section */
+.section{
+  padding:40px 20px 80px 20px;
+  text-align:center;
+}
+
+/* Cards */
 .card{
   background:rgba(20,20,20,0.6);
   backdrop-filter:blur(12px);
@@ -88,15 +111,23 @@ body.light .theme-toggle{
   border-radius:16px;
   max-width:700px;
   margin:20px auto;
-  transition:transform 0.3s ease;
-  text-align:center;
+  transition:transform 0.3s ease, box-shadow 0.3s ease;
 }
-body.light .card{background:rgba(255,255,255,0.08);}
-.card:hover{transform:translateY(-6px);}
-.card h2{font-size:24px;margin-bottom:15px;}
-.card a.button{
+body.light .card{
+  background:rgba(255,255,255,0.08);
+}
+.card:hover{
+  transform:translateY(-6px);
+}
+.card h2{
+  font-size:24px;
+  margin-bottom:15px;
+}
+
+/* Default Buttons */
+.button{
   display:inline-block;
-  margin:10px 10px;
+  margin:10px;
   padding:14px 30px;
   border-radius:8px;
   background:#a855f7;
@@ -105,13 +136,46 @@ body.light .card{background:rgba(255,255,255,0.08);}
   text-decoration:none;
   transition:transform 0.2s ease,background 0.2s ease;
 }
-.card a.button:hover{transform:scale(1.05);background:#c084fc;}
+.button:hover{
+  transform:scale(1.05);
+  background:#c084fc;
+}
 
-footer{text-align:center;padding:20px;font-size:14px;border-top:1px solid rgba(255,255,255,0.1);}
+/* Discord Special Card */
+.discord-card{
+  box-shadow:0 0 20px rgba(88,101,242,0.4);
+}
+.discord-card:hover{
+  box-shadow:0 0 35px rgba(88,101,242,0.7);
+}
 
+/* Discord Button */
+.discord-btn{
+  background:#5865F2;
+  color:#fff;
+}
+.discord-btn:hover{
+  background:#4752C4;
+  transform:scale(1.08);
+}
+
+footer{
+  text-align:center;
+  padding:20px;
+  font-size:14px;
+  border-top:1px solid rgba(255,255,255,0.1);
+}
+
+/* Mobile */
 @media(max-width:768px){
-  .navbar{flex-direction:column;gap:10px;}
-  .nav-right{flex-wrap:wrap;justify-content:center;}
+  .navbar{
+    flex-direction:column;
+    gap:10px;
+  }
+  .nav-right{
+    flex-wrap:wrap;
+    justify-content:center;
+  }
   .hero h1{font-size:28px;}
   .hero p{font-size:16px;}
   .card{padding:20px;}
@@ -137,6 +201,7 @@ footer{text-align:center;padding:20px;font-size:14px;border-top:1px solid rgba(2
 </div>
 
 <div class="section">
+
   <div class="card">
     <h2>Enjoy the socials of Rip_Dead</h2>
     <a class="button" href="https://www.youtube.com/@ripdeadYT" target="_blank">YouTube</a>
@@ -147,9 +212,17 @@ footer{text-align:center;padding:20px;font-size:14px;border-top:1px solid rgba(2
 
   <div class="card">
     <h2>Want help? We got your back!</h2>
-    <p>Check out our <a href="/support/" class="button">Support Page</a> or download some projects below.</p>
+    <p>Check out our Support Page or download some projects below.</p>
+    <a href="/support/" class="button">Support</a>
     <a href="/downloads/" class="button">Downloads</a>
   </div>
+
+  <div class="card discord-card">
+    <h2>Want to chat with the community?</h2>
+    <p>Join Rip_Dead Studios on Discord!</p>
+    <a href="https://discord.gg/cwmuBXxn64" target="_blank" class="button discord-btn">Join</a>
+  </div>
+
 </div>
 
 <footer>© 2026 Rip_Dead Studios — All Rights Reserved</footer>
