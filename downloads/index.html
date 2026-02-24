@@ -5,21 +5,31 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Rip_Dead Site - Downloads</title>
 <link rel="icon" href="/favicon.ico">
-<link rel="stylesheet" href="/navbar.css">
 
 <style>
+/* ===== Base ===== */
 body{
   margin:0;
   font-family:'Segoe UI',sans-serif;
   color:#fff;
-  overflow-x:hidden;
   transition:0.3s;
 }
 body.light{
   color:#111;
 }
 
-/* Animated Gradient Background */
+/* Ensure ALL text switches in light mode */
+body.light h1,
+body.light h2,
+body.light h3,
+body.light p,
+body.light span,
+body.light li,
+body.light a:not(.nav-link){
+  color:#111;
+}
+
+/* ===== Animated Gradient ===== */
 body::before{
   content:"";
   position:fixed;
@@ -30,7 +40,7 @@ body::before{
   animation:gradientMove 12s ease infinite;
 }
 body.light::before{
-  background:linear-gradient(-45deg,#fff,#c084fc,#fff,#a855f7);
+  background:linear-gradient(-45deg,#ffffff,#c084fc,#ffffff,#a855f7);
 }
 
 @keyframes gradientMove{
@@ -39,7 +49,7 @@ body.light::before{
   100%{background-position:0% 50%;}
 }
 
-/* Navbar */
+/* ===== Dark Blur Navbar ===== */
 .navbar{
   display:flex;
   justify-content:space-between;
@@ -56,9 +66,6 @@ body.light::before{
   color:#fff;
   text-decoration:none;
   font-weight:bold;
-}
-body.light .navbar a{
-  color:#fff; /* keep navbar text white for contrast */
 }
 .navbar a:hover{
   border-bottom:2px solid #a855f7;
@@ -86,80 +93,54 @@ body.light .theme-toggle{
   color:#fff;
 }
 
-/* Hero */
+/* ===== Layout ===== */
 .hero{
   text-align:center;
-  padding:80px 20px 40px 20px;
+  padding:80px 20px 40px;
 }
-.hero h1{
-  font-size:32px;
-  margin-bottom:10px;
-}
-
-/* Download Cards */
 .section{
-  padding:40px 20px 80px 20px;
+  padding:40px 20px 100px;
   text-align:center;
 }
+
+/* ===== Cards ===== */
 .card{
   background:rgba(20,20,20,0.6);
   backdrop-filter:blur(12px);
-  padding:30px;
-  border-radius:16px;
-  max-width:700px;
-  margin:20px auto;
-  transition:transform 0.3s ease;
+  padding:40px;
+  border-radius:18px;
+  max-width:800px;
+  margin:30px auto;
 }
 body.light .card{
-  background:rgba(255,255,255,0.6);
+  background:rgba(255,255,255,0.8);
 }
-.card:hover{
-  transform:translateY(-6px);
-}
-.card h2{
-  font-size:22px;
-  margin-bottom:15px;
-}
+
+/* ===== Buttons ===== */
 .button{
   display:inline-block;
-  margin-top:15px;
-  padding:14px 30px;
-  border-radius:8px;
+  margin:10px;
+  padding:14px 28px;
+  border-radius:10px;
   background:#a855f7;
   color:#000;
   font-weight:bold;
   text-decoration:none;
-  transition:transform 0.2s ease,background 0.2s ease;
+  transition:0.2s;
 }
 .button:hover{
-  transform:scale(1.05);
   background:#c084fc;
+  transform:scale(1.05);
 }
 
 /* Footer */
 footer{
   text-align:center;
   padding:20px;
-  font-size:14px;
   border-top:1px solid rgba(255,255,255,0.1);
 }
 body.light footer{
   border-top:1px solid rgba(0,0,0,0.1);
-}
-
-/* Responsive */
-@media(max-width:768px){
-  .navbar{
-    flex-direction:column;
-    gap:10px;
-  }
-  .nav-right{
-    flex-wrap:wrap;
-    justify-content:center;
-  }
-  .hero h1{
-    font-size:26px;
-  }
 }
 </style>
 </head>
@@ -167,44 +148,49 @@ body.light footer{
 <body>
 
 <div class="navbar">
-  <a href="/">Rip_Dead Site</a>
+  <a href="/" class="nav-link">Rip_Dead Site</a>
   <div class="nav-right">
-    <a href="/about/">About</a>
-    <a href="/support/">Support</a>
-    <a href="/downloads/">Download</a>
-    <a href="/blogs/">Blogs</a>
+    <a href="/about/" class="nav-link">About</a>
+    <a href="/support/" class="nav-link">Support</a>
+    <a href="/downloads/" class="nav-link">Download</a>
+    <a href="/blogs/" class="nav-link">Blogs</a>
     <button class="theme-toggle" onclick="toggleTheme()" id="themeIcon">☀️</button>
   </div>
 </div>
 
 <div class="hero">
   <h1>Downloads</h1>
-  <p>Official Rip_Dead releases and tools.</p>
+  <p>Official Rip_Dead Releases</p>
 </div>
 
 <div class="section">
+
+  <!-- Kahoot App -->
   <div class="card">
-    <h2>RipUI 1.1</h2>
-    <p>The latest version of RipUI with improved stability and fixes.</p>
-    <a href="#" class="button">Download Now</a>
+    <h2>Kahoot App</h2>
+    <a href="/downloads/kahoot-app" class="button">Main Page</a>
+    <a href="/downloads/kahoot-app/releases" class="button">Releases</a>
+    <a href="/downloads/kahoot-app/betas" class="button">Betas</a>
   </div>
 
+  <!-- FNF Mods -->
   <div class="card">
-    <h2>RipUI 1.0</h2>
-    <p>Initial public release of RipUI.</p>
-    <a href="#" class="button">Download</a>
+    <h2>FNF Mods</h2>
+    <a href="/downloads/fnfmods" class="button">FNF Mods</a>
+    <a href="/downloads/fnfmods/tutorial-remastered" class="button">Tutorial Remastered</a>
   </div>
+
 </div>
 
 <footer>
-  © 2026 Rip_Dead Studios — All Rights Reserved
+© 2026 Rip_Dead Studios — All Rights Reserved
 </footer>
 
 <script>
-const themeIcon = document.getElementById("themeIcon");
+const themeIcon=document.getElementById("themeIcon");
 function toggleTheme(){
   document.body.classList.toggle("light");
-  themeIcon.textContent = document.body.classList.contains("light") ? "🌙" : "☀️";
+  themeIcon.textContent=document.body.classList.contains("light")?"🌙":"☀️";
 }
 </script>
 
