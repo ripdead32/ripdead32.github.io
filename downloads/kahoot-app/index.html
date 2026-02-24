@@ -6,13 +6,30 @@
 <title>Rip_Dead Site - Kahoot App Download</title>
 <link rel="icon" href="/favicon.ico">
 <link rel="stylesheet" href="/navbar.css">
+
 <style>
 body{
   margin:0;
   font-family:'Segoe UI',sans-serif;
   color:#fff;
   overflow-x:hidden;
+  transition:0.3s;
 }
+
+/* 🔥 Light Mode Text Fix */
+body.light{
+  color:#111;
+}
+body.light h1,
+body.light h2,
+body.light h3,
+body.light p,
+body.light span,
+body.light li{
+  color:#111;
+}
+
+/* Animated Background */
 body::before{
   content:"";
   position:fixed;
@@ -25,8 +42,14 @@ body::before{
 body.light::before{
   background:linear-gradient(-45deg,#fff,#c084fc,#fff,#a855f7);
 }
-@keyframes gradientMove{0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
 
+@keyframes gradientMove{
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
+
+/* Navbar (dark blur always) */
 .navbar{
   display:flex;
   justify-content:space-between;
@@ -47,7 +70,9 @@ body.light::before{
   border:none;
   cursor:pointer;
 }
-.navbar a:hover{border-bottom:2px solid #a855f7;}
+.navbar a:hover{
+  border-bottom:2px solid #a855f7;
+}
 .theme-toggle{
   width:35px;
   height:35px;
@@ -63,13 +88,27 @@ body.light .theme-toggle{
   background:#000;
   color:#fff;
 }
-.nav-right{display:flex;align-items:center;}
+.nav-right{
+  display:flex;
+  align-items:center;
+}
 
-.hero{text-align:center;padding:80px 20px 40px 20px;}
-.hero h1{font-size:36px;}
+/* Hero */
+.hero{
+  text-align:center;
+  padding:80px 20px 40px 20px;
+}
+.hero h1{
+  font-size:36px;
+}
 
-.section{padding:40px 20px 80px 20px;text-align:center;}
+/* Section */
+.section{
+  padding:40px 20px 80px 20px;
+  text-align:center;
+}
 
+/* Card */
 .card{
   background:rgba(20,20,20,0.6);
   backdrop-filter:blur(12px);
@@ -80,10 +119,23 @@ body.light .theme-toggle{
   transition:transform 0.3s ease;
   text-align:center;
 }
-.card:hover{transform:translateY(-6px);}
+body.light .card{
+  background:rgba(255,255,255,0.8);
+}
 
-.card h2{margin-bottom:20px;}
-.card p{margin-bottom:20px;line-height:1.5em;}
+.card:hover{
+  transform:translateY(-6px);
+}
+
+.card h2{
+  margin-bottom:20px;
+}
+.card p{
+  margin-bottom:20px;
+  line-height:1.5em;
+}
+
+/* Buttons */
 .card a.button{
   display:inline-block;
   margin:10px 10px;
@@ -95,10 +147,23 @@ body.light .theme-toggle{
   text-decoration:none;
   transition:transform 0.2s ease,background 0.2s ease;
 }
-.card a.button:hover{transform:scale(1.05);background:#c084fc;}
+.card a.button:hover{
+  transform:scale(1.05);
+  background:#c084fc;
+}
 
-footer{text-align:center;padding:20px;font-size:14px;border-top:1px solid rgba(255,255,255,0.1);}
+/* Footer */
+footer{
+  text-align:center;
+  padding:20px;
+  font-size:14px;
+  border-top:1px solid rgba(255,255,255,0.1);
+}
+body.light footer{
+  border-top:1px solid rgba(0,0,0,0.1);
+}
 
+/* Responsive */
 @media(max-width:768px){
   .navbar{flex-direction:column;gap:10px;}
   .nav-right{flex-wrap:wrap;justify-content:center;}
@@ -107,6 +172,7 @@ footer{text-align:center;padding:20px;font-size:14px;border-top:1px solid rgba(2
 }
 </style>
 </head>
+
 <body>
 
 <div class="navbar">
