@@ -6,13 +6,22 @@
 <title>Rip_Dead Site - Page Not Found</title>
 <link rel="icon" href="/favicon.ico">
 <link rel="stylesheet" href="/navbar.css">
+
 <style>
 body{
   margin:0;
   font-family:'Segoe UI',sans-serif;
   color:#fff;
   overflow-x:hidden;
+  transition:0.3s;
 }
+
+/* FIX: Light mode text color */
+body.light{
+  color:#111;
+}
+
+/* Animated Gradient */
 body::before{
   content:"";
   position:fixed;
@@ -25,8 +34,14 @@ body::before{
 body.light::before{
   background:linear-gradient(-45deg,#fff,#c084fc,#fff,#a855f7);
 }
-@keyframes gradientMove{0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
 
+@keyframes gradientMove{
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
+
+/* Navbar */
 .navbar{
   display:flex;
   justify-content:space-between;
@@ -40,14 +55,17 @@ body.light::before{
 }
 .navbar a, .navbar button{
   margin-left:15px;
-  color:#fff;
+  color:inherit;
   text-decoration:none;
   font-weight:bold;
   background:none;
   border:none;
   cursor:pointer;
 }
-.navbar a:hover{border-bottom:2px solid #a855f7;}
+.navbar a:hover{
+  border-bottom:2px solid #a855f7;
+}
+
 .theme-toggle{
   width:35px;
   height:35px;
@@ -58,17 +76,36 @@ body.light::before{
   font-size:18px;
   background:#fff;
   color:#000;
+  transition:0.2s ease;
 }
 body.light .theme-toggle{
   background:#000;
   color:#fff;
 }
-.nav-right{display:flex;align-items:center;}
 
-.hero{text-align:center;padding:100px 20px 40px 20px;}
-.hero h1{font-size:50px;margin-bottom:20px;}
-.hero p{font-size:20px;margin-bottom:30px;}
+.nav-right{
+  display:flex;
+  align-items:center;
+}
 
+/* Hero */
+.hero{
+  text-align:center;
+  padding:120px 20px 60px 20px;
+}
+
+.hero h1{
+  font-size:70px;
+  margin-bottom:20px;
+  text-shadow:0 0 20px rgba(168,85,247,0.6);
+}
+
+.hero p{
+  font-size:20px;
+  margin-bottom:30px;
+}
+
+/* Button */
 a.button{
   display:inline-block;
   padding:16px 36px;
@@ -79,18 +116,37 @@ a.button{
   text-decoration:none;
   transition:transform 0.2s ease,background 0.2s ease;
 }
-a.button:hover{transform:scale(1.05);background:#c084fc;}
+a.button:hover{
+  transform:scale(1.07);
+  background:#c084fc;
+}
 
-footer{text-align:center;padding:20px;font-size:14px;border-top:1px solid rgba(255,255,255,0.1);}
+footer{
+  text-align:center;
+  padding:20px;
+  font-size:14px;
+  border-top:1px solid rgba(255,255,255,0.1);
+}
 
 @media(max-width:768px){
-  .navbar{flex-direction:column;gap:10px;}
-  .nav-right{flex-wrap:wrap;justify-content:center;}
-  .hero h1{font-size:36px;}
-  .hero p{font-size:16px;}
+  .navbar{
+    flex-direction:column;
+    gap:10px;
+  }
+  .nav-right{
+    flex-wrap:wrap;
+    justify-content:center;
+  }
+  .hero h1{
+    font-size:48px;
+  }
+  .hero p{
+    font-size:16px;
+  }
 }
 </style>
 </head>
+
 <body>
 
 <div class="navbar">
@@ -114,9 +170,11 @@ footer{text-align:center;padding:20px;font-size:14px;border-top:1px solid rgba(2
 
 <script>
 const themeIcon=document.getElementById("themeIcon");
+
 function toggleTheme(){
   document.body.classList.toggle("light");
-  themeIcon.textContent=document.body.classList.contains("light")?"🌙":"☀️";
+  themeIcon.textContent =
+    document.body.classList.contains("light") ? "🌙" : "☀️";
 }
 </script>
 
