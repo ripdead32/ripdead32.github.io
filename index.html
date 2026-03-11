@@ -180,20 +180,28 @@ footer{
   display:flex;
   flex-direction:column;
   align-items:center;
-  justify-content:center;
+  justify-content:flex-start;
+  padding-top:120px;
   gap:25px;
   z-index:9999;
   transition:opacity 0.8s ease;
 }
 #loader-logo{
   width:140px;
-  transform:translateY(-20px);
+  transform:translateY(0);
   transition:transform 0.8s ease, opacity 0.6s ease;
+}
+.loader-text{
+  font-size:28px;
+  color:#fff;
+  opacity:0;
+  transition:opacity 0.8s ease;
 }
 .loader-bar{
   width:260px;
   height:8px;
   background:#555;
+  border:2px solid #000;
   border-radius:10px;
   overflow:hidden;
   transition:opacity 0.5s ease;
@@ -209,7 +217,12 @@ footer{
   to{width:100%;}
 }
 .bar-hidden{opacity:0;}
-.logo-center{transform:translateY(0);}
+.logo-center{
+  transform:translateY(calc(50vh - 50px));
+}
+.text-show{
+  opacity:1;
+}
 .loader-hide{opacity:0;}
 </style>
 </head>
@@ -221,6 +234,7 @@ footer{
   <div class="loader-bar">
     <div class="loader-fill"></div>
   </div>
+  <div class="loader-text" id="loader-text">Rip_Dead Site</div>
 </div>
 
 <!-- NAVBAR -->
@@ -282,21 +296,30 @@ window.addEventListener("load", () => {
   const loader = document.getElementById("loader");
   const bar = document.querySelector(".loader-bar");
   const logo = document.getElementById("loader-logo");
+  const text = document.getElementById("loader-text");
 
   setTimeout(() => {
+    // Fade out bar
     bar.classList.add("bar-hidden");
+
+    // Move logo to center
     logo.classList.add("logo-center");
 
+    // Fade in text under logo
+    text.classList.add("text-show");
+
     setTimeout(() => {
+      // Fade out entire loader
       loader.classList.add("loader-hide");
+
       setTimeout(() => {
         loader.style.display = "none";
       }, 800);
-    }, 900);
 
+    }, 1200); // keep text visible for ~1.2s
   }, 3400);
 });
 </script>
 
 </body>
-</html>
+  </html>
