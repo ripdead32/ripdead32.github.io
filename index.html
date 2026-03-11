@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="/navbar.css">
 
 <style>
+/* --- BODY & BACKGROUND --- */
 body{
   margin:0;
   font-family:'Segoe UI',sans-serif;
@@ -18,8 +19,6 @@ body{
 body.light{
   color:#111;
 }
-
-/* Animated Gradient Background */
 body::before{
   content:"";
   position:fixed;
@@ -38,7 +37,7 @@ body.light::before{
   100%{background-position:0% 50%;}
 }
 
-/* Navbar */
+/* --- NAVBAR --- */
 .navbar{
   display:flex;
   justify-content:space-between;
@@ -62,8 +61,6 @@ body.light::before{
 .navbar a:hover{
   border-bottom:2px solid #a855f7;
 }
-
-/* Theme Button */
 .theme-toggle{
   width:35px;
   height:35px;
@@ -84,7 +81,7 @@ body.light .theme-toggle{
   transform:scale(1.1);
 }
 
-/* Hero */
+/* --- HERO --- */
 .hero{
   text-align:center;
   padding:100px 20px 40px 20px;
@@ -97,13 +94,11 @@ body.light .theme-toggle{
   line-height:1.6em;
 }
 
-/* Section */
+/* --- SECTION & CARDS --- */
 .section{
   padding:40px 20px 80px 20px;
   text-align:center;
 }
-
-/* Cards */
 .card{
   background:rgba(20,20,20,0.6);
   backdrop-filter:blur(12px);
@@ -123,8 +118,6 @@ body.light .card{
   font-size:24px;
   margin-bottom:15px;
 }
-
-/* Default Buttons */
 .button{
   display:inline-block;
   margin:10px;
@@ -140,16 +133,12 @@ body.light .card{
   transform:scale(1.05);
   background:#c084fc;
 }
-
-/* Discord Special Card */
 .discord-card{
   box-shadow:0 0 20px rgba(88,101,242,0.4);
 }
 .discord-card:hover{
   box-shadow:0 0 35px rgba(88,101,242,0.7);
 }
-
-/* Discord Button */
 .discord-btn{
   background:#5865F2;
   color:#fff;
@@ -166,7 +155,7 @@ footer{
   border-top:1px solid rgba(255,255,255,0.1);
 }
 
-/* Mobile */
+/* --- MOBILE --- */
 @media(max-width:768px){
   .navbar{
     flex-direction:column;
@@ -180,10 +169,61 @@ footer{
   .hero p{font-size:16px;}
   .card{padding:20px;}
 }
+
+/* --- LOADER --- */
+#loader{
+  position:fixed;
+  top:0; left:0;
+  width:100%;
+  height:100%;
+  background:#1b1b1b;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:25px;
+  z-index:9999;
+  transition:opacity 0.8s ease;
+}
+#loader-logo{
+  width:140px;
+  transform:translateY(-20px);
+  transition:transform 0.8s ease, opacity 0.6s ease;
+}
+.loader-bar{
+  width:260px;
+  height:8px;
+  background:#555;
+  border-radius:10px;
+  overflow:hidden;
+  transition:opacity 0.5s ease;
+}
+.loader-fill{
+  width:0%;
+  height:100%;
+  background:white;
+  animation:loading 3.4s forwards;
+}
+@keyframes loading{
+  from{width:0%;}
+  to{width:100%;}
+}
+.bar-hidden{opacity:0;}
+.logo-center{transform:translateY(0);}
+.loader-hide{opacity:0;}
 </style>
 </head>
 <body>
 
+<!-- LOADER -->
+<div id="loader">
+  <img src="logo.png" id="loader-logo" alt="Rip_Dead Logo">
+  <div class="loader-bar">
+    <div class="loader-fill"></div>
+  </div>
+</div>
+
+<!-- NAVBAR -->
 <div class="navbar">
   <a href="/" class="site-name">Rip_Dead Site</a>
   <div class="nav-right">
@@ -195,11 +235,13 @@ footer{
   </div>
 </div>
 
+<!-- HERO -->
 <div class="hero">
   <h1>Welcome to Rip_Dead Site</h1>
   <p>Your hub for animations, mods, and more! Explore the site using the navigation above.</p>
 </div>
 
+<!-- MAIN CONTENT -->
 <div class="section">
 
   <div class="card">
@@ -228,11 +270,32 @@ footer{
 <footer>© 2026 Rip_Dead Studios — All Rights Reserved</footer>
 
 <script>
+/* THEME TOGGLE */
 const themeIcon = document.getElementById("themeIcon");
 function toggleTheme(){
   document.body.classList.toggle("light");
   themeIcon.textContent = document.body.classList.contains("light") ? "🌙" : "☀️";
 }
+
+/* LOADER ANIMATION */
+window.addEventListener("load", () => {
+  const loader = document.getElementById("loader");
+  const bar = document.querySelector(".loader-bar");
+  const logo = document.getElementById("loader-logo");
+
+  setTimeout(() => {
+    bar.classList.add("bar-hidden");
+    logo.classList.add("logo-center");
+
+    setTimeout(() => {
+      loader.classList.add("loader-hide");
+      setTimeout(() => {
+        loader.style.display = "none";
+      }, 800);
+    }, 900);
+
+  }, 3400);
+});
 </script>
 
 </body>
