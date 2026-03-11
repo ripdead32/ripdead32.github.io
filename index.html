@@ -180,15 +180,17 @@ footer{
   display:flex;
   flex-direction:column;
   align-items:center;
-  justify-content:flex-start;
+  justify-content:flex-start; /* start top */
   padding-top:120px;
   gap:25px;
   z-index:9999;
   transition:opacity 0.8s ease;
 }
+#loader.centered{
+  justify-content:center; /* fully center logo + text */
+}
 #loader-logo{
   width:140px;
-  transform:translateY(0);
   transition:transform 0.8s ease, opacity 0.6s ease;
 }
 .loader-text{
@@ -201,7 +203,7 @@ footer{
   width:260px;
   height:8px;
   background:#555;
-  border:2px solid #000;
+  border:2px solid #000; /* black outline */
   border-radius:10px;
   overflow:hidden;
   transition:opacity 0.5s ease;
@@ -217,12 +219,7 @@ footer{
   to{width:100%;}
 }
 .bar-hidden{opacity:0;}
-.logo-center{
-  transform:translateY(calc(50vh - 50px));
-}
-.text-show{
-  opacity:1;
-}
+.text-show{opacity:1;}
 .loader-hide{opacity:0;}
 </style>
 </head>
@@ -257,7 +254,6 @@ footer{
 
 <!-- MAIN CONTENT -->
 <div class="section">
-
   <div class="card">
     <h2>Enjoy the socials of Rip_Dead</h2>
     <a class="button" href="https://www.youtube.com/@ripdeadYT" target="_blank">YouTube</a>
@@ -265,20 +261,17 @@ footer{
     <a class="button" href="https://www.reddit.com/u/rip_dead32/s/hVrQI0NqEs" target="_blank">Reddit</a>
     <a class="button" href="https://www.facebook.com/share/1AbvyPZgEh/" target="_blank">Facebook</a>
   </div>
-
   <div class="card">
     <h2>Want help? We got your back!</h2>
     <p>Check out our Support Page or download some projects below.</p>
     <a href="/support/" class="button">Support</a>
     <a href="/downloads/" class="button">Downloads</a>
   </div>
-
   <div class="card discord-card">
     <h2>Want to chat with the community?</h2>
     <p>Join Rip_Dead Studios on Discord!</p>
     <a href="https://discord.gg/cwmuBXxn64" target="_blank" class="button discord-btn">Join</a>
   </div>
-
 </div>
 
 <footer>© 2026 Rip_Dead Studios — All Rights Reserved</footer>
@@ -291,35 +284,42 @@ function toggleTheme(){
   themeIcon.textContent = document.body.classList.contains("light") ? "🌙" : "☀️";
 }
 
-/* LOADER ANIMATION */
-window.addEventListener("load", () => {
-  const loader = document.getElementById("loader");
-  const bar = document.querySelector(".loader-bar");
-  const logo = document.getElementById("loader-logo");
-  const text = document.getElementById("loader-text");
+/* LOADER ANIMATION - ONE TIME PER SESSION */
+const loader = document.getElementById("loader");
+const bar = document.querySelector(".loader-bar");
+const logo = document.getElementById("loader-logo");
+const text = document.getElementById("loader-text");
 
-  setTimeout(() => {
-    // Fade out bar
-    bar.classList.add("bar-hidden");
-
-    // Move logo to center
-    logo.classList.add("logo-center");
-
-    // Fade in text under logo
-    text.classList.add("text-show");
-
+if(!sessionStorage.getItem('loaderShown')){
+  window.addEventListener("load", () => {
     setTimeout(() => {
-      // Fade out entire loader
-      loader.classList.add("loader-hide");
+      // Fade out bar
+      bar.classList.add("bar-hidden");
+
+      // Center loader (logo + text)
+      loader.classList.add("centered");
+
+      // Fade in text
+      text.classList.add("text-show");
 
       setTimeout(() => {
-        loader.style.display = "none";
-      }, 800);
+        // Fade out loader
+        loader.classList.add("loader-hide");
 
-    }, 1200); // keep text visible for ~1.2s
-  }, 3400);
-});
+        setTimeout(() => {
+          loader.style.display = "none";
+        }, 800);
+
+      }, 1200);
+    }, 3400);
+
+    // Mark loader as shown for this session
+    sessionStorage.setItem('loaderShown', 'true');
+  });
+} else {
+  loader.style.display = "none";
+}
 </script>
 
 </body>
-  </html>
+</html>
