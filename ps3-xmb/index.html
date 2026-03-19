@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PS3 XMB - Rip_Dead</title>
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(180deg, #0a0a2a, #000);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+    color: #fff;
+    cursor: default;
+  }
+
+  #xmb-container::before {
+    content: "";
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.08), transparent 70%);
+    animation: wave 15s linear infinite;
+    pointer-events: none;
+  }
+
+  @keyframes wave {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  #xmb {
+    display: flex;
+    gap: 60px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .xmb-icon {
+    width: 90px;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    transition: transform 0.2s ease, filter 0.2s ease;
+    cursor: pointer;
+    text-align: center;
+  }
+
+  .xmb-icon.selected {
+    transform: scale(1.6) translateY(-10px);
+    filter: drop-shadow(0 0 15px cyan);
+  }
+
+  .xmb-icon.adjacent-left {
+    transform: scale(1.2) translateY(-5px);
+  }
+  .xmb-icon.adjacent-right {
+    transform: scale(1.2) translateY(-5px);
+  }
+
+  #label {
+    margin-top: 25px;
+    font-size: 28px;
+    font-weight: bold;
+    text-shadow: 0 0 10px cyan;
+  }
+
+  #submenu {
+    margin-top: 20px;
+    display: flex;
+    gap: 20px;
+    opacity: 0.9;
+  }
+
+  .submenu-item {
+    padding: 8px 12px;
+    background: rgba(0,0,0,0.4);
+    border-radius: 6px;
+    transition: transform 0.2s, background 0.2s;
+    cursor: pointer;
+  }
+
+  .submenu-item.selected {
+    background: cyan;
+    color: black;
+    transform: scale(1.2);
+  }
+</style>
+</head>
+<body>
+
+<div id="xmb-container">
+  <div id="xmb"></div>
+</div>
+
+<div id="label">Users</div>
+<div id="submenu"></div>
+
+<script>
+  const categories = [
+    { name: "Users", items: ["User1", "User2", "Guest"] },
+    { name: "Settings", items: ["Display", "Sound", "System", "Network"] },
+    { name: "Photo", items: ["Albums", "Slideshow"] },
+    { name: "Music", items: ["Songs", "Playlists", "USB"] },
+    { name: "Video", items: ["Movies", "TV Shows", "Video On Demand"] },
+    { name: "Game", items: ["Saved Data", "Disc", "Trophies"] }
+  ];
+
+  const iconsEl = document.getElementById("xmb");
+  const labelEl = document.getElementById("label");
+  const submenuEl = document.getElementById("submenu");
+
+  let x = 0; // category
+  let y = 0; // submenu item
+
+  // Generate icons
+  categories.forEach((cat, i) => {
+    const div = document.createElement("div");
+    div.classList.add("xmb-icon");
+    div.dataset.index = i;
+    div.dataset.label = cat.name;
+    div.textContent = cat.name[0]; // placeholder, can replace with icon
+    iconsEl.appendChild(div);
+
+    // Mouse hover support
+    div.addEventListener("mouseenter", () => {
+      x = i;
+      y = 0; // reset submenu
+      updateXMB();
+    });
+
+    // Mouse click support for category (optional: open submenu)
+    div.addEventListener("click", () => {
+      alert(`Selected category: ${categories[x].name}`);
+    });
+  });
+
+  const iconEls = document.querySelectorAll(".xmb-icon");
+
+  // Update XMB display
+  function updateXMB() {
+    iconEls.forEach((el, i) => {
+      el.classList.remove("selected","adjacent-left","adjacent-right");
+      if(i === x) el.classList.add("selected");
+      if(i === x-1) el.classList.add("adjacent-left");
+      if(i === x+1) el.classList.add("adjacent-right");
+    });
+
+    labelEl.textContent = categories[x].name;
+
+    // Render submenu
+    submenuEl.innerHTML = "";
+    categories[x].items.forEach((item, i) => {
+      const sub = document.createElement("div");
+      sub.classList.add("submenu-item");
+      sub.textContent = item;
+      if(i === y) sub.classList.add("selected");
+
+      // Mouse hover on submenu
+      sub.addEventListener("mouseenter", () => {
+        y = i;
+        updateXMB();
+      });
+
+      // Mouse click on submenu
+      sub.addEventListener("click", () => {
+        alert(`Selected: ${item} in ${categories[x].name}`);
+      });
+
+      submenuEl.appendChild(sub);
+    });
+  }
+
+  // Keyboard navigation
+  document.addEventListener("keydown", e => {
+    const maxX = categories.length - 1;
+    const maxY = categories[x].items.length - 1;
+
+    switch(e.key){
+      case "ArrowRight":
+        x = (x + 1) > maxX ? 0 : x + 1;
+        y = 0;
+        break;
+      case "ArrowLeft":
+        x = (x - 1) < 0 ? maxX : x - 1;
+        y = 0;
+        break;
+      case "ArrowDown":
+        y = (y + 1) > maxY ? 0 : y + 1;
+        break;
+      case "ArrowUp":
+        y = (y - 1) < 0 ? maxY : y - 1;
+        break;
+      case "Enter":
+        alert(`Selected: ${categories[x].items[y]} in ${categories[x].name}`);
+        break;
+    }
+
+    updateXMB();
+  });
+
+  // Initial render
+  updateXMB();
+</script>
+
+</body>
+</html>
