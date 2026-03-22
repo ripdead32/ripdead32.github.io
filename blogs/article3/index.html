@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rip_Dead Site Migrated to RipUI 1.2</title>
+<link rel="icon" href="/favicon.ico">
+
+<style>
+/* SAME STYLING AS BLOGS (trimmed for space) */
+body{margin:0;font-family:'Segoe UI',sans-serif;color:#fff;overflow-x:hidden;transition:0.3s;}
+body.light{color:#111;}
+body::before{
+content:"";position:fixed;inset:0;z-index:-1;
+background:linear-gradient(-45deg,#000,#4c1d95,#000,#6d28d9);
+background-size:400% 400%;animation:gradientMove 12s ease infinite;}
+body.light::before{
+background:linear-gradient(-45deg,#fff,#c084fc,#fff,#a855f7);}
+@keyframes gradientMove{
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}}
+.navbar{display:flex;justify-content:space-between;align-items:center;
+padding:15px 40px;background:rgba(0,0,0,0.6);
+backdrop-filter:blur(10px);position:sticky;top:0;}
+.navbar a{color:#fff;text-decoration:none;font-weight:bold;margin-left:15px;}
+.article{
+max-width:800px;margin:80px auto;padding:40px;
+background:rgba(20,20,20,0.6);backdrop-filter:blur(12px);
+border-radius:16px;}
+body.light .article{background:rgba(255,255,255,0.7);}
+</style>
+</head>
+
+<body>
+
+<div class="navbar">
+<a href="/">Rip_Dead Site</a>
+<div>
+<a href="/blogs/">Back</a>
+</div>
+</div>
+
+<div class="article">
+<h1>Rip_Dead Site Migrated to RipUI 1.2</h1>
+<p>
+Hey! Welcome to Rip_Dead Site! New update dropped, RipUI 1.2! Don't worry, you'll be surprised! Heres are the changelogs:
+• Fixed Some Bugs
+• Added new Arts page
+• Redesigned how Blog Articles look! 
+
+Thats All! Have fun with Rip_Dead Site
+</p>
+</div>
+
+</body>
+</html>
