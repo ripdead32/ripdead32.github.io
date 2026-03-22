@@ -13,7 +13,6 @@ body{
   overflow-x:hidden;
   transition:0.3s;
 }
-/* Gradient background */
 body::before{
   content:"";
   position:fixed;
@@ -27,60 +26,6 @@ body::before{
   0%{background-position:0% 50%;}
   50%{background-position:100% 50%;}
   100%{background-position:0% 50%;}
-}
-
-/* Section */
-.section{
-  padding:40px 20px 80px 20px;
-  text-align:center;
-}
-
-/* Art cards */
-.art-card{
-  background:rgba(30,30,30,0.7);
-  padding:20px;
-  border-radius:16px;
-  max-width:500px;
-  margin:20px auto;
-  text-align:left;
-}
-.art-card img{
-  width:100%;
-  border-radius:12px;
-  margin-bottom:10px;
-}
-.art-card h2{
-  margin:5px 0;
-}
-.art-card p{
-  margin:3px 0;
-}
-.button{
-  display:inline-block;
-  margin:5px 0;
-  padding:10px 20px;
-  border-radius:8px;
-  background:#a855f7;
-  color:#000;
-  font-weight:bold;
-  text-decoration:none;
-}
-.button:hover{
-  background:#c084fc;
-}
-
-/* Search bar */
-#tagSearch{
-  padding:10px;
-  border-radius:8px;
-  border:none;
-  width:200px;
-  transition: all 0.4s ease;
-  margin-top:20px;
-}
-#tagSearch:focus{
-  transform: translateY(-10px);
-  outline:none;
 }
 
 /* Loader */
@@ -133,6 +78,88 @@ body::before{
   opacity:0;
   transition:opacity 0.8s ease;
 }
+
+/* Search bar top-right */
+#tagSearch{
+  position:fixed;
+  top:20px;
+  right:20px;
+  padding:10px;
+  border-radius:8px;
+  border:none;
+  width:220px;
+  transition: all 0.5s ease, transform 0.5s ease;
+  z-index:1000;
+  opacity:0;
+}
+#tagSearch.show{
+  opacity:1;
+  transform: translateY(0);
+}
+
+/* Back to home button bottom-center */
+#backHome{
+  position:fixed;
+  bottom:30px;
+  left:50%;
+  transform:translateX(-50%);
+  padding:10px 20px;
+  border-radius:8px;
+  background:#a855f7;
+  color:#000;
+  font-weight:bold;
+  text-decoration:none;
+  transition: all 0.3s ease;
+  z-index:1000;
+  opacity:0;
+}
+#backHome.show{
+  opacity:1;
+}
+#backHome:hover{
+  background:#c084fc;
+  box-shadow:0 0 15px #a855f7;
+}
+
+/* Section & Art Cards */
+.section{
+  padding:40px 20px 80px 20px;
+  text-align:center;
+}
+.art-card{
+  background:rgba(30,30,30,0.7);
+  padding:20px;
+  border-radius:16px;
+  max-width:500px;
+  margin:20px auto;
+  text-align:left;
+}
+.art-card img{
+  width:100%;
+  border-radius:12px;
+  margin-bottom:10px;
+}
+.art-card h2{
+  margin:5px 0;
+}
+.art-card p{
+  margin:3px 0;
+}
+.button{
+  display:inline-block;
+  margin:5px 0;
+  padding:10px 20px;
+  border-radius:8px;
+  background:#a855f7;
+  color:#000;
+  font-weight:bold;
+  text-decoration:none;
+  transition: all 0.3s ease;
+}
+.button:hover{
+  background:#c084fc;
+  box-shadow:0 0 15px #a855f7;
+}
 </style>
 </head>
 <body>
@@ -144,10 +171,14 @@ body::before{
   <div class="loader-text" id="loader-text">Rip_Dead Art</div>
 </div>
 
-<!-- ART GALLERY -->
-<div class="section" id="gallery">
+<!-- Search input -->
+<input type="text" id="tagSearch" placeholder="Search by name or tag...">
 
-  <!-- First art item -->
+<!-- Back to Home -->
+<a href="/" id="backHome">← Back to Home</a>
+
+<!-- Art gallery -->
+<div class="section" id="gallery">
   <div class="art-card" data-tags="Funkin">
     <img src="rip-fnf.png" alt="Rip_Dead FNF">
     <h2>Rip_Dead FNF</h2>
@@ -157,12 +188,6 @@ body::before{
     <p><strong>Tags:</strong> Funkin</p>
     <a href="rip-fnf.png" download class="button">Download</a>
   </div>
-
-</div>
-
-<!-- TAG SEARCH -->
-<div style="text-align:center; margin:20px;">
-  <input type="text" id="tagSearch" placeholder="Search by tag...">
 </div>
 
 <script>
@@ -170,6 +195,8 @@ body::before{
 const loader = document.getElementById("loader");
 const bar = document.querySelector(".loader-bar");
 const text = document.getElementById("loader-text");
+const searchInput = document.getElementById("tagSearch");
+const backHome = document.getElementById("backHome");
 
 if(!sessionStorage.getItem('artLoaderShown')){
   window.addEventListener("load", () => {
@@ -181,26 +208,30 @@ if(!sessionStorage.getItem('artLoaderShown')){
       setTimeout(() => {
         loader.classList.add("loader-hide");
         setTimeout(()=>{loader.style.display="none";},800);
+        // Show search bar and back button after loader
+        searchInput.classList.add("show");
+        backHome.classList.add("show");
       },1200);
     },5000);
     sessionStorage.setItem('artLoaderShown','true');
   });
 } else {
   loader.style.display="none";
+  searchInput.classList.add("show");
+  backHome.classList.add("show");
 }
 
-// Tag search
-const searchInput = document.getElementById("tagSearch");
+// Search by tag and name
 const gallery = document.getElementById("gallery");
 searchInput.addEventListener("input", () => {
   const filter = searchInput.value.toLowerCase();
   const cards = gallery.getElementsByClassName("art-card");
   for(let card of cards){
     const tags = card.dataset.tags.toLowerCase();
-    card.style.display = tags.includes(filter) ? "" : "none";
+    const name = card.querySelector("h2").textContent.toLowerCase();
+    card.style.display = (tags.includes(filter) || name.includes(filter)) ? "" : "none";
   }
 });
 </script>
-
 </body>
 </html>
