@@ -3,20 +3,39 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rip_Dead Art</title>
+<title>Rip_Dead Site - Arts</title>
 <link rel="icon" href="/favicon.ico">
 <style>
 body{
   margin:0;
   font-family:'Segoe UI',sans-serif;
-  background:#111;
   color:#fff;
   overflow-x:hidden;
+  transition:0.3s;
 }
+/* Gradient background */
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  background:linear-gradient(-45deg,#000,#4c1d95,#000,#6d28d9);
+  background-size:400% 400%;
+  animation:gradientMove 12s ease infinite;
+}
+@keyframes gradientMove{
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
+
+/* Section */
 .section{
-  padding:40px 20px;
+  padding:40px 20px 80px 20px;
   text-align:center;
 }
+
+/* Art cards */
 .art-card{
   background:rgba(30,30,30,0.7);
   padding:20px;
@@ -49,6 +68,22 @@ body{
 .button:hover{
   background:#c084fc;
 }
+
+/* Search bar */
+#tagSearch{
+  padding:10px;
+  border-radius:8px;
+  border:none;
+  width:200px;
+  transition: all 0.4s ease;
+  margin-top:20px;
+}
+#tagSearch:focus{
+  transform: translateY(-10px);
+  outline:none;
+}
+
+/* Loader */
 #loader{
   position:fixed;
   top:0; left:0;
@@ -62,6 +97,7 @@ body{
   padding-top:120px;
   gap:25px;
   z-index:9999;
+  transition:opacity 0.8s ease;
 }
 #loader.centered{
   justify-content:center;
@@ -126,11 +162,11 @@ body{
 
 <!-- TAG SEARCH -->
 <div style="text-align:center; margin:20px;">
-  <input type="text" id="tagSearch" placeholder="Search by tag..." style="padding:10px; border-radius:8px; border:none; width:200px;">
+  <input type="text" id="tagSearch" placeholder="Search by tag...">
 </div>
 
 <script>
-// Loader logic - one time per session
+// Loader logic
 const loader = document.getElementById("loader");
 const bar = document.querySelector(".loader-bar");
 const text = document.getElementById("loader-text");
