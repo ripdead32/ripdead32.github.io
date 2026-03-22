@@ -261,7 +261,19 @@ footer{
     <a class="button" href="https://www.reddit.com/u/rip_dead32/s/hVrQI0NqEs" target="_blank">Reddit</a>
     <a class="button" href="https://www.facebook.com/share/1AbvyPZgEh/" target="_blank">Facebook</a>
   </div>
-<div class="card">
+<div class="card" style="
+  box-shadow: 0 0 20px rgba(168,85,247,0.35);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+"
+onmouseover="
+  this.style.transform='translateY(-8px) scale(1.02)';
+  this.style.boxShadow='0 0 25px rgba(168,85,247,0.6), 0 0 50px rgba(168,85,247,0.4), 0 0 80px rgba(168,85,247,0.2)';
+"
+onmouseout="
+  this.style.transform='';
+  this.style.boxShadow='0 0 20px rgba(168,85,247,0.35)';
+"
+>
   <h2>Rip_Dead's Projects and Support</h2>
   <p>Access projects, support, downloads, and creative works.</p>
 
