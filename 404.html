@@ -3,179 +3,163 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rip_Dead Site - Page Not Found</title>
+<title>404 - Page Not Found</title>
 <link rel="icon" href="/favicon.ico">
-<link rel="stylesheet" href="/navbar.css">
-
 <style>
+/* --- BODY & GRADIENT --- */
 body{
   margin:0;
   font-family:'Segoe UI',sans-serif;
   color:#fff;
-  overflow-x:hidden;
-  transition:0.3s;
-}
-
-/* FIX: Light mode text color */
-body.light{
-  color:#111;
-}
-
-/* Animated Gradient */
-body::before{
-  content:"";
-  position:fixed;
-  inset:0;
-  z-index:-1;
+  overflow:hidden;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
   background:linear-gradient(-45deg,#000,#4c1d95,#000,#6d28d9);
   background-size:400% 400%;
-  animation:gradientMove 12s ease infinite;
+  animation:gradientMove 10s ease infinite;
 }
-body.light::before{
-  background:linear-gradient(-45deg,#fff,#c084fc,#fff,#a855f7);
-}
-
 @keyframes gradientMove{
   0%{background-position:0% 50%;}
   50%{background-position:100% 50%;}
   100%{background-position:0% 50%;}
 }
 
-/* Navbar */
-.navbar{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:15px 40px;
-  background:rgba(0,0,0,0.6);
-  backdrop-filter:blur(10px);
-  position:sticky;
-  top:0;
-  z-index:100;
-}
-.navbar a, .navbar button{
-  margin-left:15px;
-  color:inherit;
-  text-decoration:none;
-  font-weight:bold;
-  background:none;
-  border:none;
-  cursor:pointer;
-}
-.navbar a:hover{
-  border-bottom:2px solid #a855f7;
-}
-
-.theme-toggle{
-  width:35px;
-  height:35px;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:18px;
-  background:#fff;
-  color:#000;
-  transition:0.2s ease;
-}
-body.light .theme-toggle{
-  background:#000;
-  color:#fff;
-}
-
-.nav-right{
-  display:flex;
-  align-items:center;
-}
-
-/* Hero */
-.hero{
+/* --- GLITCH TEXT --- */
+.glitch-container{
+  position:relative;
   text-align:center;
-  padding:120px 20px 60px 20px;
+}
+.glitch{
+  font-size:96px;
+  font-weight:bold;
+  position:relative;
+  color:#fff;
+  text-shadow:
+    0 0 5px #a855f7,
+    0 0 10px #a855f7,
+    0 0 20px #c084fc,
+    0 0 40px #c084fc;
+  animation:glitch 0.5s infinite;
+}
+.glitch::before, .glitch::after{
+  content:attr(data-text);
+  position:absolute;
+  left:0;
+}
+.glitch::before{
+  animation:glitchTop 0.5s infinite;
+  color:#a855f7;
+  clip-path: inset(0 0 50% 0);
+}
+.glitch::after{
+  animation:glitchBottom 0.5s infinite;
+  color:#c084fc;
+  clip-path: inset(50% 0 0 0);
 }
 
-.hero h1{
-  font-size:70px;
-  margin-bottom:20px;
-  text-shadow:0 0 20px rgba(168,85,247,0.6);
+@keyframes glitch{
+  0%{transform:translate(0);}
+  10%{transform:translate(-5px,5px);}
+  20%{transform:translate(5px,-5px);}
+  30%{transform:translate(-5px,5px);}
+  40%{transform:translate(5px,-5px);}
+  50%{transform:translate(-5px,5px);}
+  60%{transform:translate(5px,-5px);}
+  70%{transform:translate(-5px,5px);}
+  80%{transform:translate(5px,-5px);}
+  90%{transform:translate(-5px,5px);}
+  100%{transform:translate(0);}
+}
+@keyframes glitchTop{
+  0%{transform:translate(0);}
+  25%{transform:translate(-8px,-8px);}
+  50%{transform:translate(8px,8px);}
+  75%{transform:translate(-8px,-8px);}
+  100%{transform:translate(0);}
+}
+@keyframes glitchBottom{
+  0%{transform:translate(0);}
+  25%{transform:translate(8px,8px);}
+  50%{transform:translate(-8px,-8px);}
+  75%{transform:translate(8px,8px);}
+  100%{transform:translate(0);}
 }
 
-.hero p{
-  font-size:20px;
-  margin-bottom:30px;
+/* --- MESSAGE & FLICKER --- */
+.message{
+  margin-top:20px;
+  font-size:28px;
+  color:#fff;
+  animation:flicker 0.3s infinite;
+  text-shadow:
+    0 0 5px #a855f7,
+    0 0 10px #c084fc,
+    0 0 15px #a855f7,
+    0 0 20px #c084fc;
 }
 
-/* Button */
-a.button{
-  display:inline-block;
-  padding:16px 36px;
+/* flickering keyframes for random opacity */
+@keyframes flicker{
+  0%,10%,20%,30%,40%,50%,60%,70%,80%,90%,100%{opacity:1;}
+  5%,15%,25%,35%,45%,55%,65%,75%,85%,95%{opacity:0;}
+}
+
+/* --- BACK TO HOME BUTTON --- */
+#backHome{
+  position:fixed;
+  bottom:20px;
+  left:50%;
+  transform:translateX(-50%);
+  padding:14px 28px;
   border-radius:8px;
   background:#a855f7;
   color:#000;
   font-weight:bold;
   text-decoration:none;
-  transition:transform 0.2s ease,background 0.2s ease;
+  text-shadow:0 0 5px #fff;
+  box-shadow:0 0 10px #a855f7, 0 0 20px #c084fc;
+  animation:pulse 1.5s infinite alternate;
+  transition:all 0.3s ease;
 }
-a.button:hover{
-  transform:scale(1.07);
+#backHome:hover{
   background:#c084fc;
+  box-shadow:0 0 25px #a855f7, 0 0 35px #c084fc, 0 0 50px #a855f7;
 }
 
-footer{
-  text-align:center;
-  padding:20px;
-  font-size:14px;
-  border-top:1px solid rgba(255,255,255,0.1);
-}
-
-@media(max-width:768px){
-  .navbar{
-    flex-direction:column;
-    gap:10px;
-  }
-  .nav-right{
-    flex-wrap:wrap;
-    justify-content:center;
-  }
-  .hero h1{
-    font-size:48px;
-  }
-  .hero p{
-    font-size:16px;
-  }
+@keyframes pulse{
+  0%{transform:translateX(-50%) scale(1);}
+  50%{transform:translateX(-50%) scale(1.05);}
+  100%{transform:translateX(-50%) scale(1);}
 }
 </style>
 </head>
-
 <body>
 
-<div class="navbar">
-  <a href="/" class="site-name">Rip_Dead Site</a>
-  <div class="nav-right">
-    <a href="/about/">About</a>
-    <a href="/support/">Support</a>
-    <a href="/downloads/">Download</a>
-    <a href="/blogs/">Blogs</a>
-    <button class="theme-toggle" onclick="toggleTheme()" id="themeIcon">☀️</button>
-  </div>
+<div class="glitch-container">
+  <div class="glitch" data-text="404">404</div>
+  <div class="message">This page does not exist… or maybe it’s broken?</div>
 </div>
 
-<div class="hero">
-  <h1>404</h1>
-  <p>Oops! The page you are looking for does not exist.</p>
-  <a href="/" class="button">Back to Home</a>
-</div>
-
-<footer>© 2026 Rip_Dead Studios — All Rights Reserved</footer>
+<a href="/" id="backHome">← Back to Home</a>
 
 <script>
-const themeIcon=document.getElementById("themeIcon");
+// Random jitter for extreme glitch effect
+const glitchEl = document.querySelector('.glitch');
+setInterval(() => {
+  glitchEl.style.left = (Math.random()*16-8)+'px';
+  glitchEl.style.top = (Math.random()*16-8)+'px';
+}, 50);
 
-function toggleTheme(){
-  document.body.classList.toggle("light");
-  themeIcon.textContent =
-    document.body.classList.contains("light") ? "🌙" : "☀️";
-}
+// Global console warning for all pages
+console.log("%cSTOP! DO NOT INSERT ANYTHING HERE! IT COULD BREAK THE SITE!", "color:#fff; background:#a855f7; font-size:18px; padding:4px; border-radius:4px;");
+
+// Optional extra flicker message jitter
+const msg = document.querySelector('.message');
+setInterval(() => {
+  msg.style.transform = `translate(${Math.random()*6-3}px,${Math.random()*6-3}px)`;
+}, 80);
 </script>
 
 </body>
