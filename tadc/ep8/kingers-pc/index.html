@@ -14,16 +14,10 @@
     --border-bright: #ffffff;
     --border-dark: #808080;
     --border-black: #000000;
-    --monitor-yellow: #e8dfb8; /* Classic aged beige */
+    --monitor-yellow: #e8dfb8;
 }
 
-body { 
-    width: 100vw; height: 100vh; 
-    background: #000; 
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'Tahoma', sans-serif;
-    overflow: hidden;
-}
+body { width: 100vw; height: 100vh; background: #000; display: flex; align-items: center; justify-content: center; font-family: 'Tahoma', sans-serif; overflow: hidden; }
 
 /* ── THE YELLOW MONITOR ── */
 .monitor-housing {
@@ -55,18 +49,12 @@ body {
 .close-btn { width: 16px; height: 14px; background: var(--bg-gray); border: 1px solid #000; color: black; font-size: 9px; text-align: center; cursor: pointer; line-height: 12px; }
 
 /* Terminal Styling */
-.terminal-body { background: #000; color: #0f0; font-family: 'Courier New', monospace; padding: 10px; height: calc(100% - 25px); overflow-y: auto; font-size: 12px; }
+.terminal-body { background: #000; color: #0f0; font-family: 'Courier New', monospace; padding: 15px; height: calc(100% - 25px); overflow-y: auto; font-size: 13px; line-height: 1.4; }
 .cursor { display: inline-block; width: 8px; height: 15px; background: #0f0; animation: blink 1s infinite; vertical-align: middle; }
 @keyframes blink { 50% { opacity: 0; } }
 
-/* Desktop Icons */
 .icon { width: 75px; padding: 8px; color: white; cursor: pointer; text-align: center; margin: 15px; }
 .icon-text { text-shadow: 1px 1px #000; font-size: 10px; }
-
-/* Start Menu */
-#start-menu { position: absolute; bottom: 30px; left: 2px; width: 160px; background: var(--bg-gray); border: 2px solid; border-color: var(--border-bright) var(--border-dark) var(--border-dark) var(--border-bright); display: none; z-index: 300; }
-.menu-item { padding: 8px; cursor: pointer; font-size: 11px; }
-.menu-item:hover { background: var(--win-blue); color: white; }
 
 #taskbar { margin-top: auto; height: 30px; background: var(--bg-gray); border-top: 2px solid var(--border-bright); display: flex; align-items: center; padding: 2px 4px; z-index: 200; }
 #start-btn { font-weight: bold; height: 24px; padding: 0 10px; border: 2px solid; border-color: var(--border-bright) var(--border-dark) var(--border-dark) var(--border-bright); background: var(--bg-gray); cursor: pointer; }
@@ -94,12 +82,12 @@ body {
                     <div class="icon-text">Admin Files</div>
                 </div>
 
-                <div id="files-win" class="window" style="top:20px; left:20px; width:300px; height:200px;">
+                <div id="files-win" class="window" style="top:20px; left:20px; width:320px; height:220px;">
                     <div class="title-bar">
                         <span>C:\C&A\SYSTEM</span>
                         <div class="close-btn" onclick="toggleWin('files-win')">✕</div>
                     </div>
-                    <div style="padding:15px; background:white; height:calc(100% - 21px); border:2px inset; display:flex; gap:20px;">
+                    <div style="padding:15px; background:white; height:calc(100% - 21px); border:2px inset; display:flex; gap:25px;">
                         <div style="text-align:center; cursor:pointer;" ondblclick="toggleWin('terminal-win')">
                             <div style="font-size:32px">🎩</div>
                             <p style="font-size:10px; font-weight:bold;">CAINE</p>
@@ -111,28 +99,19 @@ body {
                     </div>
                 </div>
 
-                <div id="terminal-win" class="window" style="top:50px; left:80px; width:400px; height:250px;">
+                <div id="terminal-win" class="window" style="top:40px; left:60px; width:450px; height:300px;">
                     <div class="title-bar">
-                        <span>C&A Command Prompt - CAINE_V2.0</span>
+                        <span>C&A Command Prompt - CAINE_MEMORY_BLOCK</span>
                         <div class="close-btn" onclick="toggleWin('terminal-win')">✕</div>
                     </div>
-                    <div class="terminal-body">
-                        <p>C&A System Administration [Version 2.0.8]</p>
-                        <p>(c) 1995 C&A Development & Aesthetics.</p>
-                        <br>
-                        <p>Loading Agent: CAINE...</p>
-                        <p style="color:yellow;">WARNING: Agent shows signs of instability.</p>
-                        <br>
-                        <p>C:\> <span id="terminal-text"></span><span class="cursor"></span></p>
+                    <div class="terminal-body" id="term-body">
+                        <div id="term-output"></div>
+                        <span id="term-typing"></span><span class="cursor"></span>
                     </div>
-                </div>
-
-                <div id="start-menu">
-                    <div class="menu-item" onclick="initShutdown()">Shutdown...</div>
                 </div>
 
                 <div id="taskbar">
-                    <button id="start-btn" onclick="toggleStart()">Start</button>
+                    <button id="start-btn" onclick="alert('System busy: CAINE process active.')">Start</button>
                     <div id="clock" style="margin-left:auto; border:1px inset; padding:0 10px; font-size:11px;">12:00 PM</div>
                 </div>
             </div>
@@ -159,7 +138,7 @@ function togglePhysicalPower() {
         document.getElementById('boot-content').style.display = 'flex';
         runBoot();
     } else {
-        location.reload(); // Hard reset
+        location.reload();
     }
 }
 
@@ -175,30 +154,51 @@ function runBoot() {
             document.getElementById('desktop').style.display = 'flex';
             pcStatus = "ON";
             startClock();
-            typeTerminal();
+            startTerminalSequence();
         }
     }, 800);
 }
 
-function typeTerminal() {
-    const text = "purge --all --force";
-    let i = 0;
-    const target = document.getElementById('terminal-text');
-    const t = setInterval(() => {
-        target.innerHTML += text[i++];
-        if (i >= text.length) clearInterval(t);
-    }, 150)
+// ── NEW TERMINAL SEQUENCE ──
+async function startTerminalSequence() {
+    const output = document.getElementById('term-output');
+    const typing = document.getElementById('term-typing');
+    
+    const lines = [
+        "(C) 1996, DIGITAL CIRCUS MAINFRAME, CAINE MEMORY BLOCK",
+        "",
+        "login: "
+    ];
+
+    for(let line of lines) {
+        output.innerHTML += line + "<br>";
+        await new Promise(r => setTimeout(r, 400));
+    }
+
+    await typeEffect(typing, "kinger", 200);
+    output.innerHTML += "kinger<br>password: ";
+    typing.innerHTML = "";
+    
+    await typeEffect(typing, "queenie123", 150);
+    output.innerHTML += "**********<br><br>";
+    typing.innerHTML = "";
+
+    await new Promise(r => setTimeout(r, 600));
+    output.innerHTML += "<span style='color:cyan;'>message-from-RD@Site:</span> did you really think im coding an entire terminal? nah jokes on you i'd roll<br><br>";
+    output.innerHTML += "C:\\> ";
 }
 
-function toggleStart() {
-    const m = document.getElementById('start-menu');
-    m.style.display = (m.style.display === 'block') ? 'none' : 'block';
-}
-
-function initShutdown() {
-    document.getElementById('desktop').style.display = 'none';
-    document.getElementById('shutdown-screen').style.display = 'flex';
-    pcStatus = "SHUTDOWN";
+function typeEffect(element, text, speed) {
+    return new Promise(resolve => {
+        let i = 0;
+        const t = setInterval(() => {
+            element.innerHTML += text[i++];
+            if (i >= text.length) {
+                clearInterval(t);
+                setTimeout(resolve, 500);
+            }
+        }, speed);
+    });
 }
 
 function toggleWin(id) {
