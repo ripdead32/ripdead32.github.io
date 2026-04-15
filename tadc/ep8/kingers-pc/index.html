@@ -5,7 +5,7 @@
 <title>Rip_Dead Site -Kinger's PC Simulation</title>
 <link rel="icon" type="image/x-icon" href="pc.ico">
 <style>
-/* ── CLASSIC WIN95 THEME ── */
+/* ── C&A CORPORATE STYLE ── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root {
     --bg-gray: #c0c0c0;
@@ -18,113 +18,75 @@
 
 html, body { 
     width: 100%; height: 100%; 
-    background: #050505; 
+    background: #000; 
     font-family: 'Tahoma', 'MS Sans Serif', Arial, sans-serif; 
     font-size: 11px; 
     overflow: hidden; 
 }
 
-/* ── THE MONITOR BOOT ── */
+/* ── C&A MONITOR BOOT ── */
 #boot-screen {
     position: fixed; inset: 0; 
     display: flex; align-items: center; justify-content: center; 
     background: #000; z-index: 9999; 
-    transition: opacity 1.5s ease-in-out;
+    transition: opacity 1.2s ease-in-out;
 }
 .monitor {
-    width: 600px; padding: 40px;
-    background: linear-gradient(145deg, #4e4e7e, #2e2e5e);
-    border-radius: 30px;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.8), inset 0 2px 10px rgba(255,255,255,0.2);
-    text-align: center;
+    width: 620px; padding: 45px;
+    background: linear-gradient(160deg, #5a5a8a, #3a3a6a);
+    border-radius: 25px;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.9), inset 0 2px 10px rgba(255,255,255,0.1);
+    position: relative;
 }
 .screen-bezel {
-    background: #111; padding: 10px; border-radius: 10px;
-    box-shadow: inset 0 0 15px #000;
+    background: #1a1a1a; padding: 12px; border-radius: 8px;
+    box-shadow: inset 0 0 20px #000;
 }
 .screen-glass {
     width: 100%; aspect-ratio: 4/3;
-    background: #a8cfe0; border-radius: 5px;
+    background: #e1eef4; border-radius: 4px;
     position: relative; overflow: hidden;
-    display: flex; align-items: center; justify-content: center;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
 }
-.screen-glass::after {
-    content: ""; position: absolute; inset: 0;
-    background: repeating-linear-gradient(rgba(0,0,0,0.05) 0px, rgba(0,0,0,0.05) 1px, transparent 2px);
-    pointer-events: none;
+
+/* The CnA.png Logo Styling */
+#ca-logo {
+    max-width: 180px; 
+    max-height: 120px;
+    height: auto;
+    margin-bottom: 20px;
+    display: none; /* Appears during hardware check */
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
 }
 
 .monitor-btn {
-    width: 24px; height: 24px; margin-top: 20px;
-    background: radial-gradient(circle at 30% 30%, #666, #222);
+    width: 20px; height: 20px; position: absolute; bottom: 15px; right: 60px;
+    background: radial-gradient(circle at 35% 35%, #777, #222);
     border: 2px solid #444; border-radius: 50%;
-    cursor: pointer; transition: 0.3s;
+    cursor: pointer;
 }
 .monitor-btn.active {
-    background: radial-gradient(circle at 30% 30%, #5dfc60, #1a8a1e);
-    box-shadow: 0 0 10px #5dfc60;
+    background: radial-gradient(circle at 35% 35%, #5dfc60, #1a8a1e);
+    box-shadow: 0 0 12px rgba(93, 252, 96, 0.5);
 }
 
-/* ── DESKTOP ── */
-#desktop {
-    width: 100vw; height: 100vh;
-    background: #008080;
-    display: none;
+#boot-status {
+    color: #333; font-family: 'Courier New', monospace; font-weight: bold;
+    text-align: center; height: 20px; font-size: 12px;
 }
 
-.icon {
-    width: 80px; padding: 10px;
-    display: flex; flex-direction: column; align-items: center;
-    color: white; cursor: pointer;
-}
-.icon:hover { background: rgba(0,0,128,0.3); }
-.icon-img { font-size: 32px; margin-bottom: 5px; }
-.icon-text { text-shadow: 1px 1px black; text-align: center; font-weight: bold; }
+/* ── DESKTOP & UI ── */
+#desktop { width: 100vw; height: 100vh; background: #008080; display: none; }
+.icon { width: 85px; padding: 10px; display: flex; flex-direction: column; align-items: center; color: white; cursor: pointer; position: absolute; }
+.icon-text { text-shadow: 1px 1px black; text-align: center; padding-top: 4px; }
 
-/* ── WINDOWS ── */
-.window {
-    position: absolute; background: var(--bg-gray);
-    border: 2px solid; border-color: var(--border-bright) var(--border-dark) var(--border-dark) var(--border-bright);
-    box-shadow: 1px 1px 0 var(--border-black);
-    min-width: 300px; display: none;
-    z-index: 10;
-}
-.title-bar {
-    background: linear-gradient(90deg, var(--win-blue), var(--win-blue-light));
-    color: white; padding: 3px 5px; font-weight: bold;
-    display: flex; justify-content: space-between; align-items: center;
-    cursor: move;
-}
-.title-btns .btn {
-    width: 16px; height: 14px; background: var(--bg-gray);
-    border: 1px solid; border-color: var(--border-bright) var(--border-dark) var(--border-dark) var(--border-bright);
-    color: black; font-size: 9px; cursor: pointer; text-align: center; line-height: 12px;
-}
-.window-body { padding: 10px; height: calc(100% - 30px); }
+.window { position: absolute; background: var(--bg-gray); border: 2px solid; border-color: var(--border-bright) var(--border-dark) var(--border-dark) var(--border-bright); box-shadow: 1px 1px 0 var(--border-black); display: none; z-index: 10; }
+.title-bar { background: linear-gradient(90deg, var(--win-blue), var(--win-blue-light)); color: white; padding: 3px 5px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; cursor: move; }
+.window-body { padding: 8px; height: calc(100% - 25px); }
 
-/* ── TASKBAR ── */
-#taskbar {
-    position: fixed; bottom: 0; width: 100%; height: 30px;
-    background: var(--bg-gray); border-top: 2px solid var(--border-bright);
-    display: flex; align-items: center; padding: 2px 5px; z-index: 1000;
-}
-#start-btn {
-    font-weight: bold; height: 22px; padding: 0 10px;
-    border: 2px solid; border-color: var(--border-bright) var(--border-dark) var(--border-dark) var(--border-bright);
-    background: var(--bg-gray); cursor: pointer;
-}
-#start-btn:active { border-color: var(--border-dark) var(--border-bright) var(--border-bright) var(--border-dark); }
-#clock { margin-left: auto; border: 1px inset; padding: 2px 10px; background: var(--bg-gray); }
-
-/* Kinger's Paranoia Jitter */
-@keyframes jitter {
-    0% { transform: translate(0,0); }
-    10% { transform: translate(-1px, 1px); }
-    20% { transform: translate(1px, -1px); }
-    100% { transform: translate(0,0); }
-}
-.paranoia { animation: jitter 0.2s infinite; display: inline-block; }
-
+#taskbar { position: fixed; bottom: 0; width: 100%; height: 28px; background: var(--bg-gray); border-top: 2px solid var(--border-bright); display: flex; align-items: center; padding: 2px; z-index: 1000; }
+#start-btn { font-weight: bold; height: 22px; padding: 0 8px; border: 2px solid; border-color: var(--border-bright) var(--border-dark) var(--border-dark) var(--border-bright); background: var(--bg-gray); cursor: pointer; }
+#clock { margin-left: auto; border: 1px inset; padding: 2px 8px; background: var(--bg-gray); }
 </style>
 </head>
 <body>
@@ -133,64 +95,35 @@ html, body {
     <div class="monitor">
         <div class="screen-bezel">
             <div class="screen-glass">
-                <div id="boot-logo" style="display:none; text-align: center;">
-                    <h1 style="font-family: 'Arial Black'; font-size: 36px; color: #000;">Rip_Dead</h1>
-                    <p id="boot-status" style="font-family: monospace; font-weight: bold;">[ KINGER SIMULATION v2.0 ]</p>
-                </div>
+                <img id="ca-logo" src="CnA.png" alt="C&A Logo">
+                <div id="boot-status"></div>
             </div>
         </div>
         <div class="monitor-btn" id="pwr-btn" onclick="triggerBoot()"></div>
-        <p style="color: rgba(255,255,255,0.3); margin-top: 10px; font-size: 9px; letter-spacing: 2px;">C&A HARDWARE - KINGER MODEL</p>
+        <p style="color: rgba(255,255,255,0.2); position: absolute; bottom: 15px; left: 45px; font-size: 10px;">C&A DEVELOPMENT & AESTHETICS &copy; 1995</p>
     </div>
 </div>
 
 <div id="desktop">
-    <div class="icon" ondblclick="toggleWin('explorer')">
-        <div class="icon-img">📂</div>
+    <div class="icon" style="top: 10px; left: 10px;" ondblclick="toggleWin('explorer')">
+        <div style="font-size:32px">📂</div>
         <div class="icon-text">My Computer</div>
     </div>
-    
-    <div class="icon" style="top: 100px; left: 0px;" ondblclick="toggleWin('notes')">
-        <div class="icon-img">📝</div>
-        <div class="icon-text">Insects?</div>
-    </div>
 
-    <div id="explorer" class="window" style="top:80px; left:120px; width:420px; height:280px;">
+    <div id="explorer" class="window" style="top:60px; left:140px; width:450px; height:300px;">
         <div class="title-bar">
-            <span>Rip_Dead:\CANDA\Characters\AI</span>
-            <div class="title-btns">
-                <button class="btn" onclick="toggleWin('explorer')">✕</button>
-            </div>
+            <span>C:\CANDA\System32\Agents</span>
+            <div onclick="toggleWin('explorer')" style="cursor:pointer; background:#c0c0c0; color:black; padding:0 4px; border:1px solid #000;">✕</div>
         </div>
         <div class="window-body">
-            <div style="background:white; border: 2px inset; height: 100%; padding: 10px; overflow-y: auto;">
-                <p style="color:red; font-weight:bold;">CRITICAL SYSTEM AGENT DETECTED:</p>
-                <hr style="margin: 10px 0;">
-                <div style="display:inline-block; text-align: center; cursor: pointer; padding: 10px; border: 1px transparent solid;" onmouseover="this.style.border='1px dotted #808080'" onmouseout="this.style.border='1px transparent solid'">
+            <div style="background:white; border: 2px inset; height: 100%; padding: 12px;">
+                <p>Proprietary Agent Management Interface</p>
+                <hr style="margin:10px 0">
+                <div style="text-align: center; width: 80px;">
                     <div style="font-size:48px;">🎩</div>
-                    <p>CAINE.EXE</p>
-                    <p style="font-size:9px; color:#808080;">PID: 1337</p>
+                    <p style="font-weight:bold">CAINE.EXE</p>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <div id="notes" class="window" style="top:150px; left:200px; width:250px; height:180px;">
-        <div class="title-bar">
-            <span>Notepad - Diary.txt</span>
-            <div class="title-btns">
-                <button class="btn" onclick="toggleWin('notes')">✕</button>
-            </div>
-        </div>
-        <div class="window-body">
-            <textarea style="width:100%; height:100%; resize:none; border:none; outline:none; font-family:monospace;">
-I've hidden the exit in a 
-folder inside a folder 
-inside a folder...
-
-Wait, did you hear that?
-The <span class="paranoia">insects</span> are back.
-            </textarea>
         </div>
     </div>
 
@@ -201,26 +134,19 @@ The <span class="paranoia">insects</span> are back.
 </div>
 
 <script>
-// ── BOOT SEQUENCE ──
 function triggerBoot() {
     const btn = document.getElementById('pwr-btn');
     if(btn.classList.contains('active')) return;
-    
     btn.classList.add('active');
-    document.getElementById('boot-logo').style.display = 'block';
     
     const status = document.getElementById('boot-status');
-    const stages = [
-        "DECRYPTING RIP_DEAD...", 
-        "BYPASSING CAINE.SYS...", 
-        "MEM-CHK: 640KB OK", 
-        "LOADING PARANOIA.DLL...", 
-        "WELCOME, KINGER"
-    ];
+    const logo = document.getElementById('ca-logo');
+    const stages = ["INITIALIZING...", "DETECTING C&A HARDWARE...", "LOADING KERNEL...", "READY."];
     
     let i = 0;
     const interval = setInterval(() => {
         status.innerText = stages[i];
+        if(i === 1) logo.style.display = 'block'; 
         i++;
         if(i >= stages.length) {
             clearInterval(interval);
@@ -229,48 +155,34 @@ function triggerBoot() {
                 setTimeout(() => {
                     document.getElementById('boot-screen').style.display = 'none';
                     document.getElementById('desktop').style.display = 'block';
+                    setInterval(updateClock, 1000);
                     updateClock();
-                }, 1500);
-            }, 500);
+                }, 1200);
+            }, 800);
         }
-    }, 700);
+    }, 800);
 }
 
-// ── WINDOW CONTROLS ──
 function toggleWin(id) {
     const win = document.getElementById(id);
     win.style.display = (win.style.display === 'block') ? 'none' : 'block';
 }
 
-// ── CLOCK ──
 function updateClock() {
     const now = new Date();
     document.getElementById('clock').innerText = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-    setTimeout(updateClock, 60000);
 }
 
-// ── DRAGGABLE LOGIC ──
+// Drag functionality
 document.querySelectorAll('.title-bar').forEach(header => {
     header.onmousedown = function(e) {
         let win = header.parentElement;
-        // Bring to front
-        document.querySelectorAll('.window').forEach(w => w.style.zIndex = "10");
-        win.style.zIndex = "20";
-
         let shiftX = e.clientX - win.getBoundingClientRect().left;
         let shiftY = e.clientY - win.getBoundingClientRect().top;
-
-        function moveAt(pageX, pageY) {
-            win.style.left = pageX - shiftX + 'px';
-            win.style.top = pageY - shiftY + 'px';
-        }
-
+        function moveAt(px, py) { win.style.left = px - shiftX + 'px'; win.style.top = py - shiftY + 'px'; }
         function onMouseMove(e) { moveAt(e.clientX, e.clientY); }
         document.addEventListener('mousemove', onMouseMove);
-        document.onmouseup = () => {
-            document.removeEventListener('mousemove', onMouseMove);
-            document.onmouseup = null;
-        };
+        document.onmouseup = () => { document.removeEventListener('mousemove', onMouseMove); };
     };
 });
 </script>
