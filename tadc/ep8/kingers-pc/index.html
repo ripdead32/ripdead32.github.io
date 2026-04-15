@@ -5,7 +5,7 @@
 <title>Rip_Dead Site -Kinger's PC Simulation</title>
 <link rel="icon" type="image/x-icon" href="pc.ico">
 <style>
-/* ── C&A CORPORATE STYLE ── */
+/* ── C&A CORPORATE PROTOCOL ── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root {
     --bg-gray: #c0c0c0;
@@ -16,170 +16,249 @@
     --border-black: #000000;
 }
 
-html, body { 
-    width: 100%; height: 100%; 
+body { 
+    width: 100vw; height: 100vh; 
     background: #000; 
-    font-family: 'Tahoma', 'MS Sans Serif', Arial, sans-serif; 
-    font-size: 11px; 
-    overflow: hidden; 
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Tahoma', 'MS Sans Serif', sans-serif;
+    overflow: hidden;
 }
 
-/* ── C&A MONITOR BOOT ── */
-#boot-screen {
-    position: fixed; inset: 0; 
-    display: flex; align-items: center; justify-content: center; 
-    background: #000; z-index: 9999; 
-    transition: opacity 1.2s ease-in-out;
-}
-.monitor {
-    width: 620px; padding: 45px;
-    background: linear-gradient(160deg, #5a5a8a, #3a3a6a);
-    border-radius: 25px;
-    box-shadow: 0 25px 60px rgba(0,0,0,0.9), inset 0 2px 10px rgba(255,255,255,0.1);
+/* ── THE MONITOR HOUSING ── */
+.monitor-housing {
+    width: 90vw; max-width: 900px; padding: 35px 35px 55px;
+    background: linear-gradient(160deg, #6a6a9a, #3a3a6a 50%, #2a2a4a);
+    border-radius: 30px;
+    box-shadow: 0 40px 100px rgba(0,0,0,0.9), inset 0 2px 10px rgba(255,255,255,0.2);
     position: relative;
+    border: 4px solid #1a1a2e;
 }
-.screen-bezel {
-    background: #1a1a1a; padding: 12px; border-radius: 8px;
-    box-shadow: inset 0 0 20px #000;
+
+.bezel {
+    background: #111; padding: 12px; border-radius: 10px;
+    box-shadow: inset 0 0 30px #000;
 }
-.screen-glass {
+
+/* ── THE CRT TUBE ── */
+.crt-screen {
     width: 100%; aspect-ratio: 4/3;
-    background: #e1eef4; border-radius: 4px;
-    position: relative; overflow: hidden;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    background: #020202; /* Off state */
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+    display: flex; flex-direction: column;
 }
 
-/* The CnA.png Logo Styling */
+/* CRT Glass Reflection & Scanlines */
+.crt-screen::before {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 50%, rgba(0,0,0,0.1) 100%);
+    z-index: 1001; pointer-events: none;
+}
+.crt-screen::after {
+    content: ""; position: absolute; inset: 0;
+    background: repeating-linear-gradient(rgba(0,0,0,0.1) 0px, rgba(0,0,0,0.1) 1px, transparent 2px);
+    pointer-events: none; z-index: 1000;
+}
+
+/* ── BOOT SEQUENCE ── */
+#boot-content {
+    position: absolute; inset: 0;
+    background: #e1eef4;
+    display: none;
+    flex-direction: column; align-items: center; justify-content: center;
+    z-index: 10;
+}
+
 #ca-logo {
-    max-width: 180px; 
-    max-height: 120px;
-    height: auto;
-    margin-bottom: 20px;
-    display: none; /* Appears during hardware check */
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
-}
-
-.monitor-btn {
-    width: 20px; height: 20px; position: absolute; bottom: 15px; right: 60px;
-    background: radial-gradient(circle at 35% 35%, #777, #222);
-    border: 2px solid #444; border-radius: 50%;
-    cursor: pointer;
-}
-.monitor-btn.active {
-    background: radial-gradient(circle at 35% 35%, #5dfc60, #1a8a1e);
-    box-shadow: 0 0 12px rgba(93, 252, 96, 0.5);
+    max-width: 250px; max-height: 150px;
+    object-fit: contain;
+    margin-bottom: 25px;
+    display: none;
 }
 
 #boot-status {
-    color: #333; font-family: 'Courier New', monospace; font-weight: bold;
-    text-align: center; height: 20px; font-size: 12px;
+    color: #222; font-family: 'Courier New', monospace; 
+    font-size: 14px; font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
-/* ── DESKTOP & UI ── */
-#desktop { width: 100vw; height: 100vh; background: #008080; display: none; }
-.icon { width: 85px; padding: 10px; display: flex; flex-direction: column; align-items: center; color: white; cursor: pointer; position: absolute; }
-.icon-text { text-shadow: 1px 1px black; text-align: center; padding-top: 4px; }
+/* ── DESKTOP UI ── */
+#desktop {
+    position: absolute; inset: 0;
+    background: #008080;
+    display: none;
+    flex-direction: column;
+    z-index: 5;
+}
 
-.window { position: absolute; background: var(--bg-gray); border: 2px solid; border-color: var(--border-bright) var(--border-dark) var(--border-dark) var(--border-bright); box-shadow: 1px 1px 0 var(--border-black); display: none; z-index: 10; }
-.title-bar { background: linear-gradient(90deg, var(--win-blue), var(--win-blue-light)); color: white; padding: 3px 5px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; cursor: move; }
-.window-body { padding: 8px; height: calc(100% - 25px); }
+.icon { width: 75px; padding: 8px; color: white; cursor: pointer; text-align: center; margin: 15px; position: relative; }
+.icon:hover { background: rgba(0,0,128,0.2); }
+.icon-text { text-shadow: 1px 1px black; font-size: 10px; margin-top: 5px; font-weight: bold; }
 
-#taskbar { position: fixed; bottom: 0; width: 100%; height: 28px; background: var(--bg-gray); border-top: 2px solid var(--border-bright); display: flex; align-items: center; padding: 2px; z-index: 1000; }
-#start-btn { font-weight: bold; height: 22px; padding: 0 8px; border: 2px solid; border-color: var(--border-bright) var(--border-dark) var(--border-dark) var(--border-bright); background: var(--bg-gray); cursor: pointer; }
-#clock { margin-left: auto; border: 1px inset; padding: 2px 8px; background: var(--bg-gray); }
+.window { 
+    position: absolute; background: var(--bg-gray); 
+    border: 2px solid; border-color: var(--border-bright) var(--border-dark) var(--border-dark) var(--border-bright); 
+    display: none; z-index: 100; box-shadow: 1px 1px 0 #000; 
+}
+.title-bar { 
+    background: linear-gradient(90deg, var(--win-blue), var(--win-blue-light)); 
+    color: white; padding: 3px 6px; font-weight: bold; 
+    display: flex; justify-content: space-between; align-items: center; cursor: move; 
+}
+
+#taskbar { margin-top: auto; height: 30px; background: var(--bg-gray); border-top: 2px solid var(--border-bright); display: flex; align-items: center; padding: 2px 4px; z-index: 200; }
+#start-btn { font-weight: bold; height: 24px; padding: 0 10px; border: 2px solid; border-color: var(--border-bright) var(--border-dark) var(--border-dark) var(--border-bright); background: var(--bg-gray); cursor: pointer; }
+#start-btn:active { border-color: var(--border-dark) var(--border-bright) var(--border-bright) var(--border-dark); padding: 1px 9px 0 11px; }
+
+/* ── HARDWARE BUTTONS ── */
+.power-led {
+    position: absolute; bottom: 22px; right: 90px;
+    width: 8px; height: 8px; background: #200; border-radius: 50%;
+    transition: 0.3s;
+}
+.power-led.on { background: #0f0; box-shadow: 0 0 10px #0f0; }
+
+.pwr-btn {
+    position: absolute; bottom: 15px; right: 45px;
+    width: 25px; height: 25px; border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #999, #333);
+    border: 2px solid #222; cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+.pwr-btn:active { transform: translateY(1px); box-shadow: 0 1px 2px rgba(0,0,0,0.5); }
+
 </style>
 </head>
 <body>
 
-<div id="boot-screen">
-    <div class="monitor">
-        <div class="screen-bezel">
-            <div class="screen-glass">
+<div class="monitor-housing">
+    <div class="bezel">
+        <div class="crt-screen" id="main-screen">
+            
+            <div id="boot-content">
                 <img id="ca-logo" src="CnA.png" alt="C&A Logo">
                 <div id="boot-status"></div>
             </div>
-        </div>
-        <div class="monitor-btn" id="pwr-btn" onclick="triggerBoot()"></div>
-        <p style="color: rgba(255,255,255,0.2); position: absolute; bottom: 15px; left: 45px; font-size: 10px;">C&A DEVELOPMENT & AESTHETICS &copy; 1995</p>
-    </div>
-</div>
 
-<div id="desktop">
-    <div class="icon" style="top: 10px; left: 10px;" ondblclick="toggleWin('explorer')">
-        <div style="font-size:32px">📂</div>
-        <div class="icon-text">My Computer</div>
-    </div>
+            <div id="desktop">
+                <div class="icon" ondblclick="toggleWin('explorer-win')">
+                    <div style="font-size:32px">📂</div>
+                    <div class="icon-text">My Computer</div>
+                </div>
 
-    <div id="explorer" class="window" style="top:60px; left:140px; width:450px; height:300px;">
-        <div class="title-bar">
-            <span>C:\CANDA\System32\Agents</span>
-            <div onclick="toggleWin('explorer')" style="cursor:pointer; background:#c0c0c0; color:black; padding:0 4px; border:1px solid #000;">✕</div>
-        </div>
-        <div class="window-body">
-            <div style="background:white; border: 2px inset; height: 100%; padding: 12px;">
-                <p>Proprietary Agent Management Interface</p>
-                <hr style="margin:10px 0">
-                <div style="text-align: center; width: 80px;">
-                    <div style="font-size:48px;">🎩</div>
-                    <p style="font-weight:bold">CAINE.EXE</p>
+                <div id="explorer-win" class="window" style="top:30px; left:50px; width:350px; height:220px;">
+                    <div class="title-bar">
+                        <span style="font-size:11px">C:\C&A\Admin_Tools</span>
+                        <div onclick="toggleWin('explorer-win')" style="cursor:pointer; width:16px; height:14px; background:var(--bg-gray); color:black; border:1px solid #000; text-align:center; line-height:12px; font-size:9px;">✕</div>
+                    </div>
+                    <div style="padding:15px; height:calc(100% - 25px); background:white; border:2px inset; overflow:auto;">
+                        <p style="font-weight:bold; color:navy;">SYSTEM DIRECTORY</p>
+                        <hr style="margin:8px 0">
+                        <div style="display:flex; gap:20px;">
+                             <div style="text-align:center; cursor:pointer;" onclick="alert('ERROR: File corrupted by abstraction.')">
+                                 <div style="font-size:30px">📄</div>
+                                 <p style="font-size:9px">Exit.txt</p>
+                             </div>
+                             <div style="text-align:center;">
+                                 <div style="font-size:30px">🎩</div>
+                                 <p style="font-size:9px">Purge.exe</p>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="taskbar">
+                    <button id="start-btn">Start</button>
+                    <div id="clock" style="margin-left:auto; border:1px inset; padding:2px 10px; background:var(--bg-gray); font-size:11px;">12:00 PM</div>
                 </div>
             </div>
+
         </div>
     </div>
-
-    <div id="taskbar">
-        <button id="start-btn">Start</button>
-        <div id="clock">12:00 PM</div>
-    </div>
+    
+    <div class="power-led" id="led"></div>
+    <div class="pwr-btn" onclick="systemBoot()"></div>
+    <div style="position:absolute; bottom:18px; left:50%; transform:translateX(-50%); color:rgba(255,255,255,0.15); font-family:'Arial Black'; letter-spacing:6px; font-size:12px; pointer-events:none;">C & A</div>
 </div>
 
 <script>
-function triggerBoot() {
-    const btn = document.getElementById('pwr-btn');
-    if(btn.classList.contains('active')) return;
-    btn.classList.add('active');
+let powerOn = false;
+
+function systemBoot() {
+    if(powerOn) return;
+    powerOn = true;
     
+    document.getElementById('led').classList.add('on');
+    const boot = document.getElementById('boot-content');
     const status = document.getElementById('boot-status');
     const logo = document.getElementById('ca-logo');
-    const stages = ["INITIALIZING...", "DETECTING C&A HARDWARE...", "LOADING KERNEL...", "READY."];
+    
+    boot.style.display = 'flex';
+    
+    const steps = [
+        "BIOS ver 2.0.4...", 
+        "MEM CHECK: 640K OK", 
+        "MOUNTING C&A HARDWARE...", 
+        "SEARCHING FOR AGENTS...", 
+        "WELCOME ADMIN"
+    ];
     
     let i = 0;
-    const interval = setInterval(() => {
-        status.innerText = stages[i];
-        if(i === 1) logo.style.display = 'block'; 
+    const timer = setInterval(() => {
+        status.innerText = steps[i];
+        if(steps[i].includes("C&A")) logo.style.display = 'block';
         i++;
-        if(i >= stages.length) {
-            clearInterval(interval);
+        
+        if(i >= steps.length) {
+            clearInterval(timer);
             setTimeout(() => {
-                document.getElementById('boot-screen').style.opacity = '0';
-                setTimeout(() => {
-                    document.getElementById('boot-screen').style.display = 'none';
-                    document.getElementById('desktop').style.display = 'block';
-                    setInterval(updateClock, 1000);
-                    updateClock();
-                }, 1200);
-            }, 800);
+                boot.style.display = 'none';
+                document.getElementById('desktop').style.display = 'flex';
+                startClock();
+            }, 1200);
         }
-    }, 800);
+    }, 900);
 }
 
 function toggleWin(id) {
-    const win = document.getElementById(id);
-    win.style.display = (win.style.display === 'block') ? 'none' : 'block';
+    const w = document.getElementById(id);
+    w.style.display = (w.style.display === 'block') ? 'none' : 'block';
 }
 
-function updateClock() {
-    const now = new Date();
-    document.getElementById('clock').innerText = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+function startClock() {
+    const update = () => {
+        const now = new Date();
+        document.getElementById('clock').innerText = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+    };
+    update();
+    setInterval(update, 1000);
 }
 
-// Drag functionality
+// ── DRAG LOGIC ──
 document.querySelectorAll('.title-bar').forEach(header => {
     header.onmousedown = function(e) {
         let win = header.parentElement;
+        let screen = document.getElementById('main-screen').getBoundingClientRect();
+        
         let shiftX = e.clientX - win.getBoundingClientRect().left;
         let shiftY = e.clientY - win.getBoundingClientRect().top;
-        function moveAt(px, py) { win.style.left = px - shiftX + 'px'; win.style.top = py - shiftY + 'px'; }
+
+        function moveAt(pageX, pageY) {
+            let newX = pageX - shiftX - screen.left;
+            let newY = pageY - shiftY - screen.top;
+            
+            // Boundary checks to keep windows on the CRT screen
+            if(newX < 0) newX = 0;
+            if(newY < 0) newY = 0;
+            if(newX + win.offsetWidth > screen.width) newX = screen.width - win.offsetWidth;
+            if(newY + win.offsetHeight > screen.height) newY = screen.height - win.offsetHeight;
+
+            win.style.left = newX + 'px';
+            win.style.top = newY + 'px';
+        }
+
         function onMouseMove(e) { moveAt(e.clientX, e.clientY); }
         document.addEventListener('mousemove', onMouseMove);
         document.onmouseup = () => { document.removeEventListener('mousemove', onMouseMove); };
