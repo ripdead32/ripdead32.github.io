@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Rip_Dead Site -Kinger's PC Simulation</title>
+<title>C&A System Administration - Kinger's PC</title>
 <link rel="icon" type="image/x-icon" href="pc.ico">
 <style>
 /* ── C&A CORPORATE PROTOCOL ── */
@@ -22,36 +22,35 @@ body { width: 100vw; height: 100vh; background: #000; display: flex; align-items
 /* ── THE YELLOW MONITOR ── */
 .monitor-housing {
     width: 90vw; max-width: 900px; padding: 35px 35px 55px;
-    background: var(--monitor-yellow);
-    border-radius: 30px;
+    background: var(--monitor-yellow); border-radius: 30px;
     box-shadow: 0 40px 100px rgba(0,0,0,0.9), inset 2px 2px 10px #fff;
-    position: relative;
-    border: 4px solid #c4b58d;
+    position: relative; border: 4px solid #c4b58d;
 }
 
 .bezel { background: #1a1a1a; padding: 12px; border-radius: 10px; box-shadow: inset 0 0 30px #000; }
 .crt-screen { width: 100%; aspect-ratio: 4/3; background: #000; border-radius: 4px; position: relative; overflow: hidden; display: flex; flex-direction: column; }
-.crt-screen::after { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(rgba(0,0,0,0.1) 0px, rgba(0,0,0,0.1) 1px, transparent 2px); pointer-events: none; z-index: 1000; }
+.crt-screen::after { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(rgba(0,0,0,0.05) 0px, rgba(0,0,0,0.05) 1px, transparent 2px); pointer-events: none; z-index: 1000; }
 
-/* ── SCREEN STATES ── */
 #boot-content, #desktop, #shutdown-screen { position: absolute; inset: 0; display: none; flex-direction: column; }
 #boot-content { background: #e1eef4; align-items: center; justify-content: center; z-index: 10; }
 #desktop { background: #008080; z-index: 5; }
 #shutdown-screen { background: #000; color: #df9000; align-items: center; justify-content: center; text-align: center; font-family: 'Courier New', monospace; font-size: 22px; padding: 40px; z-index: 15; }
 
-/* Retro Logo */
-.retro-logo { font-family: 'Arial Black', sans-serif; font-size: 60px; color: #000; letter-spacing: -4px; }
-.retro-logo span { color: #d00; }
+/* Logo Styling */
+#cna-logo-img { 
+    max-width: 280px; 
+    max-height: 180px; 
+    object-fit: contain; 
+    display: none; 
+    margin-bottom: 20px;
+}
 
-/* ── WINDOWS & UI ── */
+/* ── WINDOWS & TERMINAL ── */
 .window { position: absolute; background: var(--bg-gray); border: 2px solid; border-color: var(--border-bright) var(--border-dark) var(--border-dark) var(--border-bright); display: none; z-index: 100; box-shadow: 1px 1px 0 #000; }
 .title-bar { background: linear-gradient(90deg, var(--win-blue), var(--win-blue-light)); color: white; padding: 3px 6px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; cursor: move; font-size: 11px; }
-.close-btn { width: 16px; height: 14px; background: var(--bg-gray); border: 1px solid #000; color: black; font-size: 9px; text-align: center; cursor: pointer; line-height: 12px; }
 
-/* Terminal Styling */
-.terminal-body { background: #000; color: #0f0; font-family: 'Courier New', monospace; padding: 15px; height: calc(100% - 25px); overflow-y: auto; font-size: 13px; line-height: 1.4; }
-.cursor { display: inline-block; width: 8px; height: 15px; background: #0f0; animation: blink 1s infinite; vertical-align: middle; }
-@keyframes blink { 50% { opacity: 0; } }
+.terminal-body { background: #000; color: #0f0; font-family: 'Courier New', monospace; padding: 15px; height: calc(100% - 25px); overflow-y: auto; font-size: 13px; outline: none; }
+#term-input { background: transparent; border: none; color: #0f0; font-family: inherit; font-size: inherit; outline: none; width: 60%; }
 
 .icon { width: 75px; padding: 8px; color: white; cursor: pointer; text-align: center; margin: 15px; }
 .icon-text { text-shadow: 1px 1px #000; font-size: 10px; }
@@ -65,15 +64,17 @@ body { width: 100vw; height: 100vh; background: #000; display: flex; align-items
 .pwr-btn { position: absolute; bottom: 15px; right: 45px; width: 25px; height: 25px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #999, #333); border: 2px solid #222; cursor: pointer; }
 </style>
 </head>
-<body>
+<body onclick="focusTerm()">
+
+<audio id="startup-sound" src="startup.mp3" preload="auto"></audio>
 
 <div class="monitor-housing">
     <div class="bezel">
         <div class="crt-screen" id="main-screen">
             
             <div id="boot-content">
-                <div class="retro-logo">C<span>&</span>A</div>
-                <div id="boot-status"></div>
+                <img id="cna-logo-img" src="cna.png" alt="C&A Logo">
+                <div id="boot-status" style="font-family: monospace; font-weight: bold; color: #333;">OFFLINE</div>
             </div>
 
             <div id="desktop">
@@ -82,10 +83,10 @@ body { width: 100vw; height: 100vh; background: #000; display: flex; align-items
                     <div class="icon-text">Admin Files</div>
                 </div>
 
-                <div id="files-win" class="window" style="top:20px; left:20px; width:320px; height:220px;">
+                <div id="files-win" class="window" style="top:20px; left:20px; width:320px; height:200px;">
                     <div class="title-bar">
                         <span>C:\C&A\SYSTEM</span>
-                        <div class="close-btn" onclick="toggleWin('files-win')">✕</div>
+                        <div onclick="toggleWin('files-win')" style="cursor:pointer; padding: 0 4px; border: 1px solid #000; background: #c0c0c0;">✕</div>
                     </div>
                     <div style="padding:15px; background:white; height:calc(100% - 21px); border:2px inset; display:flex; gap:25px;">
                         <div style="text-align:center; cursor:pointer;" ondblclick="toggleWin('terminal-win')">
@@ -99,20 +100,25 @@ body { width: 100vw; height: 100vh; background: #000; display: flex; align-items
                     </div>
                 </div>
 
-                <div id="terminal-win" class="window" style="top:40px; left:60px; width:450px; height:300px;">
+                <div id="terminal-win" class="window" style="top:40px; left:60px; width:500px; height:350px;">
                     <div class="title-bar">
-                        <span>C&A Command Prompt - CAINE_MEMORY_BLOCK</span>
-                        <div class="close-btn" onclick="toggleWin('terminal-win')">✕</div>
+                        <span>C&A Command Prompt - CAINE_V2</span>
+                        <div onclick="toggleWin('terminal-win')" style="cursor:pointer; padding: 0 4px; border: 1px solid #000; background: #c0c0c0;">✕</div>
                     </div>
-                    <div class="terminal-body" id="term-body">
-                        <div id="term-output"></div>
-                        <span id="term-typing"></span><span class="cursor"></span>
+                    <div class="terminal-body" id="terminal-screen" onclick="focusTerm()">
+                        <div id="terminal-history">
+                            (C) 1996, DIGITAL CIRCUS MAINFRAME, CAINE MEMORY BLOCK<br><br>
+                        </div>
+                        <div id="input-line">
+                            <span id="prompt-label">login: </span>
+                            <input type="text" id="term-input" autocomplete="off" autofocus>
+                        </div>
                     </div>
                 </div>
 
                 <div id="taskbar">
-                    <button id="start-btn" onclick="alert('System busy: CAINE process active.')">Start</button>
-                    <div id="clock" style="margin-left:auto; border:1px inset; padding:0 10px; font-size:11px;">12:00 PM</div>
+                    <button id="start-btn" onclick="initShutdown()">Start</button>
+                    <div id="clock" style="margin-left:auto; border:1px inset; padding:0 10px; font-size:11px; background: #c0c0c0;">12:00 PM</div>
                 </div>
             </div>
 
@@ -122,13 +128,52 @@ body { width: 100vw; height: 100vh; background: #000; display: flex; align-items
 
         </div>
     </div>
-    
     <div class="power-led" id="led"></div>
     <div class="pwr-btn" onclick="togglePhysicalPower()"></div>
 </div>
 
 <script>
 let pcStatus = "OFF";
+let currentStep = "LOGIN";
+const history = document.getElementById('terminal-history');
+const input = document.getElementById('term-input');
+const label = document.getElementById('prompt-label');
+
+function focusTerm() { input.focus(); }
+
+input.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+        const val = input.value.trim().toLowerCase();
+        history.innerHTML += label.innerText + (currentStep === "PASSWORD" ? "********" : input.value) + "<br>";
+        processCommand(val);
+        input.value = "";
+        document.getElementById('terminal-screen').scrollTop = document.getElementById('terminal-screen').scrollHeight;
+    }
+});
+
+function processCommand(val) {
+    if (val === "help") {
+        history.innerHTML += "Available credentials located in 'Admin Files' directory. Hint: check member relationships.<br>";
+        return;
+    }
+    if (currentStep === "LOGIN") {
+        if (val === "kinger") {
+            currentStep = "PASSWORD";
+            label.innerText = "password: ";
+            input.type = "password";
+        } else { history.innerHTML += "Invalid login.<br>"; }
+    } else if (currentStep === "PASSWORD") {
+        if (val === "queenie123") {
+            currentStep = "COMMAND";
+            label.innerText = "C:\\> ";
+            input.type = "text";
+            history.innerHTML += "<br><span style='color:cyan;'>message-from-RD@Site:</span> did you really think im coding an entire terminal? nah jokes on you i'd roll<br><br>";
+        } else {
+            history.innerHTML += "Access Denied.<br>";
+            currentStep = "LOGIN"; label.innerText = "login: "; input.type = "text";
+        }
+    } else { history.innerHTML += "Unknown command: " + val + "<br>"; }
+}
 
 function togglePhysicalPower() {
     const led = document.getElementById('led');
@@ -138,67 +183,38 @@ function togglePhysicalPower() {
         document.getElementById('boot-content').style.display = 'flex';
         runBoot();
     } else {
-        location.reload();
+        location.reload(); // Physical reset
     }
 }
 
 function runBoot() {
     const status = document.getElementById('boot-status');
-    const stages = ["BIOS INIT...", "MEM CHK...", "C&A READY."];
+    const logoImg = document.getElementById('cna-logo-img');
+    const audio = document.getElementById('startup-sound');
+    const stages = ["BIOS INIT...", "SCANNING SECTORS...", "MEMORY OK", "C&A HARDWARE DETECTED", "READY."];
     let i = 0;
+    
+    // Audio starts shortly after power-on
+    setTimeout(() => { audio.play().catch(e => {}); }, 1000);
+
     const t = setInterval(() => {
-        status.innerText = stages[i++];
-        if (i > stages.length) {
-            clearInterval(t);
-            document.getElementById('boot-content').style.display = 'none';
-            document.getElementById('desktop').style.display = 'flex';
-            pcStatus = "ON";
-            startClock();
-            startTerminalSequence();
+        status.innerText = stages[i];
+        if (stages[i] === "C&A HARDWARE DETECTED") {
+            logoImg.style.display = 'block';
         }
-    }, 800);
-}
-
-// ── NEW TERMINAL SEQUENCE ──
-async function startTerminalSequence() {
-    const output = document.getElementById('term-output');
-    const typing = document.getElementById('term-typing');
-    
-    const lines = [
-        "(C) 1996, DIGITAL CIRCUS MAINFRAME, CAINE MEMORY BLOCK",
-        "",
-        "login: "
-    ];
-
-    for(let line of lines) {
-        output.innerHTML += line + "<br>";
-        await new Promise(r => setTimeout(r, 400));
-    }
-
-    await typeEffect(typing, "kinger", 200);
-    output.innerHTML += "kinger<br>password: ";
-    typing.innerHTML = "";
-    
-    await typeEffect(typing, "queenie123", 150);
-    output.innerHTML += "**********<br><br>";
-    typing.innerHTML = "";
-
-    await new Promise(r => setTimeout(r, 600));
-    output.innerHTML += "<span style='color:cyan;'>message-from-RD@Site:</span> did you really think im coding an entire terminal? nah jokes on you i'd roll<br><br>";
-    output.innerHTML += "C:\\> ";
-}
-
-function typeEffect(element, text, speed) {
-    return new Promise(resolve => {
-        let i = 0;
-        const t = setInterval(() => {
-            element.innerHTML += text[i++];
-            if (i >= text.length) {
-                clearInterval(t);
-                setTimeout(resolve, 500);
-            }
-        }, speed);
-    });
+        i++;
+        if (i >= stages.length) {
+            clearInterval(t);
+            setTimeout(() => {
+                document.getElementById('boot-content').style.display = 'none';
+                document.getElementById('desktop').style.display = 'flex';
+                pcStatus = "ON";
+                setInterval(() => {
+                    document.getElementById('clock').innerText = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                }, 1000);
+            }, 1000);
+        }
+    }, 1400); // Timed to finish around the 7-8 second mark
 }
 
 function toggleWin(id) {
@@ -206,15 +222,12 @@ function toggleWin(id) {
     w.style.display = (w.style.display === 'block') ? 'none' : 'block';
 }
 
-function startClock() {
-    const clock = document.getElementById('clock');
-    setInterval(() => {
-        const now = new Date();
-        clock.innerText = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-    }, 1000);
+function initShutdown() {
+    document.getElementById('desktop').style.display = 'none';
+    document.getElementById('shutdown-screen').style.display = 'flex';
 }
 
-// Drag logic
+// Win95-style dragging
 document.querySelectorAll('.title-bar').forEach(header => {
     header.onmousedown = function(e) {
         let win = header.parentElement;
