@@ -93,7 +93,7 @@
 
                 <div id="terminal-win" class="window" style="top:40px; left:60px; width:500px; height:350px;">
                     <div class="title-bar">
-                        <span>C&A Command Prompt - CAINE_V2</span>
+                        <span>Cmd</span>
                         <div onclick="toggleWin('terminal-win')" style="cursor:pointer; padding:0 3px; border:1px solid #000; background:#c0c0c0; color:#000;">✕</div>
                     </div>
                     <div class="terminal-body" id="terminal-screen" onclick="focusTerm()">
@@ -135,7 +135,7 @@
     input.addEventListener('keydown', function(e) {
         if (e.key === 'Enter') {
             const val = input.value.trim().toLowerCase();
-            history.innerHTML += label.innerText + (currentStep === "PASSWORD" ? "********" : input.value) + "<br>";
+            history.innerHTML += label.innerText + (currentStep === "PASSWORD" ? "queenie123" : input.value) + "<br>";
             processCommand(val);
             input.value = "";
             document.getElementById('terminal-screen').scrollTop = document.getElementById('terminal-screen').scrollHeight;
