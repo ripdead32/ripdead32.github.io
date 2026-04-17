@@ -22,7 +22,7 @@
         }
 
         body {
-            background-color: #0f0f0f;
+            background-color: #0a0a0a;
             margin: 0;
             display: flex;
             align-items: center;
@@ -33,135 +33,95 @@
             cursor: url('https://cur.cursors-4u.net/games/gam-4/gam384.cur'), auto;
         }
 
-        #workspace {
-            position: relative;
-            display: flex;
-            align-items: flex-end;
-            gap: 50px;
-        }
+        #workspace { position: relative; display: flex; align-items: flex-end; gap: 50px; }
 
-        /* --- THE WIRES --- */
-        .cable {
-            position: absolute;
-            background: #1a1a1a;
-            z-index: -1;
-            border-radius: 5px;
-        }
-        #power-cable { width: 200px; height: 10px; bottom: 30px; left: 100px; transform: rotate(-15deg); }
-        #mon-cable { width: 150px; height: 14px; bottom: 50px; left: 160px; background: #222; }
+        /* Cables */
+        .cable { position: absolute; background: #111; z-index: -1; border-radius: 5px; }
+        #p-cable { width: 180px; height: 10px; bottom: 30px; left: 80px; transform: rotate(-10deg); }
 
-        /* --- PC TOWER --- */
+        /* PC Case */
         #pc-case {
-            width: 190px; height: 490px;
-            background: #dcdcdc;
-            border: 4px solid #fff;
+            width: 190px; height: 500px;
+            background: #dcdcdc; border: 4px solid #fff;
             border-right-color: #888; border-bottom-color: #888;
             display: flex; flex-direction: column; align-items: center;
             box-shadow: 20px 20px 50px #000;
         }
 
-        .drive-bay { width: 130px; height: 14px; background: #111; margin-top: 35px; border: 2px solid #aaa; position: relative; }
-        .drive-bay::after { content: ''; position: absolute; left: 10px; top: 4px; width: 30px; height: 2px; background: #444; }
-
-        #case-brand {
-            margin-top: 15px;
-            text-align: center;
-            font-family: sans-serif;
-            font-weight: bold;
-        }
-        
-        #compat-badge {
-            margin-top: 5px;
-            padding: 2px 5px;
-            border: 1px solid #999;
-            font-size: 9px;
-            color: #444;
-            background: #eee;
-        }
+        .drive { width: 130px; height: 12px; background: #000; margin-top: 40px; border: 2px solid #999; }
+        #compat-badge { margin-top: 20px; padding: 3px 6px; border: 1px solid #999; font-size: 9px; background: #eee; color: #333; }
 
         #power-btn {
-            width: 55px; height: 55px; border-radius: 50%;
+            width: 60px; height: 60px; border-radius: 50%;
             background: #c0c0c0; border: 4px solid #fff;
             border-right-color: #777; border-bottom-color: #777;
-            margin-top: auto; margin-bottom: 25px; cursor: pointer;
-            box-shadow: 0 0 5px rgba(0,0,0,0.2);
+            margin-top: auto; margin-bottom: 30px; cursor: pointer;
         }
-        #power-btn:active { border-color: #777 #fff #fff #777; transform: translateY(1px); }
-
-        #led { width: 10px; height: 10px; border-radius: 50%; background: #300; margin-bottom: 15px; transition: 0.1s; }
+        #power-btn:active { border-color: #777 #fff #fff #777; }
+        #led { width: 12px; height: 12px; border-radius: 50%; background: #300; margin-bottom: 20px; }
         #led.on { background: #0f0; box-shadow: 0 0 10px #0f0; }
 
-        /* --- MONITOR --- */
-        #monitor {
-            background: #dcdcdc; padding: 25px; border-radius: 10px;
-            border-bottom: 15px solid #888; box-shadow: 0 40px 80px #000;
-        }
+        /* Monitor */
+        #monitor { background: #dcdcdc; padding: 25px; border-radius: 10px; border-bottom: 15px solid #888; }
+        #screen-box { width: 800px; height: 600px; background: #000; border: 18px solid #222; position: relative; overflow: hidden; }
 
-        #screen-box {
-            width: 800px; height: 600px; background: #000;
-            border: 18px solid #282828; position: relative; overflow: hidden;
-            border-radius: 5px;
-        }
-
-        /* --- OS LAYERS --- */
-        .layer { display: none; width: 100%; height: 100%; position: absolute; }
-        
+        /* Layers */
+        .layer { display: none; width: 100%; height: 100%; position: absolute; top:0; left:0; }
         #bios { background: #000; color: #fff; padding: 25px; font-family: monospace; font-size: 18px; }
-
-        #win-boot { 
-            background: #000; display: none; 
-            flex-direction: column; align-items: center; justify-content: center;
-        }
-
+        #win-boot { background: #000; display: none; flex-direction: column; align-items: center; justify-content: center; }
         #desktop { background: var(--bg-teal); }
 
-        /* --- DESKTOP UI --- */
-        .icon {
-            width: 80px; margin: 15px; text-align: center; color: white;
-            font-size: 11px; text-shadow: 1px 1px #000; cursor: pointer;
+        /* ICONS - THE FIX */
+        .icon-container {
+            width: 80px; height: 80px;
+            margin: 15px;
+            display: flex; flex-direction: column; align-items: center;
+            cursor: pointer;
+            z-index: 5;
+            position: relative;
         }
-        .icon img { width: 32px; height: 32px; display: block; margin: 0 auto 5px; }
+        .icon-container img { width: 32px; height: 32px; pointer-events: none; }
+        .icon-label {
+            color: white; font-size: 11px; margin-top: 4px;
+            text-shadow: 1px 1px #000; padding: 1px 3px;
+        }
+        /* Visual feedback for clicking */
+        .icon-container:focus .icon-label { background: #000080; }
+        .icon-container:focus img { filter: sepia(100%) hue-rotate(190deg) saturate(500%); opacity: 0.7; }
 
+        /* WINDOWS */
         .window {
-            position: absolute; top: 100px; left: 150px; width: 420px;
+            position: absolute; top: 80px; left: 120px; width: 450px;
             background: var(--silver); border: 2px solid;
-            border-color: var(--white) var(--dark-gray) var(--dark-gray) var(--white);
-            z-index: 100; display: none; padding: 2px;
+            border-color: #fff #555 #555 #fff;
+            z-index: 100; display: none; flex-direction: column;
         }
         .title-bar {
             background: linear-gradient(90deg, var(--blue-title), #1084d0);
             color: white; padding: 3px 6px; font-weight: bold; font-size: 13px;
             display: flex; justify-content: space-between; align-items: center;
         }
-        .win-body { padding: 15px; background: #fff; border: 1px inset #888; min-height: 200px; }
-
-        .close-btn { width: 16px; height: 14px; background: var(--silver); border: 1px solid; border-color: #fff #555 #555 #fff; font-size: 9px; cursor: pointer; }
+        .close-btn { width: 16px; height: 14px; background: var(--silver); border: 1px solid; border-color: #fff #555 #555 #fff; cursor: pointer; line-height: 10px; text-align: center; font-size: 9px; }
+        .win-body { background: #fff; margin: 2px; border: 1px inset #888; padding: 20px; min-height: 250px; color: black; }
 
         #taskbar {
-            position: absolute; bottom: 0; width: 100%; height: 28px;
+            position: absolute; bottom: 0; width: 100%; height: 30px;
             background: var(--silver); border-top: 2px solid var(--white);
-            display: flex; align-items: center; padding: 2px; box-sizing: border-box;
-            z-index: 200;
+            display: flex; align-items: center; padding: 2px; z-index: 200;
         }
-        .start-btn {
-            height: 18px; border: 2px solid; font-weight: bold; font-size: 12px;
-            border-color: var(--white) var(--dark-gray) var(--dark-gray) var(--white);
-            display: flex; align-items: center; padding: 0 5px; gap: 4px; cursor: pointer;
-        }
+        .start-btn { height: 22px; border: 2px solid; border-color: #fff #555 #555 #fff; font-weight: bold; padding: 0 5px; display: flex; align-items: center; gap: 5px; cursor: pointer; }
     </style>
 </head>
 <body>
 
 <div id="workspace">
-    <div class="cable" id="power-cable"></div>
-    <div class="cable" id="mon-cable"></div>
-
+    <div class="cable" id="p-cable"></div>
+    
     <div id="pc-case">
-        <div class="drive-bay"></div>
-        <div id="case-brand" style="font-size: 12px; color: #555;">RIP_DEAD PRO</div>
+        <div class="drive"></div>
+        <div style="font-size: 12px; color: #555; margin-top: 15px;">RIP_DEAD PRO</div>
         <div id="compat-badge">Windows 98 Compatible</div>
-        
-        <button id="power-btn" onclick="systemAction()"></button>
+        <button id="power-btn" onclick="pressPower()"></button>
         <div id="led"></div>
     </div>
 
@@ -170,44 +130,42 @@
             <div id="blackout" style="width:100%; height:100%; background:#000; z-index:1000; position:absolute;"></div>
             
             <div id="bios" class="layer">
-                <p>Rip_Dead BIOS Revision 2.4</p>
-                <p>Copyright 1998 Rip_Dead Studios</p>
-                <br>
-                <p id="ram-count">Memory Check: 0K OK</p>
-                <p>IDE Channel 0: Master - 20GB HDD</p>
-                <p>IDE Channel 1: Slave - ATAPI CD-ROM</p>
-                <p>Booting OS...</p>
+                <p>Rip_Dead BIOS v4.0</p>
+                <p id="ram-txt">Memory Test: 0K OK</p>
+                <p>Checking IDE drives...</p>
+                <p>Starting Windows 98...</p>
             </div>
 
             <div id="win-boot" class="layer">
-                <img src="https://upload.wikimedia.org/wikipedia/en/thumb/a/af/Windows_98_logo.svg/1200px-Windows_98_logo.svg.png" width="380">
-                <div style="width:280px; height:12px; border:1px solid #fff; margin-top:40px; padding:1px; background:#000;">
-                    <div id="load-bar" style="width:0%; height:100%; background:linear-gradient(to right, #000080, #1084d0);"></div>
+                <img src="https://upload.wikimedia.org/wikipedia/en/thumb/a/af/Windows_98_logo.svg/1200px-Windows_98_logo.svg.png" width="350">
+                <div style="width:250px; height:12px; border:1px solid #fff; margin-top:40px; background:#000;">
+                    <div id="bar" style="width:0%; height:100%; background:linear-gradient(90deg, #000080, #1084d0);"></div>
                 </div>
-                <p style="color:white; font-size:10px; margin-top:10px;">Starting Rip_Dead 98...</p>
             </div>
 
             <div id="desktop" class="layer">
-                <div class="icon" ondblclick="toggleWindow('my-computer-win')">
+                <div class="icon-container" tabindex="0" ondblclick="openWin('my-pc')">
                     <img src="https://win98icons.alexmeub.com/icons/png/computer_pc-4.png">
-                    My Computer
+                    <span class="icon-label">My Computer</span>
                 </div>
 
-                <div id="my-computer-win" class="window">
-                    <div class="title-bar" onmousedown="dragStart(event, 'my-computer-win')">
+                <div id="my-pc" class="window">
+                    <div class="title-bar" onmousedown="dragStart(event, 'my-pc')">
                         <div style="display:flex; align-items:center; gap:5px;">
                             <img src="https://win98icons.alexmeub.com/icons/png/computer_pc-0.png" width="16">
-                            <span>My Computer</span>
+                            My Computer
                         </div>
-                        <button class="close-btn" onclick="toggleWindow('my-computer-win')">X</button>
+                        <button class="close-btn" onclick="closeWin('my-pc')">X</button>
                     </div>
                     <div class="win-body">
-                        <div style="display:flex; gap:20px; flex-wrap:wrap;">
-                            <div style="text-align:center; width:60px; font-size:11px;">
-                                <img src="https://win98icons.alexmeub.com/icons/png/drive_harddisk-2.png" width="32"><br>(C:)
+                        <div style="display:flex; gap:30px; flex-wrap:wrap;">
+                            <div style="text-align:center; width:70px;">
+                                <img src="https://win98icons.alexmeub.com/icons/png/drive_harddisk-2.png"><br>
+                                <span style="font-size:11px;">(C:) System</span>
                             </div>
-                            <div style="text-align:center; width:60px; font-size:11px;">
-                                <img src="https://win98icons.alexmeub.com/icons/png/drive_cdrom-2.png" width="32"><br>(D:)
+                            <div style="text-align:center; width:70px;">
+                                <img src="https://win98icons.alexmeub.com/icons/png/drive_cdrom-2.png"><br>
+                                <span style="font-size:11px;">(D:) Rip_Dead</span>
                             </div>
                         </div>
                     </div>
@@ -221,87 +179,80 @@
                 </div>
             </div>
         </div>
-        <div onclick="toggleMonitor()" style="width:20px; height:10px; background:#333; margin:10px auto 0; cursor:pointer; border-radius:2px; border:1px solid #111;"></div>
+        <div onclick="toggleMon()" style="width:25px; height:12px; background:#333; margin:10px auto 0; cursor:pointer; border:1px solid #000;"></div>
     </div>
 </div>
 
-<audio id="startup-wav" src="/win98simu/startup.wav"></audio>
+<audio id="start-wav" src="/win98simu/startup.wav"></audio>
 
 <script>
-    let isPC = false;
-    let isMon = false;
-    const led = document.getElementById('led');
+    let pc = false, mon = false;
     const blackout = document.getElementById('blackout');
+    const led = document.getElementById('led');
 
-    function systemAction() {
-        isPC = !isPC;
-        if (isPC) {
-            led.classList.add('on');
-            if (isMon) runBoot(); else beep();
-        } else {
-            location.reload();
-        }
+    function pressPower() {
+        pc = !pc;
+        if(pc) { led.classList.add('on'); if(mon) boot(); else beep(); }
+        else { location.reload(); }
     }
 
-    function toggleMonitor() {
-        isMon = !isMon;
-        blackout.style.display = isMon ? 'none' : 'block';
-        if (isMon && isPC) runBoot();
+    function toggleMon() {
+        mon = !mon;
+        blackout.style.display = mon ? 'none' : 'block';
+        if(mon && pc) boot();
     }
 
     function beep() {
-        try {
-            const ctx = new (window.AudioContext || window.webkitAudioContext)();
-            const osc = ctx.createOscillator();
-            osc.type = 'square'; osc.frequency.value = 850;
-            osc.connect(ctx.destination);
-            osc.start(); setTimeout(() => osc.stop(), 150);
-        } catch(e) {}
+        const ctx = new AudioContext();
+        const o = ctx.createOscillator();
+        o.type = 'square'; o.frequency.value = 800;
+        o.connect(ctx.destination);
+        o.start(); setTimeout(()=>o.stop(), 150);
     }
 
-    async function runBoot() {
-        if (document.getElementById('bios').style.display === 'block') return;
+    async function boot() {
+        if(document.getElementById('bios').style.display === 'block') return;
         beep();
         document.getElementById('bios').style.display = 'block';
-        
         let r = 0;
         const ri = setInterval(() => {
-            r += 4096;
-            document.getElementById('ram-count').innerText = `Memory Check: ${r}K OK`;
-            if (r >= 65536) clearInterval(ri);
+            r += 4096; document.getElementById('ram-txt').innerText = `Memory Test: ${r}K OK`;
+            if(r >= 65536) clearInterval(ri);
         }, 40);
 
         await new Promise(res => setTimeout(res, 3000));
-        
         document.getElementById('bios').style.display = 'none';
         document.getElementById('win-boot').style.display = 'flex';
         
         let p = 0;
         const pi = setInterval(() => {
-            p += 4;
-            document.getElementById('load-bar').style.width = p + '%';
-            if (p >= 100) clearInterval(pi);
+            p += 4; document.getElementById('bar').style.width = p + '%';
+            if(p >= 100) clearInterval(pi);
         }, 120);
 
         await new Promise(res => setTimeout(res, 4500));
-        
         document.getElementById('win-boot').style.display = 'none';
         document.getElementById('desktop').style.display = 'block';
-        document.getElementById('startup-wav').play().catch(()=>{});
+        document.getElementById('start-wav').play().catch(()=>{});
     }
 
-    function toggleWindow(id) {
+    function openWin(id) {
         const w = document.getElementById(id);
-        w.style.display = (w.style.display === 'block') ? 'none' : 'block';
+        w.style.display = 'flex';
+        w.style.zIndex = 150; // Ensure it's on top
+    }
+
+    function closeWin(id) {
+        document.getElementById(id).style.display = 'none';
     }
 
     function dragStart(e, id) {
-        const win = document.getElementById(id);
-        let sX = e.clientX - win.offsetLeft;
-        let sY = e.clientY - win.offsetTop;
+        const w = document.getElementById(id);
+        let sX = e.clientX - w.offsetLeft;
+        let sY = e.clientY - w.offsetTop;
         function move(ev) {
-            win.style.left = (ev.clientX - sX) + 'px';
-            win.style.top = (ev.clientY - sY) + 'px';
+            w.style.left = (ev.clientX - sX) + 'px';
+            w.style.top = (ev.clientY - sY) + 'px';
         }
         document.addEventListener('mousemove', move);
         document.onmouseup = () => document.removeEventListener('mousemove', move);
