@@ -52,31 +52,37 @@
         }
         #screen-content { width: 100%; height: 100%; background: #000; border-radius: 12px; position: relative; overflow: hidden; }
 
-        /* OS Layers */
+        /* Layers */
         .layer { display: none; width: 100%; height: 100%; position: absolute; }
         #bios { background: #000; color: #fff; padding: 30px; font-family: monospace; font-size: 18px; }
         #win-boot { background: #000; display: none; flex-direction: column; align-items: center; justify-content: center; }
         #desktop { background: var(--bg-teal); }
 
-        /* Icon Grid */
+        /* Windows & Icons */
         .icon-grid { display: flex; flex-direction: column; flex-wrap: wrap; height: 90%; align-content: flex-start; padding: 10px; }
         .icon { width: 85px; margin-bottom: 20px; text-align: center; color: white; font-size: 11px; text-shadow: 1px 1px #000; cursor: pointer; outline: none; }
         .icon img { width: 32px; height: 32px; display: block; margin: 0 auto 5px; pointer-events: none; }
         .icon:focus span { background: #000080; outline: 1px dotted #fff; }
 
-        /* Window UI */
         .window { position: absolute; top: 50px; left: 100px; background: var(--silver); border: 2px solid; border-color: #fff #555 #555 #fff; z-index: 100; display: none; flex-direction: column; box-shadow: 6px 6px 20px rgba(0,0,0,0.5); }
         .title-bar { background: linear-gradient(90deg, var(--blue-title), #1084d0); color: white; padding: 3px 6px; font-weight: bold; font-size: 12px; display: flex; justify-content: space-between; align-items: center; cursor: move; }
         .win-body { background: #fff; margin: 2px; border: 1px inset #888; padding: 10px; min-height: 200px; overflow: auto; color: #000; }
-        .win-btn { width: 16px; height: 14px; background: var(--silver); border: 1px solid; border-color: #fff #555 #555 #fff; font-family: sans-serif; font-size: 9px; line-height: 10px; cursor: pointer; text-align: center; }
+        .win-btn { width: 16px; height: 14px; background: var(--silver); border: 1px solid; border-color: #fff #555 #555 #fff; font-family: sans-serif; font-size: 9px; line-height: 10px; cursor: pointer; text-align: center; color: #000; }
 
-        /* App Specific Styles */
-        #cmd-screen { background: #000; color: #0f0; font-family: monospace; height: 300px; width: 500px; padding: 5px; white-space: pre-wrap; outline: none; }
-        .ie-nav { background: var(--silver); padding: 4px; display: flex; gap: 5px; border-bottom: 1px solid #888; border-top: 1px solid #fff; }
-        .ie-address { flex-grow: 1; border: 1px inset #888; padding: 2px; font-size: 12px; background: #fff; color: #000; }
+        /* Command Prompt Custom Style */
+        #cmd-screen { 
+            background: #000; 
+            color: #ffffff; /* Default text is now white */
+            font-family: monospace; 
+            height: 300px; 
+            width: 500px; 
+            padding: 5px; 
+            white-space: pre-wrap; 
+            outline: none; 
+        }
 
         #taskbar { position: absolute; bottom: 0; width: 100%; height: 28px; background: var(--silver); border-top: 2px solid var(--white); display: flex; align-items: center; padding: 2px; z-index: 200; box-sizing: border-box; }
-        .start-btn { border: 2px solid; border-color: #fff #555 #555 #fff; font-weight: bold; padding: 0 5px; display: flex; align-items: center; gap: 4px; cursor: pointer; height: 20px; font-size: 12px; }
+        .start-btn { border: 2px solid; border-color: #fff #555 #555 #fff; font-weight: bold; padding: 0 5px; display: flex; align-items: center; gap: 4px; cursor: pointer; height: 20px; font-size: 12px; color: #000; }
     </style>
 </head>
 <body>
@@ -98,9 +104,6 @@
                 <div id="bios" class="layer">
                     <p>Dell System BIOS vA09</p>
                     <p id="ram-txt">Memory Test: 0K OK</p>
-                    <p>Primary Master: IDE Disk 20GB</p>
-                    <p>Secondary Master: ATAPI CD-ROM</p>
-                    <br>
                     <p>Booting from Hard Drive...</p>
                 </div>
 
@@ -117,26 +120,8 @@
                         <div class="icon" tabindex="0" ondblclick="openWin('win-pc')">
                             <img src="https://win98icons.alexmeub.com/icons/png/computer_explorer_cool-0.png"><span>My Computer</span>
                         </div>
-                        <div class="icon" tabindex="0" ondblclick="openWin('win-ie')">
-                            <img src="https://win98icons.alexmeub.com/icons/png/msie2-1.png"><span>Internet Explorer</span>
-                        </div>
                         <div class="icon" tabindex="0" ondblclick="openWin('win-cmd')">
                             <img src="https://win98icons.alexmeub.com/icons/png/console_prompt-0.png"><span>MS-DOS Prompt</span>
-                        </div>
-                    </div>
-
-                    <div id="win-ie" class="window" style="width: 600px;">
-                        <div class="title-bar" onmousedown="dragStart(event, 'win-ie')">
-                            <div style="display:flex; align-items:center; gap:5px;"><img src="https://win98icons.alexmeub.com/icons/png/msie2-1.png" width="14"> Internet Explorer</div>
-                            <button class="win-btn" onclick="closeWin('win-ie')">X</button>
-                        </div>
-                        <div class="ie-nav"><div class="ie-address">http://www.microsoft.com</div></div>
-                        <div class="win-body" style="height:300px;">
-                            <center>
-                                <h1 style="font-size: 32px; margin-top: 40px;">Welcome to Windows 98</h1>
-                                <p>You are now connected to the World Wide Web.</p>
-                                <button onclick="alert('Modem Hangs Up...')">Disconnect</button>
-                            </center>
                         </div>
                     </div>
 
@@ -158,7 +143,6 @@ C:\WINDOWS>_</div>
                         </div>
                         <div class="win-body" style="display:flex; gap:30px; justify-content: center; padding: 40px;">
                             <div style="text-align:center;"><img src="https://win98icons.alexmeub.com/icons/png/hard_disk_drive-2.png"><br>(C:)</div>
-                            <div style="text-align:center;"><img src="https://win98icons.alexmeub.com/icons/png/floppy_drive_3_5_cool-0.png"><br>(A:)</div>
                             <div style="text-align:center;"><img src="https://win98icons.alexmeub.com/icons/png/cd_drive-5.png"><br>(D:)</div>
                         </div>
                     </div>
@@ -167,7 +151,7 @@ C:\WINDOWS>_</div>
                 </div>
             </div>
         </div>
-        <div onclick="toggleMon()" style="width:25px; height:15px; background:#444; margin:15px auto 0; cursor:pointer; border-radius:5px; border:1px solid #111; box-shadow: inset 0 2px 5px #000;"></div>
+        <div onclick="toggleMon()" style="width:25px; height:15px; background:#444; margin:15px auto 0; cursor:pointer; border-radius:5px; border:1px solid #111;"></div>
     </div>
 </div>
 
@@ -191,11 +175,11 @@ C:\WINDOWS>_</div>
         if(document.getElementById('bios').style.display === 'block') return;
         beep(); document.getElementById('bios').style.display = 'block';
         let r = 0; const ri = setInterval(() => { r += 4096; document.getElementById('ram-txt').innerText = `Memory Test: ${r}K OK`; if(r>=65536) clearInterval(ri); }, 50);
-        await new Promise(res => setTimeout(res, 2500));
+        await new Promise(res => setTimeout(res, 2000));
         document.getElementById('bios').style.display = 'none';
         document.getElementById('win-boot').style.display = 'flex';
-        let b = 0; const bi = setInterval(() => { b += 5; document.getElementById('load-bar').style.width = b + '%'; if(b>=100) clearInterval(bi); }, 140);
-        await new Promise(res => setTimeout(res, 4000));
+        let b = 0; const bi = setInterval(() => { b += 5; document.getElementById('load-bar').style.width = b + '%'; if(b>=100) clearInterval(bi); }, 100);
+        await new Promise(res => setTimeout(res, 3000));
         document.getElementById('win-boot').style.display = 'none';
         document.getElementById('desktop').style.display = 'block';
         document.getElementById('start-wav').play().catch(()=>{});
@@ -217,10 +201,15 @@ C:\WINDOWS>_</div>
             const lines = box.innerText.split('\n');
             const cmd = lines[lines.length - 1].replace('C:\\WINDOWS>', '').trim().toLowerCase();
             let res = "\n";
-            if(cmd === 'dir') res = "\nDirectory of C:\\WINDOWS\nCOMMAND COM\nIEXPLORE EXE\nSYSTEM   DAT\n";
+            
+            // New "color" command logic
+            if(cmd === 'color f') { box.style.color = '#ffffff'; res = "\n"; }
+            else if(cmd === 'color a') { box.style.color = '#0f0'; res = "\n"; }
+            else if(cmd === 'dir') res = "\nDirectory of C:\\WINDOWS\nCOMMAND COM\nSYSTEM   DAT\n";
             else if(cmd === 'ver') res = "\nWindows 98 [Version 4.10.1998]\n";
-            else if(cmd === 'help') res = "\nCommands: DIR, VER, CLS, HELP, WIN\n";
+            else if(cmd === 'help') res = "\nDIR, VER, CLS, HELP, COLOR [F/A]\n";
             else if(cmd === 'cls') { box.innerText = "C:\\WINDOWS>"; return; }
+            
             box.innerText += res + "C:\\WINDOWS>";
             const range = document.createRange(); const sel = window.getSelection();
             range.selectNodeContents(box); range.collapse(false);
