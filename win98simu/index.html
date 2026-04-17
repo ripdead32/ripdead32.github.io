@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Rip_Dead Site - Windows 98 Simulator</title>
-    
     <link rel="icon" type="image/png" href="https://win98icons.alexmeub.com/icons/png/computer-4.png">
 
     <style>
@@ -22,125 +21,62 @@
         }
 
         body {
-            background-color: #111;
-            margin: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            font-family: 'Win98', sans-serif;
-            overflow: hidden;
+            background-color: #0a0a0a; margin: 0; display: flex; align-items: center; justify-content: center; height: 100vh;
+            font-family: 'Win98', sans-serif; overflow: hidden;
             cursor: url('https://win98icons.alexmeub.com/icons/png/mouse_speed.png'), auto;
         }
 
         #workspace { position: relative; display: flex; align-items: flex-end; gap: 40px; }
 
-        /* --- DELL PC TOWER --- */
+        /* --- DELL TOWER --- */
         #pc-case {
-            width: 180px; height: 520px;
-            background: var(--dell-beige);
-            border: 4px solid #fff;
-            border-right: 6px solid #888; border-bottom: 6px solid #888;
-            display: flex; flex-direction: column; align-items: center;
+            width: 185px; height: 520px; background: var(--dell-beige); border: 4px solid #fff;
+            border-right: 6px solid #888; border-bottom: 6px solid #888; display: flex; flex-direction: column; align-items: center;
             box-shadow: 20px 20px 50px #000;
         }
-
-        #dell-logo {
-            margin-top: 20px;
-            font-family: "Arial Black", sans-serif;
-            font-style: italic;
-            color: #0066cc;
-            font-size: 24px;
-            letter-spacing: -2px;
-        }
-
-        .drive-bay { width: 110px; height: 12px; background: #111; margin-top: 30px; border: 2px solid #999; }
-        .vent { width: 100px; height: 3px; background: #999; margin-top: 10px; }
-
-        #compat-sticker {
-            margin-top: 30px; padding: 4px;
-            border: 1px solid #777; font-size: 9px;
-            background: #eee; color: #333; font-weight: bold;
-        }
-
-        #pwr-btn {
-            width: 50px; height: 50px; border-radius: 50%;
-            background: #c0c0c0; border: 4px solid #fff;
-            border-right-color: #777; border-bottom-color: #777;
-            margin-top: auto; margin-bottom: 20px; cursor: pointer;
-        }
+        #dell-logo { margin-top: 25px; font-family: "Arial Black", sans-serif; font-style: italic; color: #0066cc; font-size: 26px; letter-spacing: -2px; }
+        .drive-bay { width: 110px; height: 12px; background: #111; margin-top: 35px; border: 2px solid #999; box-shadow: inset 0 0 5px #000; }
+        #compat-sticker { margin-top: 35px; padding: 4px; border: 1px solid #777; font-size: 9px; background: #eee; color: #333; font-weight: bold; }
+        
+        #pwr-btn { width: 50px; height: 50px; border-radius: 50%; background: #c0c0c0; border: 4px solid #fff; border-right-color: #777; border-bottom-color: #777; margin-top: auto; margin-bottom: 20px; cursor: pointer; outline: none; }
         #pwr-btn:active { border-color: #777 #fff #fff #777; }
         #led { width: 10px; height: 10px; border-radius: 50%; background: #300; margin-bottom: 30px; }
         #led.on { background: #0f0; box-shadow: 0 0 10px #0f0; }
 
-        /* --- CRT MONITOR WITH BEZEL --- */
-        #monitor-housing {
-            background: var(--dell-beige);
-            padding: 35px;
-            border-radius: 40px 40px 10px 10px;
-            border-bottom: 20px solid #999;
-            box-shadow: 0 40px 100px #000;
-            position: relative;
+        /* --- CRT MONITOR --- */
+        #monitor-housing { background: var(--dell-beige); padding: 35px; border-radius: 45px 45px 15px 15px; border-bottom: 25px solid #999; box-shadow: 0 40px 100px #000; position: relative; }
+        #crt-bezel { 
+            width: 800px; height: 600px; background: #282828; padding: 25px; 
+            border-radius: 50px / 25px; box-shadow: inset 0 0 60px #000; 
+            display: flex; align-items: center; justify-content: center; position: relative; 
         }
-
-        #crt-bezel {
-            width: 800px; height: 600px;
-            background: #222;
-            padding: 20px;
-            border-radius: 50px / 20px; /* Slight curve effect */
-            box-shadow: inset 0 0 50px #000;
-            display: flex; align-items: center; justify-content: center;
-            position: relative;
-        }
-
-        /* The glass reflection overlay */
-        #crt-bezel::after {
-            content: '';
-            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-            background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 50%);
-            pointer-events: none; border-radius: 20px;
-        }
-
-        #screen-content {
-            width: 100%; height: 100%;
-            background: #000;
-            border-radius: 10px;
-            position: relative;
-            overflow: hidden;
-        }
+        #screen-content { width: 100%; height: 100%; background: #000; border-radius: 12px; position: relative; overflow: hidden; }
 
         /* OS Layers */
         .layer { display: none; width: 100%; height: 100%; position: absolute; }
-        #bios { background: #000; color: #fff; padding: 25px; font-family: monospace; font-size: 18px; }
+        #bios { background: #000; color: #fff; padding: 30px; font-family: monospace; font-size: 18px; }
         #win-boot { background: #000; display: none; flex-direction: column; align-items: center; justify-content: center; }
         #desktop { background: var(--bg-teal); }
 
+        /* Icon Grid */
+        .icon-grid { display: flex; flex-direction: column; flex-wrap: wrap; height: 90%; align-content: flex-start; padding: 10px; }
+        .icon { width: 85px; margin-bottom: 20px; text-align: center; color: white; font-size: 11px; text-shadow: 1px 1px #000; cursor: pointer; outline: none; }
+        .icon img { width: 32px; height: 32px; display: block; margin: 0 auto 5px; pointer-events: none; }
+        .icon:focus span { background: #000080; outline: 1px dotted #fff; }
+
         /* Window UI */
-        .window {
-            position: absolute; top: 50px; left: 80px; width: 450px;
-            background: var(--silver); border: 2px solid;
-            border-color: #fff #555 #555 #fff; z-index: 100; display: none;
-            box-shadow: 5px 5px 15px rgba(0,0,0,0.3);
-        }
-        .title-bar {
-            background: linear-gradient(90deg, var(--blue-title), #1084d0);
-            color: white; padding: 3px 6px; font-weight: bold; font-size: 12px;
-            display: flex; justify-content: space-between; align-items: center;
-        }
-        .win-body { background: #fff; margin: 2px; border: 1px inset #888; padding: 15px; min-height: 200px; }
+        .window { position: absolute; top: 50px; left: 100px; background: var(--silver); border: 2px solid; border-color: #fff #555 #555 #fff; z-index: 100; display: none; flex-direction: column; box-shadow: 6px 6px 20px rgba(0,0,0,0.5); }
+        .title-bar { background: linear-gradient(90deg, var(--blue-title), #1084d0); color: white; padding: 3px 6px; font-weight: bold; font-size: 12px; display: flex; justify-content: space-between; align-items: center; cursor: move; }
+        .win-body { background: #fff; margin: 2px; border: 1px inset #888; padding: 10px; min-height: 200px; overflow: auto; color: #000; }
+        .win-btn { width: 16px; height: 14px; background: var(--silver); border: 1px solid; border-color: #fff #555 #555 #fff; font-family: sans-serif; font-size: 9px; line-height: 10px; cursor: pointer; text-align: center; }
 
-        .icon {
-            width: 80px; margin: 15px; text-align: center; color: white;
-            font-size: 11px; text-shadow: 1px 1px #000; cursor: pointer;
-        }
-        .icon img { width: 32px; height: 32px; display: block; margin: 0 auto 5px; }
+        /* App Specific Styles */
+        #cmd-screen { background: #000; color: #0f0; font-family: monospace; height: 300px; width: 500px; padding: 5px; white-space: pre-wrap; outline: none; }
+        .ie-nav { background: var(--silver); padding: 4px; display: flex; gap: 5px; border-bottom: 1px solid #888; border-top: 1px solid #fff; }
+        .ie-address { flex-grow: 1; border: 1px inset #888; padding: 2px; font-size: 12px; background: #fff; color: #000; }
 
-        #taskbar {
-            position: absolute; bottom: 0; width: 100%; height: 28px;
-            background: var(--silver); border-top: 2px solid var(--white);
-            display: flex; align-items: center; padding: 2px; z-index: 200; box-sizing: border-box;
-        }
-        .start-btn { border: 2px solid; border-color: #fff #555 #555 #fff; font-weight: bold; padding: 0 5px; display: flex; align-items: center; gap: 4px; cursor: pointer; height: 20px; }
+        #taskbar { position: absolute; bottom: 0; width: 100%; height: 28px; background: var(--silver); border-top: 2px solid var(--white); display: flex; align-items: center; padding: 2px; z-index: 200; box-sizing: border-box; }
+        .start-btn { border: 2px solid; border-color: #fff #555 #555 #fff; font-weight: bold; padding: 0 5px; display: flex; align-items: center; gap: 4px; cursor: pointer; height: 20px; font-size: 12px; }
     </style>
 </head>
 <body>
@@ -149,10 +85,7 @@
     <div id="pc-case">
         <div id="dell-logo">DELL</div>
         <div class="drive-bay"></div>
-        <div class="drive-bay" style="height: 8px; margin-top: 10px;"></div>
-        <div class="vent"></div><div class="vent"></div><div class="vent"></div>
         <div id="compat-sticker">Windows 98 Compatible</div>
-        
         <button id="pwr-btn" onclick="sysAction()"></button>
         <div id="led"></div>
     </div>
@@ -165,46 +98,76 @@
                 <div id="bios" class="layer">
                     <p>Dell System BIOS vA09</p>
                     <p id="ram-txt">Memory Test: 0K OK</p>
-                    <p>Keyboard... Detected</p>
-                    <p>Mouse... Detected</p>
-                    <p>Fixed Disk 0: DELL-HDD 20GB</p>
+                    <p>Primary Master: IDE Disk 20GB</p>
+                    <p>Secondary Master: ATAPI CD-ROM</p>
+                    <br>
+                    <p>Booting from Hard Drive...</p>
                 </div>
 
                 <div id="win-boot" class="layer">
-                    <img src="https://upload.wikimedia.org/wikipedia/en/thumb/a/af/Windows_98_logo.svg/1200px-Windows_98_logo.svg.png" width="350">
-                    <div style="width:250px; height:12px; border:1px solid #fff; margin-top:40px; background:#000;">
+                    <div style="font-size: 48px; color: white; font-weight: bold; font-style: italic; margin-bottom: 10px;">Microsoft</div>
+                    <div style="font-size: 64px; color: white; font-weight: bold;">Windows 98</div>
+                    <div style="width:250px; height:15px; border:1px solid #fff; margin-top:50px; background:#000; padding: 2px;">
                         <div id="load-bar" style="width:0%; height:100%; background:linear-gradient(90deg, #000080, #1084d0);"></div>
                     </div>
-                    <p style="color:white; font-size:11px; margin-top:10px;">Starting Windows 98...</p>
                 </div>
 
                 <div id="desktop" class="layer">
-                    <div class="icon" tabindex="0" ondblclick="openWin('win-pc')">
-                        <img src="https://win98icons.alexmeub.com/icons/png/computer_explorer_cool-0.png">
-                        <span>My Computer</span>
+                    <div class="icon-grid">
+                        <div class="icon" tabindex="0" ondblclick="openWin('win-pc')">
+                            <img src="https://win98icons.alexmeub.com/icons/png/computer_explorer_cool-0.png"><span>My Computer</span>
+                        </div>
+                        <div class="icon" tabindex="0" ondblclick="openWin('win-ie')">
+                            <img src="https://win98icons.alexmeub.com/icons/png/msie2-1.png"><span>Internet Explorer</span>
+                        </div>
+                        <div class="icon" tabindex="0" ondblclick="openWin('win-cmd')">
+                            <img src="https://win98icons.alexmeub.com/icons/png/console_prompt-0.png"><span>MS-DOS Prompt</span>
+                        </div>
+                    </div>
+
+                    <div id="win-ie" class="window" style="width: 600px;">
+                        <div class="title-bar" onmousedown="dragStart(event, 'win-ie')">
+                            <div style="display:flex; align-items:center; gap:5px;"><img src="https://win98icons.alexmeub.com/icons/png/msie2-1.png" width="14"> Internet Explorer</div>
+                            <button class="win-btn" onclick="closeWin('win-ie')">X</button>
+                        </div>
+                        <div class="ie-nav"><div class="ie-address">http://www.microsoft.com</div></div>
+                        <div class="win-body" style="height:300px;">
+                            <center>
+                                <h1 style="font-size: 32px; margin-top: 40px;">Welcome to Windows 98</h1>
+                                <p>You are now connected to the World Wide Web.</p>
+                                <button onclick="alert('Modem Hangs Up...')">Disconnect</button>
+                            </center>
+                        </div>
+                    </div>
+
+                    <div id="win-cmd" class="window">
+                        <div class="title-bar" onmousedown="dragStart(event, 'win-cmd')">
+                            <div>MS-DOS Prompt</div><button class="win-btn" onclick="closeWin('win-cmd')">X</button>
+                        </div>
+                        <div class="win-body" style="background:#000; padding:0;">
+                            <div id="cmd-screen" contenteditable="true" onkeydown="handleCmd(event)">Microsoft(R) Windows 98
+(C)Copyright Microsoft Corp 1981-1998.
+
+C:\WINDOWS>_</div>
+                        </div>
                     </div>
 
                     <div id="win-pc" class="window">
                         <div class="title-bar" onmousedown="dragStart(event, 'win-pc')">
-                            <div style="display:flex; align-items:center; gap:5px;"><img src="https://win98icons.alexmeub.com/icons/png/computer_explorer_cool-0.png" width="14"> My Computer</div>
-                            <button onclick="closeWin('win-pc')" style="cursor:pointer">X</button>
+                            <div>My Computer</div><button class="win-btn" onclick="closeWin('win-pc')">X</button>
                         </div>
-                        <div class="win-body" style="display:flex; gap:25px;">
+                        <div class="win-body" style="display:flex; gap:30px; justify-content: center; padding: 40px;">
                             <div style="text-align:center;"><img src="https://win98icons.alexmeub.com/icons/png/hard_disk_drive-2.png"><br>(C:)</div>
                             <div style="text-align:center;"><img src="https://win98icons.alexmeub.com/icons/png/floppy_drive_3_5_cool-0.png"><br>(A:)</div>
                             <div style="text-align:center;"><img src="https://win98icons.alexmeub.com/icons/png/cd_drive-5.png"><br>(D:)</div>
                         </div>
                     </div>
 
-                    <div id="taskbar">
-                        <div class="start-btn">
-                            <img src="https://win98icons.alexmeub.com/icons/png/windows-0.png" width="14"> Start
-                        </div>
-                    </div>
+                    <div id="taskbar"><div class="start-btn"><img src="https://win98icons.alexmeub.com/icons/png/windows-0.png" width="14"> Start</div></div>
                 </div>
             </div>
         </div>
-        <div onclick="toggleMon()" style="width:20px; height:12px; background:#333; margin:15px auto 0; cursor:pointer; border-radius:50%; border:1px solid #000;"></div>
+        <div onclick="toggleMon()" style="width:25px; height:15px; background:#444; margin:15px auto 0; cursor:pointer; border-radius:5px; border:1px solid #111; box-shadow: inset 0 2px 5px #000;"></div>
     </div>
 </div>
 
@@ -222,10 +185,7 @@
 
     function toggleMon() { mon = !mon; blackout.style.display = mon ? 'none' : 'block'; if(mon && pc) boot(); }
 
-    function beep() {
-        const c = new AudioContext(); const o = c.createOscillator(); o.type='square'; o.frequency.value=800;
-        o.connect(c.destination); o.start(); setTimeout(()=>o.stop(), 150);
-    }
+    function beep() { const c = new AudioContext(); const o = c.createOscillator(); o.type='square'; o.frequency.value=800; o.connect(c.destination); o.start(); setTimeout(()=>o.stop(), 150); }
 
     async function boot() {
         if(document.getElementById('bios').style.display === 'block') return;
@@ -234,14 +194,14 @@
         await new Promise(res => setTimeout(res, 2500));
         document.getElementById('bios').style.display = 'none';
         document.getElementById('win-boot').style.display = 'flex';
-        let b = 0; const bi = setInterval(() => { b += 5; document.getElementById('load-bar').style.width = b + '%'; if(b>=100) clearInterval(bi); }, 150);
+        let b = 0; const bi = setInterval(() => { b += 5; document.getElementById('load-bar').style.width = b + '%'; if(b>=100) clearInterval(bi); }, 140);
         await new Promise(res => setTimeout(res, 4000));
         document.getElementById('win-boot').style.display = 'none';
         document.getElementById('desktop').style.display = 'block';
         document.getElementById('start-wav').play().catch(()=>{});
     }
 
-    function openWin(id) { const w = document.getElementById(id); w.style.display = 'block'; w.style.zIndex = 150; }
+    function openWin(id) { const w = document.getElementById(id); w.style.display = 'flex'; w.style.zIndex = 150; }
     function closeWin(id) { document.getElementById(id).style.display = 'none'; }
 
     function dragStart(e, id) {
@@ -249,7 +209,24 @@
         function mv(ev) { w.style.left = (ev.clientX - sX) + 'px'; w.style.top = (ev.clientY - sY) + 'px'; }
         document.addEventListener('mousemove', mv); document.onmouseup = () => document.removeEventListener('mousemove', mv);
     }
-</script>
 
+    function handleCmd(e) {
+        if(e.key === 'Enter') {
+            e.preventDefault();
+            const box = document.getElementById('cmd-screen');
+            const lines = box.innerText.split('\n');
+            const cmd = lines[lines.length - 1].replace('C:\\WINDOWS>', '').trim().toLowerCase();
+            let res = "\n";
+            if(cmd === 'dir') res = "\nDirectory of C:\\WINDOWS\nCOMMAND COM\nIEXPLORE EXE\nSYSTEM   DAT\n";
+            else if(cmd === 'ver') res = "\nWindows 98 [Version 4.10.1998]\n";
+            else if(cmd === 'help') res = "\nCommands: DIR, VER, CLS, HELP, WIN\n";
+            else if(cmd === 'cls') { box.innerText = "C:\\WINDOWS>"; return; }
+            box.innerText += res + "C:\\WINDOWS>";
+            const range = document.createRange(); const sel = window.getSelection();
+            range.selectNodeContents(box); range.collapse(false);
+            sel.removeAllRanges(); sel.addRange(range);
+        }
+    }
+</script>
 </body>
 </html>
