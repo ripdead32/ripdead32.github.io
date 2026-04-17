@@ -6,7 +6,6 @@
     
     <link rel="icon" type="image/png" href="https://win98icons.alexmeub.com/icons/png/windows-0.png" sizes="16x16">
     <link rel="icon" type="image/png" href="https://win98icons.alexmeub.com/icons/png/windows-4.png" sizes="32x32">
-    <link rel="apple-touch-icon" href="https://win98icons.alexmeub.com/icons/png/windows-4.png">
 
     <style>
         @font-face {
@@ -19,384 +18,273 @@
             --silver: #c0c0c0;
             --dark-gray: #808080;
             --white: #ffffff;
-            --black: #000000;
             --blue-title: #000080;
         }
 
         body {
-            background-color: #1a1a1a;
+            background-color: #121212;
             margin: 0;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
             height: 100vh;
+            font-family: 'Win98', sans-serif;
             overflow: hidden;
-            font-family: 'Win98', 'Tahoma', sans-serif;
-            user-select: none;
             cursor: url('https://cur.cursors-4u.net/games/gam-4/gam384.cur'), auto;
         }
 
-        /* Physical Monitor Unit */
-        #crt-monitor {
-            background: #dcdcdc;
-            padding: 40px 40px 80px 40px;
-            border-radius: 30px;
-            border-bottom: 15px solid #a0a0a0;
-            box-shadow: 0 50px 100px rgba(0,0,0,0.8);
-            position: relative;
+        /* The Desk Setup Layout */
+        #desk-setup {
+            display: flex;
+            align-items: flex-end;
+            gap: 40px;
         }
 
-        #screen-frame {
-            width: 960px;
-            height: 720px;
+        /* Physical PC Case (Desktop Unit) */
+        #pc-case {
+            width: 180px;
+            height: 450px;
+            background: #e0e0e0;
+            border: 4px solid #bebebe;
+            border-right: 8px solid #999;
+            border-bottom: 8px solid #999;
+            border-radius: 5px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 40px;
+            box-shadow: 10px 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .floppy-drive {
+            width: 120px;
+            height: 15px;
+            background: #333;
+            margin-bottom: 20px;
+            border: 2px solid #888;
+        }
+
+        #power-button {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #ccc;
+            border: 4px solid #999;
+            margin-top: auto;
+            margin-bottom: 20px;
+            cursor: pointer;
+            box-shadow: inset -2px -2px 5px #fff, 2px 2px 5px #000;
+        }
+        #power-button:active { box-shadow: inset 2px 2px 5px #000; transform: translateY(2px); }
+
+        #power-led {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #300;
+            margin-bottom: 40px;
+        }
+        #power-led.on { background: #0f0; box-shadow: 0 0 10px #0f0; }
+
+        /* CRT Monitor */
+        #monitor {
+            background: #dcdcdc;
+            padding: 30px;
+            border-radius: 20px;
+            border-bottom: 12px solid #a0a0a0;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.7);
+        }
+
+        #screen-container {
+            width: 800px;
+            height: 600px;
             background: #000;
-            border: 20px solid #282828;
-            border-radius: 10px;
+            border: 15px solid #222;
             position: relative;
             overflow: hidden;
-            box-shadow: inset 0 0 40px rgba(0,0,0,1);
         }
 
         /* Layers */
-        .layer { display: none; width: 100%; height: 100%; position: absolute; top: 0; left: 0; }
+        .layer { display: none; width: 100%; height: 100%; position: absolute; }
         
-        #bios { background: #000; color: #fff; padding: 30px; font-family: monospace; font-size: 18px; line-height: 1.4; cursor: none; }
-
-        #boot-splash { 
-            background: #000; 
-            display: none; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center; 
-            cursor: none;
-        }
+        #bios { background: #000; color: #fff; padding: 25px; font-family: monospace; font-size: 16px; }
 
         #desktop { background: var(--bg-teal); }
 
-        #bsod { background: #0000aa; color: #fff; padding: 50px; font-family: monospace; z-index: 9999; cursor: none; }
-
-        /* Icons */
+        /* Icon Styling Fix */
         .icon {
-            width: 80px;
+            width: 70px;
             margin: 15px;
             text-align: center;
             color: white;
             font-size: 11px;
-            text-shadow: 1px 1px #000;
+            text-shadow: 1px 1px 1px #000;
             cursor: pointer;
+            display: inline-block;
         }
-        .icon img { width: 32px; height: 32px; margin-bottom: 5px; display: block; margin-left: auto; margin-right: auto;}
+        .icon img { 
+            width: 32px; height: 32px; 
+            display: block; margin: 0 auto 4px;
+            image-rendering: pixelated; 
+        }
 
-        /* Windows Logic */
+        /* Window & UI Elements */
         .window {
-            position: absolute;
-            top: 50px; left: 100px;
-            min-width: 350px;
-            background: var(--silver);
-            border: 2px solid;
+            position: absolute; top: 40px; left: 80px; width: 350px;
+            background: var(--silver); border: 2px solid;
             border-color: var(--white) var(--dark-gray) var(--dark-gray) var(--white);
-            padding: 2px;
-            box-shadow: 2px 2px 10px rgba(0,0,0,0.3);
             z-index: 10;
         }
-
         .title-bar {
             background: linear-gradient(90deg, var(--blue-title), #1084d0);
-            color: white;
-            padding: 3px 5px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: bold;
-            font-size: 13px;
+            color: white; padding: 3px 6px; font-weight: bold; font-size: 13px;
+            display: flex; justify-content: space-between;
         }
 
-        .win-btns button {
-            width: 16px; height: 14px; font-size: 9px; padding: 0;
-            background: var(--silver); border: 1px solid;
-            border-color: var(--white) var(--dark-gray) var(--dark-gray) var(--white);
-            cursor: pointer;
-        }
-
-        /* Taskbar */
         #taskbar {
-            position: absolute; bottom: 0; width: 100%; height: 30px;
+            position: absolute; bottom: 0; width: 100%; height: 28px;
             background: var(--silver); border-top: 2px solid var(--white);
-            display: flex; align-items: center; padding: 2px; z-index: 1000;
-            box-sizing: border-box;
+            display: flex; align-items: center; padding: 2px; box-sizing: border-box;
         }
 
-        .start-button {
-            height: 22px; padding: 0 8px; border: 2px solid;
+        .start-btn {
+            height: 20px; border: 2px solid; font-weight: bold;
             border-color: var(--white) var(--dark-gray) var(--dark-gray) var(--white);
-            font-weight: bold; display: flex; align-items: center; gap: 5px;
-            cursor: pointer;
+            display: flex; align-items: center; padding: 0 5px; gap: 4px;
         }
 
-        .start-button:active { border-color: var(--dark-gray) var(--white) var(--white) var(--dark-gray); }
-
-        #start-menu {
-            position: absolute; bottom: 30px; left: 0; width: 220px;
-            background: var(--silver); border: 2px solid; 
-            border-color: var(--white) var(--dark-gray) var(--dark-gray) var(--white);
-            display: none;
-            box-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+        #monitor-btn {
+            width: 20px; height: 10px; background: #444; margin: 15px auto 0;
+            border-radius: 2px; cursor: pointer; border: 1px solid #222;
         }
-
-        .menu-sidebar {
-            background: linear-gradient(to top, #000080, #1084d0);
-            width: 25px; position: absolute; left: 0; top: 0; bottom: 0;
-            display: flex; align-items: flex-end; justify-content: center;
-            padding-bottom: 10px;
-        }
-
-        .menu-sidebar span {
-            color: white; font-weight: bold; transform: rotate(-90deg);
-            white-space: nowrap; font-family: sans-serif; font-size: 14px;
-        }
-
-        .menu-content { margin-left: 25px; }
-        .menu-item { padding: 8px 10px; font-size: 13px; display: flex; align-items: center; gap: 10px; cursor: pointer; }
-        .menu-item img { width: 24px; height: 24px; }
-        .menu-item:hover { background: var(--blue-title); color: white; }
-        .menu-sep { border-bottom: 1px solid var(--dark-gray); border-top: 1px solid var(--white); margin: 2px 0; }
-
-        #clock { margin-left: auto; border: 2px inset var(--white); padding: 2px 10px; font-size: 12px; background: #dcdcdc; }
-
-        /* Physical Controls */
-        #front-panel {
-            position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
-            display: flex; gap: 30px; align-items: center;
-        }
-
-        .power-btn {
-            width: 40px; height: 40px; border-radius: 50%;
-            background: #bbb; border: 3px solid #888; cursor: pointer;
-            box-shadow: 0 4px #666;
-        }
-
-        .led { width: 10px; height: 10px; border-radius: 50%; background: #300; transition: 0.2s; }
-        .led.active { background: #0f0; box-shadow: 0 0 10px #0f0; }
-        .monitor-btn { width: 25px; height: 25px; border-radius: 4px; background: #333; cursor: pointer; }
     </style>
 </head>
 <body>
 
-<div id="crt-monitor">
-    <div id="screen-frame">
-        <div id="screen-black" style="width:100%; height:100%; background:#000; position:absolute; z-index:999;"></div>
-
-        <div id="bios" class="layer">
-            <p>Rip_Dead Custom BIOS v4.51PG</p>
-            <p>Copyright (C) 1998-2026, Rip_Dead Studios</p>
-            <p id="ram-counter">Memory Test: 0KB OK</p>
-            <p>Primary Master: IDE Disk 20GB</p>
-            <p>Secondary Master: CD-ROM 52X</p>
-            <br>
-            <p>Keyboard... Found</p>
-            <p>Mouse... Found</p>
-            <p>Starting Windows 98...</p>
-        </div>
-
-        <div id="boot-splash" class="layer">
-            <img src="https://upload.wikimedia.org/wikipedia/en/thumb/a/af/Windows_98_logo.svg/1200px-Windows_98_logo.svg.png" width="450">
-            <div style="width:300px; height:18px; border:2px solid #fff; margin-top:40px; background:#000;">
-                <div id="boot-progress" style="width:0%; height:100%; background:linear-gradient(to right, #000080, #1084d0);"></div>
-            </div>
-        </div>
-
-        <div id="desktop" class="layer">
-            <div class="icon" ondblclick="toggleWindow('mycomputer')">
-                <img src="https://win98icons.alexmeub.com/icons/png/computer_pc-4.png">
-                <div>My Computer</div>
-            </div>
-            <div class="icon" ondblclick="toggleWindow('recycled')">
-                <img src="https://win98icons.alexmeub.com/icons/png/recycle_bin_empty-4.png">
-                <div>Recycle Bin</div>
-            </div>
-
-            <div id="mycomputer" class="window" style="display:none">
-                <div class="title-bar" onmousedown="dragStart(event, 'mycomputer')">
-                    <div style="display:flex; align-items:center; gap:5px;">
-                        <img src="https://win98icons.alexmeub.com/icons/png/computer_pc-0.png" width="16">
-                        <span>My Computer</span>
-                    </div>
-                    <div class="win-btns"><button onclick="toggleWindow('mycomputer')">X</button></div>
-                </div>
-                <div style="padding:15px; background:#fff; height:180px; border:1px inset #808080;">
-                    <p>3½ Floppy (A:)</p>
-                    <p><b>Hard Disk (C:)</b></p>
-                    <p>Removable Disk (D:)</p>
-                </div>
-            </div>
-
-            <div id="recycled" class="window" style="display:none">
-                <div class="title-bar" onmousedown="dragStart(event, 'recycled')">
-                    <div style="display:flex; align-items:center; gap:5px;">
-                        <img src="https://win98icons.alexmeub.com/icons/png/recycle_bin_empty-0.png" width="16">
-                        <span>Recycle Bin</span>
-                    </div>
-                    <div class="win-btns"><button onclick="toggleWindow('recycled')">X</button></div>
-                </div>
-                <div style="padding:15px; background:#fff; height:100px; border:1px inset #808080;">
-                    <p><i>Trash is empty.</i></p>
-                </div>
-            </div>
-
-            <div id="start-menu">
-                <div class="menu-sidebar"><span>Rip_Dead 98</span></div>
-                <div class="menu-content">
-                    <div class="menu-item"><img src="https://win98icons.alexmeub.com/icons/png/directory_program_group-4.png"> Programs</div>
-                    <div class="menu-item"><img src="https://win98icons.alexmeub.com/icons/png/settings_gear-4.png"> Settings</div>
-                    <div class="menu-item" onclick="toggleWindow('mycomputer')"><img src="https://win98icons.alexmeub.com/icons/png/application_hourglass-4.png"> Run...</div>
-                    <div class="menu-sep"></div>
-                    <div class="menu-item" onclick="showBSOD()"><img src="https://win98icons.alexmeub.com/icons/png/shut_down_cool-4.png"> Shut Down...</div>
-                </div>
-            </div>
-
-            <div id="taskbar">
-                <div class="start-button" onclick="toggleStart()">
-                    <img src="https://win98icons.alexmeub.com/icons/png/windows-0.png" width="16">
-                    Start
-                </div>
-                <div id="clock">12:00 PM</div>
-            </div>
-        </div>
-
-        <div id="bsod" class="layer">
-            <div style="display:flex; align-items:center; gap:20px; margin-bottom:20px;">
-                <img src="https://win98icons.alexmeub.com/icons/png/msg_error-0.png" width="32">
-                <h2 style="background:#ccc; color:#0000aa; padding:0 10px;">Fatal Error</h2>
-            </div>
-            <p>An exception 0E has occurred at 0028:C0011E36 in VXD VMM(01).</p>
-            <p>* Press any key to terminate the application.</p>
-            <p>* Press CTRL+ALT+DEL to restart. You will lose unsaved data.</p>
-            <p style="text-align:center; margin-top:80px;">Press any key to continue _</p>
-        </div>
+<div id="desk-setup">
+    <div id="pc-case">
+        <div class="floppy-drive"></div>
+        <div class="floppy-drive" style="width: 100px; height: 10px;"></div>
+        <div style="font-size: 10px; color: #888; margin-top: 20px;">RIP_DEAD 98 PRO</div>
+        <button id="power-button" onclick="pressPower()"></button>
+        <div id="power-led"></div>
     </div>
 
-    <div id="front-panel">
-        <div id="power-led" class="led"></div>
-        <button class="power-btn" onclick="systemPower()"></button>
-        <button class="monitor-btn" onclick="monitorPower()"></button>
+    <div id="monitor">
+        <div id="screen-container">
+            <div id="overlay" style="width:100%; height:100%; background:#000; z-index:999; position:absolute;"></div>
+            
+            <div id="bios" class="layer">
+                <p>Award Modular BIOS v4.51PG</p>
+                <p>Copyright (C) 1998, Rip_Dead Studios</p>
+                <br>
+                <p id="ram-text">Memory Test : 0K OK</p>
+                <p>Detecting HDD... Done</p>
+                <p>Starting Windows...</p>
+            </div>
+
+            <div id="desktop" class="layer">
+                <div class="icon" ondblclick="toggleWin('my-comp')">
+                    <img src="https://win98icons.alexmeub.com/icons/png/computer_pc-4.png">
+                    My Computer
+                </div>
+
+                <div id="my-comp" class="window" style="display:none">
+                    <div class="title-bar" onmousedown="dragStart(event, 'my-comp')">
+                        <span>My Computer</span>
+                        <button onclick="toggleWin('my-comp')">X</button>
+                    </div>
+                    <div style="padding:15px; background:white; height:120px; border:1px inset #888;">
+                        (C:) System Drive<br>
+                        (D:) Data
+                    </div>
+                </div>
+
+                <div id="taskbar">
+                    <div class="start-btn">
+                        <img src="https://win98icons.alexmeub.com/icons/png/windows-0.png" width="16">
+                        Start
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="monitor-btn" onclick="toggleMonitor()"></div>
     </div>
 </div>
 
 <audio id="startup-wav" src="/win98simu/startup.wav"></audio>
 
 <script>
-    let isSystemOn = false, isMonitorOn = false, activeDrag = null;
+    let pcOn = false;
+    let monOn = false;
+    const overlay = document.getElementById('overlay');
+    const led = document.getElementById('power-led');
 
-    function beep() {
-        try {
-            const ctx = new (window.AudioContext || window.webkitAudioContext)();
-            const osc = ctx.createOscillator(), gain = ctx.createGain();
-            osc.type = 'square'; osc.frequency.setValueAtTime(850, ctx.currentTime);
-            gain.gain.setValueAtTime(0.05, ctx.currentTime);
-            osc.connect(gain); gain.connect(ctx.destination);
-            osc.start(); setTimeout(() => osc.stop(), 180);
-        } catch(e) {}
-    }
-
-    function monitorPower() {
-        isMonitorOn = !isMonitorOn;
-        document.getElementById('screen-black').style.display = isMonitorOn ? 'none' : 'block';
-        if (isMonitorOn && isSystemOn && document.getElementById('desktop').style.display !== 'block') startBoot();
-    }
-
-    function systemPower() {
-        isSystemOn = !isSystemOn;
-        const led = document.getElementById('power-led');
-        if (isSystemOn) {
-            led.classList.add('active');
-            if (isMonitorOn) startBoot(); else beep();
+    function pressPower() {
+        pcOn = !pcOn;
+        if (pcOn) {
+            led.classList.add('on');
+            if (monOn) startBoot();
+            else beep(); // Motherboard beep always happens
         } else {
+            led.classList.remove('on');
             location.reload();
         }
     }
 
+    function toggleMonitor() {
+        monOn = !monOn;
+        overlay.style.display = monOn ? 'none' : 'block';
+        if (monOn && pcOn) startBoot();
+    }
+
+    function beep() {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator();
+        osc.type = 'square'; osc.frequency.value = 800;
+        osc.connect(ctx.destination);
+        osc.start(); setTimeout(() => osc.stop(), 150);
+    }
+
     async function startBoot() {
-        if(document.getElementById('bios').style.display === 'block') return;
-        hideLayers(); beep();
-        const bios = document.getElementById('bios');
-        bios.style.display = 'block';
-        document.getElementById('screen-frame').style.cursor = 'none';
+        if (document.getElementById('bios').style.display === 'block') return;
+        beep();
+        hideAll();
+        document.getElementById('bios').style.display = 'block';
         
         let ram = 0;
-        const ramInt = setInterval(() => {
-            ram += 2048; document.getElementById('ram-counter').innerText = `Memory Test: ${ram}KB OK`;
-            if (ram >= 65536) clearInterval(ramInt);
-        }, 30);
+        const intr = setInterval(() => {
+            ram += 4096;
+            document.getElementById('ram-text').innerText = `Memory Test : ${ram}K OK`;
+            if (ram >= 65536) clearInterval(intr);
+        }, 40);
 
-        await new Promise(r => setTimeout(r, 3500));
-        if(!isSystemOn) return;
-        
-        hideLayers();
-        document.getElementById('boot-splash').style.display = 'flex';
-        let prog = 0;
-        const progInt = setInterval(() => {
-            prog += 2; document.getElementById('boot-progress').style.width = prog + '%';
-            if (prog >= 100) clearInterval(progInt);
-        }, 100);
-
-        await new Promise(r => setTimeout(r, 6000));
-        if(!isSystemOn) return;
-        
-        hideLayers();
+        await new Promise(r => setTimeout(r, 3000));
+        hideAll();
         document.getElementById('desktop').style.display = 'block';
-        document.getElementById('screen-frame').style.cursor = '';
-        document.getElementById('startup-wav').play().catch(() => {});
+        document.getElementById('startup-wav').play().catch(()=>{});
     }
 
-    function hideLayers() { document.querySelectorAll('.layer').forEach(l => l.style.display = 'none'); }
-
-    function toggleStart() {
-        const m = document.getElementById('start-menu');
-        m.style.display = (m.style.display === 'block') ? 'none' : 'block';
+    function hideAll() {
+        document.querySelectorAll('.layer').forEach(l => l.style.display = 'none');
     }
 
-    function toggleWindow(id) {
+    function toggleWin(id) {
         const w = document.getElementById(id);
-        w.style.display = (w.style.display === 'block') ? 'none' : 'block';
-        if(w.style.display === 'block') {
-            document.querySelectorAll('.window').forEach(win => win.style.zIndex = 10);
-            w.style.zIndex = 11;
-        }
-    }
-
-    function showBSOD() {
-        hideLayers();
-        document.getElementById('start-menu').style.display = 'none';
-        document.getElementById('bsod').style.display = 'block';
-        document.getElementById('screen-frame').style.cursor = 'none';
+        w.style.display = w.style.display === 'none' ? 'block' : 'none';
     }
 
     function dragStart(e, id) {
-        activeDrag = document.getElementById(id);
-        document.querySelectorAll('.window').forEach(w => w.style.zIndex = 10);
-        activeDrag.style.zIndex = 11;
-        let sX = e.clientX - activeDrag.getBoundingClientRect().left;
-        let sY = e.clientY - activeDrag.getBoundingClientRect().top;
-
+        const win = document.getElementById(id);
+        let sX = e.clientX - win.offsetLeft;
+        let sY = e.clientY - win.offsetTop;
         function move(ev) {
-            activeDrag.style.left = (ev.pageX - sX) + 'px';
-            activeDrag.style.top = (ev.pageY - sY) + 'px';
+            win.style.left = (ev.clientX - sX) + 'px';
+            win.style.top = (ev.clientY - sY) + 'px';
         }
         document.addEventListener('mousemove', move);
-        document.onmouseup = () => { document.removeEventListener('mousemove', move); document.onmouseup = null; };
+        document.onmouseup = () => document.removeEventListener('mousemove', move);
     }
-
-    function updateClock() {
-        const now = new Date();
-        document.getElementById('clock').innerText = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-    }
-    setInterval(updateClock, 1000); updateClock();
-
-    document.addEventListener('click', (e) => {
-        if (!e.target.closest('.start-button') && !e.target.closest('#start-menu')) 
-            document.getElementById('start-menu').style.display = 'none';
-    });
 </script>
 
 </body>
